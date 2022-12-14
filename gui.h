@@ -210,7 +210,7 @@ class Gui {
                 difficultyWindow.setVisible(true);
             // check hint 
             if (checkClicked(hub.hintProp.xPos, hub.hintProp.width, cursorPos.x)) 
-                putHint(board);
+                if (board.toFill != 0) putHint(board);
             // check notes
             if (checkClicked(hub.notesProp.xPos, hub.notesProp.width, cursorPos.x)) 
                 handleNotes();
@@ -285,9 +285,10 @@ class Gui {
         void handleCorrect(Board &board, const int &number)
         {
             board.toFill--;
-            gameboard.blocks[selectedBlock].tiles[selectedTile].box.mistakeHighlight = false;
             gameboard.blocks[selectedBlock].numbers[selectedTile] = board.actualBlocks[selectedBlock][selectedTile] = board.solvedBlocks[selectedBlock][selectedTile];
+            gameboard.blocks[selectedBlock].tiles[selectedTile].box.mistakeHighlight = false;
             gameboard.blocks[selectedBlock].tiles[selectedTile].box.mainHighlight = true;
+            gameboard.blocks[selectedBlock].tiles[selectedTile].showNotes = false;
             removeNotesFromRowColBlock(number);
             handleGameOver(board);
         }
