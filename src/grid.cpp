@@ -103,6 +103,7 @@ namespace Sudoku
         void Grid::getBox(int box, std::array<int, 9>& boxArray) const
         {
                 LOG_TRACE("Grid::getBox() called");
+
                 if (!Grid::checkIndex(box, false))
                 {
                         LOG_ERROR("Box out of range");
@@ -116,6 +117,36 @@ namespace Sudoku
                         for (int j = rowStartIndex; j < rowStartIndex + 2; j++)
                         {
                                 boxArray[i * 3 + j - rowStartIndex] = grid[j];
+                        }
+                        rowStartIndex += 9;
+                }
+        }
+
+        /*
+        Returns the fixed values of the cells in the specified box.
+
+        @param box The box to get. Must be in the range [0, 9].
+        @param boxArray The array to store the values of the cells in the box.
+
+        @throw std::out_of_range if box is out of range.
+        */
+        void Grid::getBoxFixed(int box, std::array<bool, 9>& boxArray) const
+        {
+                LOG_TRACE("Grid::getBoxFixed() called");
+
+                if (!Grid::checkIndex(box, false))
+                {
+                        LOG_ERROR("Box out of range");
+                        throw std::out_of_range("Box out of range");
+                }
+                const std::array<int, 9>
+                        startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
+                for (int i = 0; i < 3; i++)
+                {
+                        int rowStartIndex = startIndex[box];
+                        for (int j = rowStartIndex; j < rowStartIndex + 2; j++)
+                        {
+                                boxArray[i * 3 + j - rowStartIndex] = fixed[j];
                         }
                         rowStartIndex += 9;
                 }
@@ -295,6 +326,7 @@ namespace Sudoku
                                 std::cout << "------|-------|------" << std::endl;
                         }
                 }
+                std::cout << std::endl;
         }
 // Check methods
         /*

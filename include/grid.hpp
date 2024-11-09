@@ -40,6 +40,7 @@ namespace Sudoku
                 void getRow(int row, std::array<int, 9>& rowArray) const;
                 void getCol(int col, std::array<int, 9>& colArray) const;
                 void getBox(int box, std::array<int, 9>& boxArray) const;
+                void getBoxFixed(int box, std::array<bool, 9>& boxArray) const;
         // Setter methods
                 void setCell(int row, int col, int value);
                 void setRow(int row, const std::array<int, 9>& rowArray);
@@ -63,6 +64,7 @@ namespace Sudoku
 
         private: // Variables
                 std::array<int, 81> grid;                                               // Stores the sudoku grid as a 1D array
+        public: // Variables
                 std::array<bool, 81> fixed;                                             // Stores whether a cell is fixed
         };
 } // namespace Sudoku
