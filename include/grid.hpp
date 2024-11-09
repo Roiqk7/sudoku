@@ -60,7 +60,7 @@ namespace Sudoku
                 bool isValidBox(int box) const noexcept;
                 bool isValid() const noexcept;
 
-        public: // Variables
+        private: // Variables
                 std::array<int, 81> grid;                                               // Stores the sudoku grid as a 1D array
         };
 } // namespace Sudoku
