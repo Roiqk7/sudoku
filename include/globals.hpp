@@ -50,7 +50,7 @@ namespace Globals
         // Constants
         namespace Constants
         {
-                const int FPS = 60;                                             // Frames per second
+                // const int GRID_SIZE = 9;                                        // The size of the sudoku grid
         }
 }
 
