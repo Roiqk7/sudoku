@@ -63,6 +63,7 @@ namespace Sudoku
 
         private: // Variables
                 std::array<int, 81> grid;                                               // Stores the sudoku grid as a 1D array
+                std::array<bool, 81> fixed;                                             // Stores whether a cell is fixed
         };
 } // namespace Sudoku
 
