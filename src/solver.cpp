@@ -12,6 +12,7 @@ Sources:
 #include "../include/solver.hpp"
 #include <algorithm>
 #include <array>
+#include <math.h>
 #include <random>
 #include <vector>
 
@@ -167,19 +168,21 @@ namespace Sudoku
                 // TODO: Parallelize this function (using 4 threads one for 25 grids)
 
                 LOG_TRACE("Solver::initializePopulation() called");
+                std::random_device rd;
+                std::mt19937 g(rd());
+                std::vector<int> missingValues;
 
-                for (auto& grid : population)
+                for (auto& individual : population)
                 {
                         // We fill the remaining cells so that each 3x3 grid
                         // contains the numbers 1 to 9 exactly once. We respect
                         // the initial values of the grid.
 
                         // For each box
-                        std::vector<int> missingValues;
                         for (int i = 0; i < 9; i++)
                         {
                                 std::array<int, 9> box;
-                                grid.getBox(i, box);
+                                individual.getBox(i, box);
 
                                 // Find the missing values
                                 for (int j = 1; j <= 9; j++)
@@ -191,8 +194,6 @@ namespace Sudoku
                                 }
 
                                 // Shuffle the missing values
-                                std::random_device rd;
-                                std::mt19937 g(rd());
                                 std::shuffle(missingValues.begin(), missingValues.end(), g);
 
                                 // Fill the box with the missing values
@@ -200,11 +201,71 @@ namespace Sudoku
                                 {
                                         if (box[j] == 0)
                                         {
-                                                grid.setCell(i, j, missingValues.back());
+                                                individual.setCell(i, j, missingValues.back());
                                                 missingValues.pop_back();
                                         }
                                 }
                         }
                 }
         }
+
+        /*
+        "The mutation function is implemented on each individual separately and
+        works as follows: a 3x3 grid is randomly selected. Two unfixed cells in
+        the grid are then randomly selected and switched. During reproduction,
+        the mutation function is implemented on each individual in the population.
+
+        The number of mutations implemented on an individual depends on how far
+        the CGA has progressed (how fit the fittest individual in the population
+        is). The number of mutations implemented is equal to the fitness of the
+        fittest individual divided by 2, rounded up." [1]
+
+        @param population The population to mutate.
+        @param maxFitness The fitness of the fittest individual in the population.
+        */
+        void Solver::mutation(std::vector<Grid>& population, int maxFitness) const noexcept
+        {
+                LOG_TRACE("Solver::mutation() called");
+                std::random_device rd;
+                std::mt19937 g(rd());
+
+                // Number of mutations
+                int numMutations = std::ceil(maxFitness / 2.0);
+
+                // For each individual in the population
+                for (auto& individual : population)
+                {
+                        // For each mutation
+                        for (int i = 0; i < numMutations; i++)
+                        {
+                                // Select a random box
+                                std::uniform_int_distribution<int> dist(0, 8);
+                                int box = dist(g);
+                                std::array<int, 9> boxArray;
+                                individual.getBox(box, boxArray);
+                                std::array<bool, 9> boxFixed;
+                                individual.getBoxFixed(box, boxFixed);
+
+                                // Select two random unfixed cells in the box
+                                int cell1, cell2;
+                                do
+                                {
+                                        cell1 = dist(g);
+                                }
+                                while (!boxFixed[cell1]);
+                                do
+                                {
+                                        cell2 = dist(g);
+                                }
+                                while (!boxFixed[cell2] && cell1 == cell2);
+
+                                // Swap the values of the two cells
+                                std::swap(boxArray[cell1], boxArray[cell2]);
+
+                                // Set the box to the new values
+                                individual.setBox(box, boxArray);
+                        }
+                }
+        }
+
 }
