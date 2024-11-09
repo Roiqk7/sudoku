@@ -103,7 +103,6 @@ namespace Sudoku
         void Grid::getBox(int box, std::array<int, 9>& boxArray) const
         {
                 LOG_TRACE("Grid::getBox() called");
-
                 if (!Grid::checkIndex(box, false))
                 {
                         LOG_ERROR("Box out of range");
@@ -111,9 +110,9 @@ namespace Sudoku
                 }
                 const std::array<int, 9>
                         startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
+                int rowStartIndex = startIndex[box];
                 for (int i = 0; i < 3; i++)
                 {
-                        int rowStartIndex = startIndex[box];
                         for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
                         {
                                 boxArray[i * 3 + j - rowStartIndex] = grid[j];
@@ -141,9 +140,9 @@ namespace Sudoku
                 }
                 const std::array<int, 9>
                         startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
+                int rowStartIndex = startIndex[box];
                 for (int i = 0; i < 3; i++)
                 {
-                        int rowStartIndex = startIndex[box];
                         for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
                         {
                                 boxArray[i * 3 + j - rowStartIndex] = fixed[j];
