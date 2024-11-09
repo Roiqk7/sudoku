@@ -21,8 +21,11 @@ namespace Sudoku
                 void solve(Grid& grid);
         // Stochastic search
                 int evalFitness(const Grid& grid) const noexcept;
-        // Stochastic helper methods
+        private: // Methods
+        // Stochastic search
                 int evalArrayFitness(const std::array<int, 9>& array) const noexcept;
+                void initializePopulation(std::vector<Grid>& population) const;
+                void mutation(std::vector<Grid>& population, int maxFitness) const noexcept;
 
         };
 }

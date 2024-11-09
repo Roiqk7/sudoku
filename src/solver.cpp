@@ -10,7 +10,10 @@ Sources:
 #include "../include/globals.hpp"
 #include "../include/grid.hpp"
 #include "../include/solver.hpp"
+#include <algorithm>
 #include <array>
+#include <random>
+#include <vector>
 
 namespace Sudoku
 {
@@ -32,14 +35,44 @@ namespace Sudoku
         }
 // Solver methods
         /*
-        Solves the grid using stochastic search / optimization methods.
+        4.4. CGA Applied to the Sudoku Problem: Second Approach [1]
 
         @param grid The grid to solve.
+
+        @note Missing numbers are represented by zeros and the fixed numbers
+        are assumed to be correct.
         */
         void Solver::solve(Grid& grid)
         {
                 LOG_TRACE("Solver::solve() called");
-                // TODO: Implement solve method
+
+                // Initialize the population
+                std::vector<Grid> population(100, grid);
+                initializePopulation(population);
+
+                // Search for the solution
+                int maxFitness;
+                size_t fittestIndex;
+                do
+                {
+                        // Evaluate the fitness of the population
+                        for (size_t i = 0; i < population.size(); i++)
+                        {
+                                int fitness = evalFitness(population[i]);
+                                if (fitness > maxFitness)
+                                {
+                                        maxFitness = fitness;
+                                        fittestIndex = i;
+                                }
+                        }
+
+                        // Mutation
+                        mutation(population, maxFitness);
+                }
+                while (maxFitness != 0);
+
+                // Set the grid to the solution
+                grid = population[fittestIndex];
         }
 // Stochastic search
         /*
@@ -64,15 +97,15 @@ namespace Sudoku
                 {
                         std::array<int, 9> row;
                         std::array<int, 9> col;
-                        std::array<int, 9> box;
+                        // std::array<int, 9> box;
 
                         grid.getRow(i, row);
                         grid.getCol(i, col);
-                        grid.getBox(i, box);
+                        // grid.getBox(i, box);
 
                         fitness += evalArrayFitness(row);
                         fitness += evalArrayFitness(col);
-                        fitness += evalArrayFitness(box);
+                        // fitness += evalArrayFitness(box);
 
                 }
 
@@ -118,5 +151,60 @@ namespace Sudoku
                 }
 
                 return fitness;
+        }
+
+        /*
+        "This approach uses the third solution space representation scheme
+        mentioned in Section 2. Each individual is represented as a completed
+        puzzle where the third constraint mentioned in Section 1 is met: each 3x3
+        grid in each puzzle contains the numbers 1 to 9 exactly once. Each 3x3
+        grid is thus considered a gene." [1]
+
+        @param population The population to initialize.
+        */
+        void Solver::initializePopulation(std::vector<Grid>& population) const
+        {
+                // TODO: Parallelize this function (using 4 threads one for 25 grids)
+
+                LOG_TRACE("Solver::initializePopulation() called");
+
+                for (auto& grid : population)
+                {
+                        // We fill the remaining cells so that each 3x3 grid
+                        // contains the numbers 1 to 9 exactly once. We respect
+                        // the initial values of the grid.
+
+                        // For each box
+                        std::vector<int> missingValues;
+                        for (int i = 0; i < 9; i++)
+                        {
+                                std::array<int, 9> box;
+                                grid.getBox(i, box);
+
+                                // Find the missing values
+                                for (int j = 1; j <= 9; j++)
+                                {
+                                        if (std::find(box.begin(), box.end(), j) == box.end())
+                                        {
+                                                missingValues.push_back(j);
+                                        }
+                                }
+
+                                // Shuffle the missing values
+                                std::random_device rd;
+                                std::mt19937 g(rd());
+                                std::shuffle(missingValues.begin(), missingValues.end(), g);
+
+                                // Fill the box with the missing values
+                                for (int j = 0; j < 9; j++)
+                                {
+                                        if (box[j] == 0)
+                                        {
+                                                grid.setCell(i, j, missingValues.back());
+                                                missingValues.pop_back();
+                                        }
+                                }
+                        }
+                }
         }
 }
