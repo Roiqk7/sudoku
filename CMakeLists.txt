@@ -30,10 +30,6 @@ target_include_directories(Sudoku PUBLIC "include/")
 # External dependencies
 # Include the findAndCheckDependency function
 include(${CMAKE_SOURCE_DIR}/cmake/findAndCheckDependency.cmake)
-# Add SDL2
-find_and_check_dependency(PACKAGE SDL2)
-target_include_directories(Sudoku PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(Sudoku PRIVATE ${SDL2_LIBRARIES})
 
 # Add source files
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
