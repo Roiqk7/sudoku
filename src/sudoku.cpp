@@ -24,10 +24,10 @@ int main()
         Sudoku::Grid grid;
         grid.print();
 
-        std::array<int, 9> rowArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        grid.setBox(0, rowArray);
-        grid.setBox(4, rowArray);
-        grid.setBox(8, rowArray);
+        std::array<int, 9> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        grid.setBox(0, arr);
+        grid.setBox(4, arr);
+        grid.setBox(8, arr);
         grid.print();
 
         Sudoku::Solver solver;
