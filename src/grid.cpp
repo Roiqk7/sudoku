@@ -114,7 +114,7 @@ namespace Sudoku
                 for (int i = 0; i < 3; i++)
                 {
                         int rowStartIndex = startIndex[box];
-                        for (int j = rowStartIndex; j < rowStartIndex + 2; j++)
+                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
                         {
                                 boxArray[i * 3 + j - rowStartIndex] = grid[j];
                         }
@@ -144,7 +144,7 @@ namespace Sudoku
                 for (int i = 0; i < 3; i++)
                 {
                         int rowStartIndex = startIndex[box];
-                        for (int j = rowStartIndex; j < rowStartIndex + 2; j++)
+                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
                         {
                                 boxArray[i * 3 + j - rowStartIndex] = fixed[j];
                         }
@@ -166,7 +166,7 @@ namespace Sudoku
         {
                 LOG_TRACE("Grid::setCell() called");
                 const int index = Grid::convertIndex(row, col);
-                if (value < 0 || 9 > value)
+                if (value < 0 || value > 9)
                 {
                         LOG_ERROR("Value out of range");
                         throw std::invalid_argument("Value out of range");
@@ -236,10 +236,10 @@ namespace Sudoku
                 }
                 const std::array<int, 9>
                         startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
+                int rowStartIndex = startIndex[box];
                 for (int i = 0; i < 3; i++)
                 {
-                        int rowStartIndex = startIndex[box];
-                        for (int j = rowStartIndex; j < rowStartIndex + 2; j++)
+                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
                         {
                                 grid[j] = boxArray[i * 3 + j - rowStartIndex];
                         }
