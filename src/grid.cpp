@@ -34,8 +34,8 @@ namespace Sudoku
         /*
         Returns the value of the cell at the specified row and column.
 
-        @param row The row of the cell. Must be in the range [0, 8].
-        @param col The column of the cell. Must be in the range [0, 8].
+        @param row The row of the cell. Must be in the range [0, 9].
+        @param col The column of the cell. Must be in the range [0, 9].
 
         @return The value of the cell at the specified row and column.
 
@@ -51,7 +51,7 @@ namespace Sudoku
         /*
         Returns the values of the cells in the specified row.
 
-        @param row The row to get. Must be in the range [0, 8].
+        @param row The row to get. Must be in the range [0, 9].
         @param rowArray The array to store the values of the cells in the row.
 
         @throw std::out_of_range if row is out of range.
@@ -73,7 +73,7 @@ namespace Sudoku
         /*
         Returns the values of the cells in the specified column.
 
-        @param col The column to get. Must be in the range [0, 8].
+        @param col The column to get. Must be in the range [0, 9].
         @param colArray The array to store the values of the cells in the column.
 
         @throw std::out_of_range if col is out of range.
@@ -95,7 +95,7 @@ namespace Sudoku
         /*
         Returns the values of the cells in the specified box.
 
-        @param box The box to get. Must be in the range [0, 8].
+        @param box The box to get. Must be in the range [0, 9].
         @param boxArray The array to store the values of the cells in the box.
 
         @throw std::out_of_range if box is out of range.
@@ -124,8 +124,8 @@ namespace Sudoku
         /*
         Sets the value of the cell at the specified row and column.
 
-        @param row The row of the cell. Must be in the range [0, 8].
-        @param col The column of the cell. Must be in the range [0, 8].
+        @param row The row of the cell. Must be in the range [0, 9].
+        @param col The column of the cell. Must be in the range [0, 9].
         @param value The value to set the cell to. Must be in the range [0, 9].
 
         @throw std::out_of_range if row or col is out of range.
@@ -146,7 +146,7 @@ namespace Sudoku
         /*
         Sets the values of the cells in the specified row.
 
-        @param row The row to set. Must be in the range [0, 8].
+        @param row The row to set. Must be in the range [0, 9].
         @param rowArray The array containing the values to set the cells in the row to.
 
         @throw std::out_of_range if row is out of range.
@@ -168,7 +168,7 @@ namespace Sudoku
         /*
         Sets the values of the cells in the specified column.
 
-        @param col The column to set. Must be in the range [0, 8].
+        @param col The column to set. Must be in the range [0, 9].
         @param colArray The array containing the values to set the cells in the column to.
 
         @throw std::out_of_range if col is out of range.
@@ -190,7 +190,7 @@ namespace Sudoku
         /*
         Sets the values of the cells in the specified box.
 
-        @param box The box to set. Must be in the range [0, 8].
+        @param box The box to set. Must be in the range [0, 9].
         @param boxArray The array containing the values to set the cells in the box to.
 
         @throw std::out_of_range if box is out of range.
@@ -217,6 +217,19 @@ namespace Sudoku
         }
 // Utility methods
         /*
+        Returns the size of the grid.
+
+        @return The size of the grid.
+
+        @note The size of the grid is 81.
+        */
+        size_t Grid::size() const noexcept
+        {
+                LOG_TRACE("Grid::size() called");
+                return grid.size();
+        }
+
+        /*
         Clears the grid by setting all cells to zero.
         */
         void Grid::clear() noexcept
@@ -242,8 +255,8 @@ namespace Sudoku
         /*
         Converts the row and column to an index in the grid array.
 
-        @param row The row of the cell. Must be in the range [0, 8].
-        @param col The column of the cell. Must be in the range [0, 8].
+        @param row The row of the cell. Must be in the range [0, 9].
+        @param col The column of the cell. Must be in the range [0, 9].
 
         @return The index in the grid array corresponding to the row and column.
 
@@ -320,8 +333,8 @@ namespace Sudoku
         /*
         Checks if the value of the cell at the specified row and column is valid.
 
-        @param row The row of the cell. Must be in the range [0, 8].
-        @param col The column of the cell. Must be in the range [0, 8].
+        @param row The row of the cell. Must be in the range [0, 9].
+        @param col The column of the cell. Must be in the range [0, 9].
         @param includeZero True if zero is considered a valid value, false otherwise.
 
         @return True if the value of the cell is valid, false otherwise.
@@ -340,7 +353,7 @@ namespace Sudoku
         /*
         Checks if the values in the specified row are valid.
 
-        @param row The row to check. Must be in the range [0, 8].
+        @param row The row to check. Must be in the range [0, 9].
 
         @return True if the values in the row are valid, false otherwise.
 
@@ -362,7 +375,7 @@ namespace Sudoku
         /*
         Checks if the values in the specified column are valid.
 
-        @param col The column to check. Must be in the range [0, 8].
+        @param col The column to check. Must be in the range [0, 9].
 
         @return True if the values in the column are valid, false otherwise.
 
@@ -384,7 +397,7 @@ namespace Sudoku
         /*
         Checks if the values in the specified box are valid.
 
-        @param box The box to check. Must be in the range [0, 8].
+        @param box The box to check. Must be in the range [0, 9].
 
         @return True if the values in the box are valid, false otherwise.
 

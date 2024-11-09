@@ -1,7 +1,7 @@
 /*
 Date: 09/11/2024
 
-This file includes the Grid class, which stores the sudoku grid and provides methods to manipulate it.
+Grid class stores the sudoku grid and provides methods to manipulate it.
 
 The sudoku grid is stored as a 1D array of 81 integers. The grid is divided into 9 rows, 9 columns, and 9 boxes.
 Here is visual representation of the grid:
@@ -46,6 +46,7 @@ namespace Sudoku
                 void setCol(int col, const std::array<int, 9>& colArray);
                 void setBox(int box, const std::array<int, 9>& boxArray);
         // Utility methods
+                size_t size() const noexcept;
                 void clear() noexcept;
                 void fill(int value) noexcept;
                 int convertIndex(int row, int col) const;
