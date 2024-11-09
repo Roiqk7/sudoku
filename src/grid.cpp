@@ -279,7 +279,7 @@ namespace Sudoku
                         std::cout << std::endl;
                         if (i == 2 || i == 5)
                         {
-                                std::cout << "---------|---------|---------" << std::endl;
+                                std::cout << "------|-------|------" << std::endl;
                         }
                 }
         }
