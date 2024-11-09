@@ -266,7 +266,22 @@ namespace Sudoku
         void Grid::print() const noexcept
         {
                 LOG_TRACE("Grid::print() called");
-                // TODO: Implement print method
+                for (int i = 0; i < 9; i++)
+                {
+                        for (int j = 0; j < 9; j++)
+                        {
+                                std::cout << grid[Grid::convertIndex(i, j)] << " ";
+                                if (j == 2 || j == 5)
+                                {
+                                        std::cout << "| ";
+                                }
+                        }
+                        std::cout << std::endl;
+                        if (i == 2 || i == 5)
+                        {
+                                std::cout << "---------|---------|---------" << std::endl;
+                        }
+                }
         }
 // Check methods
         /*
