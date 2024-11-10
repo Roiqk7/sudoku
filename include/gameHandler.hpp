@@ -20,7 +20,7 @@ namespace Sudoku
         Hard: 24-28
         Expert: 19-23
 
-        @note NONE is used for the default constructor.
+        @note NONE is used as a default value.
         */
         enum class Difficulty
         {
