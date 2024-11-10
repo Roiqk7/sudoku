@@ -20,9 +20,10 @@ namespace System
 
                 init();
 
-                runFlag = RunFlag::RUN;
-
-                run();
+                if (shouldRun())
+                {
+                        run();
+                }
         }
 
         /*
@@ -31,6 +32,8 @@ namespace System
         Application::~Application()
         {
                 LOG_TRACE("Application::~Application() called");
+
+                LOG_INFO("Application closed");
 
                 runFlag = RunFlag::STOPPED;
         }
@@ -41,6 +44,23 @@ namespace System
         void Application::init()
         {
                 LOG_TRACE("Application::init() called");
+
+                bool successFlag = true;
+
+                // TODO: Implement the initialization
+
+                if (successFlag)
+                {
+                        runFlag = RunFlag::RUN;
+
+                        LOG_INFO("Application initialized");
+                }
+                else
+                {
+                        LOG_ERROR("Application failed to initialize");
+
+                        close();
+                }
         }
         /*
         Runs the application.
@@ -73,6 +93,8 @@ namespace System
         void Application::close()
         {
                 LOG_TRACE("Application::close() called");
+
+                LOG_INFO("Closing application");
 
                 runFlag = RunFlag::WILL_STOP;
         }
