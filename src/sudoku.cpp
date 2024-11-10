@@ -21,7 +21,7 @@ int main()
 
         // Delete - Test
         Sudoku::Grid grid;
-        std::array<int, 9> arr = {1, 2, 3, 4, 5, 6, 7, 8, 0};
+        std::array<int, 9> arr = {1, 2, 3, 4, 5, 0, 0, 0, 0};
         grid.setBox(0, arr);
         grid.setBox(4, arr);
         grid.setBox(8, arr);
