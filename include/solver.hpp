@@ -21,9 +21,6 @@ namespace Sudoku
         // Solver methods
                 void solve(Grid& grid);
                 bool backtrack(Grid& grid, int row, int col);
-        // Utility methods
-                void generatePossibilities(Grid& grid, int row, int col,
-                        std::vector<int>& possibilities);
         };
 }
 
