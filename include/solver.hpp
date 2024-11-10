@@ -19,8 +19,8 @@ namespace Sudoku
                 Solver();
                 ~Solver();
         // Solver methods
-                void solve(Grid& grid);
-                bool backtrack(Grid& grid, int row, int col);
+                bool solve(Grid& grid);
+                bool backtrack(Grid& grid, int row, int col, int zeroCount);
         };
 }
 

@@ -38,21 +38,18 @@ namespace Sudoku
 
         @param grid The grid to solve.
 
+        @return True if the grid is solved, false otherwise.
+
         @note Missing numbers are represented by zeros and the fixed numbers
         are assumed to be correct.
         */
-        void Solver::solve(Grid& grid)
+        bool Solver::solve(Grid& grid)
         {
                 LOG_TRACE("Solver::solve() called");
 
-                if (backtrack(grid, 0, 0))
-                {
-                        LOG_INFO("Sudoku grid solved successfully");
-                }
-                else
-                {
-                        LOG_ERROR("Failed to solve sudoku grid");
-                }
+                int zeroCount = grid.count(0);
+
+                return backtrack(grid, 0, 0, zeroCount);
         }
 
         /*
@@ -64,12 +61,12 @@ namespace Sudoku
 
         @return True if the grid is solved, false otherwise.
         */
-        bool Solver::backtrack(Grid& grid, int row, int col)
+        bool Solver::backtrack(Grid& grid, int row, int col, int zeroCount)
         {
                 LOG_TRACE("Solver::backtrack() called");
 
-                // If we have reached the end of the grid, return true
-                if (row == 9)
+                // If there are no zeros left, the grid is solved
+                if (zeroCount == 0)
                 {
                         return true;
                 }
@@ -77,7 +74,7 @@ namespace Sudoku
                 // Move to the next cell if the current cell is not empty
                 if (grid.getCell(row, col) != 0)
                 {
-                        return backtrack(grid, row + (col + 1) / 9, (col + 1) % 9);
+                        return backtrack(grid, row + (col + 1) / 9, (col + 1) % 9, zeroCount);
                 }
 
                 // Try all numbers from 1 to 9
@@ -87,7 +84,7 @@ namespace Sudoku
                         {
                                 grid.setCell(row, col, num);
 
-                                if (backtrack(grid, row + (col + 1) / 9, (col + 1) % 9))
+                                if (backtrack(grid, row + (col + 1) / 9, (col + 1) % 9, zeroCount - 1))
                                 {
                                         return true;
                                 }
