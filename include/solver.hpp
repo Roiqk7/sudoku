@@ -8,6 +8,7 @@ Solver is class which given a sudoku grid, solves it Stochastic search / optimiz
 #define SUDOKU_SOLVER_HPP
 
 #include "grid.hpp"
+#include <vector>
 
 namespace Sudoku
 {
@@ -19,14 +20,10 @@ namespace Sudoku
                 ~Solver();
         // Solver methods
                 void solve(Grid& grid);
-        // Stochastic search
-                int evalFitness(const Grid& grid) const noexcept;
-        private: // Methods
-        // Stochastic search
-                int evalArrayFitness(const std::array<int, 9>& array) const noexcept;
-                void initializePopulation(std::vector<Grid>& population) const;
-                void mutation(std::vector<Grid>& population, int maxFitness) const noexcept;
-
+                bool backtrack(Grid& grid, int row, int col);
+        // Utility methods
+                void generatePossibilities(Grid& grid, int row, int col,
+                        std::vector<int>& possibilities);
         };
 }
 
