@@ -9,6 +9,7 @@ This file implements the Grid class.
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <random>
 #include <stdexcept>
 
 namespace Sudoku
@@ -31,6 +32,26 @@ namespace Sudoku
                 LOG_TRACE("Grid::~Grid() called");
         }
 // Getter methods
+        /*
+        Returns the value of the cell at the specified index.
+
+        @param i The index of the cell. Must be in the range [0, 80].
+
+        @return The value of the cell at the specified index.
+
+        @throw std::out_of_range if i is out of range.
+        */
+        int Grid::getCell(int i) const
+        {
+                LOG_TRACE("Grid::getCell() called");
+                if (!Grid::checkIndex(i, true))
+                {
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
+                }
+                return grid[i];
+        }
+
         /*
         Returns the value of the cell at the specified row and column.
 
@@ -151,6 +172,56 @@ namespace Sudoku
                 }
         }
 // Setter methods
+        /*
+        Sets the values of the cells in the grid to zero.
+
+        @param count The number of cells to set to zero.
+        */
+        void Grid::setZero(int count) noexcept
+        {
+                LOG_TRACE("Grid::setZero() called");
+
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_int_distribution<int> dis(0, 80);
+                int index;
+
+                for (int i = 0; i < count; i++)
+                {
+                        do
+                        {
+                                index = dis(gen);
+                        }
+                        while (grid[index] == 0);
+                        grid[index] = 0;
+                }
+        }
+
+        /*
+        Sets the value of the cell at the specified index.
+
+        @param i The index of the cell. Must be in the range [0, 80].
+        @param value The value to set the cell to. Must be in the range [0, 9].
+
+        @throw std::out_of_range if i is out of range.
+        @throw std::invalid_argument if value is out of range.
+        */
+        void Grid::setCell(int i, int value)
+        {
+                LOG_TRACE("Grid::setCell() called");
+                if (!Grid::checkIndex(i, true))
+                {
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
+                }
+                if (value < 0 || value > 9)
+                {
+                        LOG_ERROR("Value out of range");
+                        throw std::invalid_argument("Value out of range");
+                }
+                grid[i] = value;
+        }
+
         /*
         Sets the value of the cell at the specified row and column.
 

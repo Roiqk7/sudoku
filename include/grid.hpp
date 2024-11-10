@@ -36,12 +36,15 @@ namespace Sudoku
                 Grid();
                 ~Grid();
         // Getter methods
+                int getCell(int i) const;
                 int getCell(int row, int col) const;
                 void getRow(int row, std::array<int, 9>& rowArray) const;
                 void getCol(int col, std::array<int, 9>& colArray) const;
                 void getBox(int box, std::array<int, 9>& boxArray) const;
                 void getBoxFixed(int box, std::array<bool, 9>& boxArray) const;
         // Setter methods
+                void setZero(int count) noexcept;
+                void setCell(int i, int value);
                 void setCell(int row, int col, int value);
                 void setRow(int row, const std::array<int, 9>& rowArray);
                 void setCol(int col, const std::array<int, 9>& colArray);
