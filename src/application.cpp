@@ -5,6 +5,8 @@ Application class controls the overall flow of the program.
 */
 
 #include "../include/application.hpp"
+#include "../include/globals.hpp"
+#include "../include/gui.hpp"
 
 namespace System
 {
@@ -69,7 +71,7 @@ namespace System
         {
                 LOG_TRACE("Application::run() called");
 
-                while (shouldRun())
+                if (shouldRun())
                 {
                         controlFlow();
                 }
@@ -94,7 +96,7 @@ namespace System
         {
                 LOG_TRACE("Application::close() called");
 
-                LOG_INFO("Closing application");
+                LOG_INFO("Closing application...");
 
                 runFlag = RunFlag::WILL_STOP;
         }

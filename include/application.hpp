@@ -8,6 +8,7 @@ Application class controls the overall flow of the program.
 #define APPLICATION_HPP
 
 #include "globals.hpp"
+#include "gui.hpp"
 
 namespace System
 {
@@ -35,6 +36,7 @@ namespace System
                 bool shouldRun();
         private: // Variables
                 RunFlag runFlag;
+                GUI gui;
         };
 }
 
