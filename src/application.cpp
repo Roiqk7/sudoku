@@ -9,16 +9,40 @@ Application class controls the overall flow of the program.
 namespace System
 {
 // Class methods
+        /*
+        Initializes the Application class.
+        */
         Application::Application()
         {
                 LOG_TRACE("Application::Application() called");
+
+                runFlag = RunFlag::NULL;
+
+                init();
+
+                runFlag = RunFlag::RUN;
         }
 
+        /*
+        Destructs the Application class.
+        */
         Application::~Application()
         {
                 LOG_TRACE("Application::~Application() called");
+
+                runFlag = RunFlag::STOPPED;
         }
 // Application methods
+        /*
+        Initializes the application.
+        */
+        void Application::init()
+        {
+                LOG_TRACE("Application::init() called");
+        }
+        /*
+        Runs the application.
+        */
         void Application::run()
         {
                 LOG_TRACE("Application::run() called");
@@ -31,13 +55,33 @@ namespace System
                 close();
         }
 
+        /*
+        Controls the flow of the application.
+        */
         void Application::controlFlow()
         {
                 LOG_TRACE("Application::controlFlow() called");
         }
 
+        /*
+        Closes the application.
+        */
         void Application::close()
         {
                 LOG_TRACE("Application::close() called");
+
+                runFlag = RunFlag::WILL_STOP;
+        }
+// Check methods
+        /*
+        Checks if the application should run.
+
+        @return True if the application should run, false otherwise.
+        */
+        bool Application::shouldRun()
+        {
+                LOG_TRACE("Application::shouldRun() called");
+
+                return runFlag == RunFlag::RUN;
         }
 }

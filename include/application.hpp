@@ -11,6 +11,14 @@ Application class controls the overall flow of the program.
 
 namespace System
 {
+        enum class RunFlag
+        {
+                NULL = 0,
+                RUN,
+                WILL_STOP,
+                STOPPED
+        };
+
         class Application
         {
         public: // Methods
@@ -19,11 +27,14 @@ namespace System
                 ~Application();
         private: // Methods
         // Application methods
+                void init();
                 void run();
                 void controlFlow();
                 void close();
         // Check methods
                 bool shouldRun();
+        private: // Variables
+                RunFlag runFlag;
         };
 }
 
