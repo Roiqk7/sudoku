@@ -37,6 +37,10 @@ file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 list(REMOVE_ITEM PROJECT_SOURCES "${CMAKE_SOURCE_DIR}/src/sudoku.cpp")
 target_sources(Sudoku PRIVATE ${PROJECT_SOURCES})
 
+# Find and link SFML
+find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+target_link_libraries(Sudoku PRIVATE sfml-system sfml-window sfml-graphics sfml-audio)
+
 # Conditionally include spdlog in development mode
 if(DEVELOPMENT)
         # Add spdlog
