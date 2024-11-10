@@ -55,6 +55,7 @@ namespace Sudoku
         // Check methods
                 bool checkIndex(int index, bool cell = true) const noexcept;
                 bool isSolved() const noexcept;
+                bool isValidValue(int row, int col, int value) const noexcept;
                 bool isValidCell(
                         int row, int col, bool includeZero = true) const noexcept;
                 bool isValidRow(int row) const noexcept;
