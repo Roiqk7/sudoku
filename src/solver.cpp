@@ -49,7 +49,16 @@ namespace Sudoku
 
                 int zeroCount = grid.count(0);
 
-                return backtrack(grid, 0, 0, zeroCount);
+                bool result = backtrack(grid, 0, 0, zeroCount);
+
+                #ifdef DEVELOPMENT
+                LOG_DEBUG("Solver::solve() result: {}", result);
+                LOG_DEBUG("Solver::solve() grid:");
+                grid.print();
+                LOG_DEBUG("Solver::solve() end of grid");
+                #endif // DEVELOPMENT
+
+                return result;
         }
 
         /*
@@ -71,10 +80,11 @@ namespace Sudoku
                         return true;
                 }
 
-                // Move to the next cell if the current cell is not empty
-                if (grid.getCell(row, col) != 0)
+                // Find next empty cell
+                while (grid.getCell(row, col) != 0)
                 {
-                        return backtrack(grid, row + (col + 1) / 9, (col + 1) % 9, zeroCount);
+                        col = (col + 1) % 9;
+                        row += (col == 0);
                 }
 
                 // Try all numbers from 1 to 9
