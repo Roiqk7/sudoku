@@ -14,6 +14,7 @@ Notes: x
 #include <spdlog/spdlog.h>
 // Macro for development logging
 #define LOG_TRACE(...) spdlog::trace(__VA_ARGS__)
+#define LOG_DEBUG(...) spdlog::debug(__VA_ARGS__)
 #define LOG_INFO(...) spdlog::info(__VA_ARGS__)
 #define LOG_WARN(...) spdlog::warn(__VA_ARGS__)
 #define LOG_ERROR(...) spdlog::error(__VA_ARGS__)
@@ -30,6 +31,7 @@ Notes: x
 #else // RELEASE
 // Define macros as no-operation if not in development mode
 #define LOG_TRACE(...) (void)0
+#define LOG_DEBUG(...) (void)0
 #define LOG_INFO(...) (void)0
 #define LOG_WARN(...) (void)0
 #define LOG_ERROR(...) (void)0
