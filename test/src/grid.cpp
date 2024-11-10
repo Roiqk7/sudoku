@@ -11,7 +11,6 @@ This file provides a few tests for the Grid class.
 #include "../../include/grid.hpp"
 #include <array>
 #include <gtest/gtest.h>
-#include <iostream>
 
 /*
 Test for the Grid::Grid() constructor.
