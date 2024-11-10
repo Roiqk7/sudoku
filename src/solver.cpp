@@ -1,9 +1,7 @@
 /*
 Date: 09/11/2024
 
-Solver is class which given a sudoku grid, solves it using backtracking. I tried to implement
-stochastic approach using this paper [https://arxiv.org/pdf/0805.0697, 4.4] but it was too complex
-and way too slow. So I decided to implement backtracking instead.
+Solver is class which given a sudoku grid, solves it using backtracking.
 */
 
 #include "../include/globals.hpp"
