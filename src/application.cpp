@@ -16,7 +16,7 @@ namespace System
         {
                 LOG_TRACE("Application::Application() called");
 
-                runFlag = RunFlag::NULL;
+                runFlag = RunFlag::NONE;
 
                 init();
 

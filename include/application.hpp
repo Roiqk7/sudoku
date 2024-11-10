@@ -13,7 +13,7 @@ namespace System
 {
         enum class RunFlag
         {
-                NULL = 0,
+                NONE = 0,
                 RUN,
                 WILL_STOP,
                 STOPPED
