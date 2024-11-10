@@ -7,6 +7,7 @@ GUI class controls the graphical user interface of the program.
 #ifndef GUI_HPP
 #define GUI_HPP
 
+#include "gameHandler.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -36,6 +37,7 @@ namespace System
         private: // Variables
                 sf::RenderWindow window;
                 State state;
+                Sudoku::GameHandler gameHandler;
         };
 }
 
