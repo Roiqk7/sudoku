@@ -32,7 +32,7 @@ namespace Sudoku
         }
 // Generator methods
         /*
-        Generates a new sudoku grid.
+        Generates a new, filled sudoku grid.
 
         @param grid The grid to generate.
         */
