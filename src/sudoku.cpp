@@ -11,7 +11,6 @@ Description: This file contains the main function.
 #include "../include/solver.hpp"
 #include <array>
 
-
 int main()
 {
         LOG_TRACE("main() called");
@@ -22,9 +21,7 @@ int main()
 
         // Delete - Test
         Sudoku::Grid grid;
-        grid.print();
-
-        std::array<int, 9> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        std::array<int, 9> arr = {1, 2, 3, 4, 5, 6, 7, 8, 0};
         grid.setBox(0, arr);
         grid.setBox(4, arr);
         grid.setBox(8, arr);
