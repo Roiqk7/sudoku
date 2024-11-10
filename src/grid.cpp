@@ -362,6 +362,50 @@ namespace Sudoku
         }
 
         /*
+        Checks if the value is valid for the cell at the specified row and column.
+
+        @param row The row of the cell. Must be in the range [0, 9].
+        @param col The column of the cell. Must be in the range [0, 9].
+        @param value The value to check.
+
+        @return True if the value is valid for the cell, false otherwise.
+
+        @throw std::out_of_range if row or col is out of range.
+
+        @note A valid value is in the range (0, 9] and does not conflict with the row, column, or box.
+        */
+        bool Grid::isValidValue(int row, int col, int value) const noexcept
+        {
+                LOG_TRACE("Grid::isValidValue() called");
+                if (value <= 0 || value > 9)
+                {
+                        return false;
+                }
+
+                std::array<int, 9> rowArray;
+                std::array<int, 9> colArray;
+                std::array<int, 9> boxArray;
+                Grid::getRow(row, rowArray);
+                Grid::getCol(col, colArray);
+                Grid::getBox(row / 3 * 3 + col / 3, boxArray);
+
+                return std::none_of(rowArray.begin(), rowArray.end(), [value](int val)
+                {
+                        return val == value;
+                })
+                &&
+                std::none_of(colArray.begin(), colArray.end(), [value](int val)
+                {
+                        return val == value;
+                })
+                &&
+                std::none_of(boxArray.begin(), boxArray.end(), [value](int val)
+                {
+                        return val == value;
+                });
+        }
+
+        /*
         Checks if the value of the cell at the specified row and column is valid.
 
         @param row The row of the cell. Must be in the range [0, 9].
