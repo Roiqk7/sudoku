@@ -74,68 +74,28 @@ namespace Sudoku
                         return true;
                 }
 
-                // If the cell is not empty, move to the next cell
+                // Move to the next cell if the current cell is not empty
                 if (grid.getCell(row, col) != 0)
                 {
-                        if (col == 8)
-                        {
-                                return backtrack(grid, row + 1, 0);
-                        }
-                        else
-                        {
-                                return backtrack(grid, row, col + 1);
-                        }
+                        return backtrack(grid, row + (col + 1) / 9, (col + 1) % 9);
                 }
 
-                // Generate possibilities for the cell
-                std::vector<int> possibilities;
-                generatePossibilities(grid, row, col, possibilities);
-
-                // Try all possibilities for the cell
-                for (int i = 0; i < possibilities.size(); i++)
+                // Try all numbers from 1 to 9
+                for (int num = 1; num <= 9; num++)
                 {
-                        int value = possibilities[i];
-                        grid.setCell(row, col, value);
-
-                        if (col == 8)
+                        if (grid.isValidValue(row, col, num))
                         {
-                                if (backtrack(grid, row + 1, 0))
+                                grid.setCell(row, col, num);
+
+                                if (backtrack(grid, row + (col + 1) / 9, (col + 1) % 9))
                                 {
                                         return true;
                                 }
-                        }
-                        else
-                        {
-                                if (backtrack(grid, row, col + 1))
-                                {
-                                        return true;
-                                }
-                        }
 
-                        grid.setCell(row, col, 0);
+                                grid.setCell(row, col, 0);
+                        }
                 }
 
                 return false;
-        }
-// Utility methods
-        /*
-        Generates the possibilities for each cell in the grid.
-
-        @param grid The grid to generate possibilities for.
-        @param possibilities The array of possibilities for each cell.
-        */
-        void Solver::generatePossibilities(Grid& grid, int row, int col,
-                std::vector<int>& possibilities)
-        {
-                LOG_TRACE("Solver::generatePossibilities() called");
-
-                possibilities.clear();
-                for (int i = 1; i <= 9; i++)
-                {
-                        if (grid.isValidValue(row, col, i))
-                        {
-                                possibilities.push_back(i);
-                        }
-                }
         }
 }
