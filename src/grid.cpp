@@ -327,6 +327,19 @@ namespace Sudoku
                 }
                 std::cout << std::endl;
         }
+
+        /*
+        Counts the number of occurrences of the specified value in the grid.
+
+        @param value The value to count.
+
+        @return The number of occurrences of the value in the grid.
+        */
+        int Grid::count(int value) const noexcept
+        {
+                LOG_TRACE("Grid::count() called");
+                return std::count(grid.begin(), grid.end(), value);
+        }
 // Check methods
         /*
         Checks if the index is valid.

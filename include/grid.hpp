@@ -52,6 +52,7 @@ namespace Sudoku
                 void fill(int value) noexcept;
                 int convertIndex(int row, int col) const;
                 void print() const noexcept;
+                int count(int value) const noexcept;
         // Check methods
                 bool checkIndex(int index, bool cell = true) const noexcept;
                 bool isSolved() const noexcept;
