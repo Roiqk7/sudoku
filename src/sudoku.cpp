@@ -8,7 +8,7 @@ Description: This file contains the main function.
 
 // Delete - Test
 #include "../include/grid.hpp"
-#include "../include/solver.hpp"
+#include "../include/generator.hpp"
 #include <array>
 
 int main()
@@ -21,15 +21,13 @@ int main()
 
         // Delete - Test
         Sudoku::Grid grid;
-        std::array<int, 9> arr = {1, 2, 3, 4, 5, 0, 0, 0, 0};
-        grid.setBox(0, arr);
-        grid.setBox(4, arr);
-        grid.setBox(8, arr);
-        grid.print();
+        Sudoku::Generator generator;
 
-        Sudoku::Solver solver;
-        solver.solve(grid);
-        grid.print();
+        for (int i = 0; i < 9; i++)
+        {
+                generator.generate(grid);
+                grid.print();
+        }
 
         return 0;
 }
