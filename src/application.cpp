@@ -21,6 +21,8 @@ namespace System
                 init();
 
                 runFlag = RunFlag::RUN;
+
+                run();
         }
 
         /*
@@ -61,6 +63,8 @@ namespace System
         void Application::controlFlow()
         {
                 LOG_TRACE("Application::controlFlow() called");
+
+                // TODO: Implement the control flow
         }
 
         /*
