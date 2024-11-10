@@ -1,7 +1,7 @@
 /*
 Date: 09/11/2024
 
-Solver is class which given a sudoku grid, solves it Stochastic search / optimization methods.
+Solver is class which given a sudoku grid, solves it using backtracking.
 */
 
 #ifndef SUDOKU_SOLVER_HPP

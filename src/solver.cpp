@@ -49,12 +49,7 @@ namespace Sudoku
 
                 bool result = backtrack(grid, 0, 0, zeroCount);
 
-                #ifdef DEVELOPMENT
                 LOG_DEBUG("Solver::solve() result: {}", result);
-                LOG_DEBUG("Solver::solve() grid:");
-                grid.print();
-                LOG_DEBUG("Solver::solve() end of grid");
-                #endif // DEVELOPMENT
 
                 return result;
         }
