@@ -12,7 +12,6 @@ GUI class controls the graphical user interface of the program.
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 
 namespace System
 {
