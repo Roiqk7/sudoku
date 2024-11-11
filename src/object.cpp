@@ -30,6 +30,5 @@ namespace System
                 : x(x), y(y), width(width), height(height), path(path), type(type),
                 loaded(false)
         {
-                load();
         }
 }
