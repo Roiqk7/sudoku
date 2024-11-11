@@ -22,6 +22,16 @@ namespace System
                 GAME
         };
 
+        struct Assets
+        {
+                sf::Texture arrowTexture;                               // Arrow texture (undo pick a number)
+                sf::Texture pencilTexture;                              // Pencil texture (for notes)
+                sf::Font titleFont;                                     // Font for the title
+                sf::Font font;                                          // Font for the game
+
+                Assets();
+        };
+
         class GUI
         {
         public: // Methods
@@ -35,9 +45,9 @@ namespace System
         private: // Methods
                 void init();
         private: // Variables
-                sf::RenderWindow window;
-                State state;
-                Sudoku::GameHandler gameHandler;
+                sf::RenderWindow window;                                // The window to render to
+                State state;                                            // Used to determine what to render
+                Sudoku::GameHandler gameHandler;                        // Interface for the game logic
         };
 }
 
