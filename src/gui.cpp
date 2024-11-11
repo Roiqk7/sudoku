@@ -10,24 +10,6 @@ GUI class controls the graphical user interface of the program.
 
 namespace System
 {
-// Assets helper struct
-        /*
-        Constructor for Assets struct.
-
-        @throws std::runtime_error if assets fail to load.
-        */
-        Assets::Assets()
-        {
-                // Load arrow texture
-                if (!arrowTexture.loadFromFile("assets/arrow.png")
-                        || !pencilTexture.loadFromFile("assets/pencil.png")
-                        || !titleFont.loadFromFile("assets/arial.ttf")
-                        || !font.loadFromFile("assets/arial.ttf"))
-                {
-                        throw std::runtime_error("Failed to load game assets.");
-                }
-        }
-
 // Class methods
         /*
         Constructor for GUI class.
@@ -70,10 +52,14 @@ namespace System
 
         /*
         Initialize the GUI.
+
+        @throws std::runtime_error if the assets failed to load.
         */
         void GUI::init()
         {
                 // Setups the window
-                window.create(sf::VideoMode(sf::Vector2u(WIDTH, HEIGHT)), "SUDOKU!");
+                window.create(sf::VideoMode(sf::Vector2u(
+                        constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)),
+                        "SUDOKU!");
         }
 } // namespace System

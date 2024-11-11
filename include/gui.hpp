@@ -8,6 +8,7 @@ GUI class controls the graphical user interface of the program.
 #define GUI_HPP
 
 #include "gameHandler.hpp"
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -15,23 +16,6 @@ GUI class controls the graphical user interface of the program.
 
 namespace System
 {
-        enum class State
-        {
-                NONE = 0,
-                MENU,
-                GAME
-        };
-
-        struct Assets
-        {
-                sf::Texture arrowTexture;                               // Arrow texture (undo pick a number)
-                sf::Texture pencilTexture;                              // Pencil texture (for notes)
-                sf::Font titleFont;                                     // Font for the title
-                sf::Font font;                                          // Font for the game
-
-                Assets();
-        };
-
         struct Constants
         {
                 const int WINDOW_WIDTH = 800;                           // Width of the window
@@ -51,10 +35,8 @@ namespace System
         private: // Methods
                 void init();
         private: // Variables
-                State state;                                            // Used to determine what to render
                 Constants constants;                                    // Constants for the GUI
                 sf::RenderWindow window;                                // The window to render to
-                Assets assets;                                          // Assets for the game
                 Sudoku::GameHandler gameHandler;                        // Interface for the game logic
         };
 }
