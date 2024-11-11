@@ -6,8 +6,8 @@ Description: This file contains global variables, macros etc. that are used thro
 Notes: x
 */
 
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef MACROS_HPP
+#define MACROS_HPP
 
 #ifdef DEVELOPMENT
 // Include the spdlog library for logging
@@ -47,13 +47,4 @@ Notes: x
 #define SET_LOG_LEVEL_OFF() (void)0
 #endif // RELEASE
 
-namespace Globals
-{
-        // Constants
-        namespace Constants
-        {
-                // const int GRID_SIZE = 9;                                        // The size of the sudoku grid
-        }
-}
-
-#endif // !GLOBALS_HPP
+#endif // !MACROS_HPP

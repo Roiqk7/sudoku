@@ -7,7 +7,7 @@ Application class controls the overall flow of the program.
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "globals.hpp"
+#include "macros.hpp"
 #include "gui.hpp"
 
 namespace System

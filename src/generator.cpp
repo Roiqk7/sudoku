@@ -5,7 +5,7 @@ Generator is class which generates a new sudoku grid.
 */
 
 #include "../include/generator.hpp"
-#include "../include/globals.hpp"
+#include "../include/macros.hpp"
 #include "../include/grid.hpp"
 #include "../include/solver.hpp"
 #include <algorithm>

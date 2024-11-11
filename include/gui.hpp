@@ -32,6 +32,12 @@ namespace System
                 Assets();
         };
 
+        struct Constants
+        {
+                const int WINDOW_WIDTH = 800;                           // Width of the window
+                const int WINDOW_HEIGHT = 600;                          // Height of the window
+        };
+
         class GUI
         {
         public: // Methods

@@ -5,7 +5,7 @@ Application class controls the overall flow of the program.
 */
 
 #include "../include/application.hpp"
-#include "../include/globals.hpp"
+#include "../include/macros.hpp"
 #include "../include/gui.hpp"
 
 namespace System

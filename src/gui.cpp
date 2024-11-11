@@ -4,7 +4,7 @@ Date: 10/11/2024
 GUI class controls the graphical user interface of the program.
 */
 
-#include "../include/globals.hpp"
+#include "../include/macros.hpp"
 #include "../include/gui.hpp"
 #include <stdexcept>
 

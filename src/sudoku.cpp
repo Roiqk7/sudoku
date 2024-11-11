@@ -5,7 +5,7 @@ Description: This file contains the main function.
 */
 
 #include "../include/application.hpp"
-#include "../include/globals.hpp"
+#include "../include/macros.hpp"
 
 int main()
 {
