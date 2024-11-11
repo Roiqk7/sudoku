@@ -51,8 +51,10 @@ namespace System
         private: // Methods
                 void init();
         private: // Variables
-                sf::RenderWindow window;                                // The window to render to
                 State state;                                            // Used to determine what to render
+                Constants constants;                                    // Constants for the GUI
+                sf::RenderWindow window;                                // The window to render to
+                Assets assets;                                          // Assets for the game
                 Sudoku::GameHandler gameHandler;                        // Interface for the game logic
         };
 }
