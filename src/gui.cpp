@@ -53,7 +53,7 @@ namespace System
         /*
         Initialize the GUI.
 
-        @throws std::runtime_error if the assets failed to load.
+        @throw std::runtime_error if the assets failed to load.
         */
         void GUI::init()
         {
