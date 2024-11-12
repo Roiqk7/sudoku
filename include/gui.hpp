@@ -33,6 +33,7 @@ namespace System
                 void waitEvent();
         private: // Methods
                 void init();
+                void handleEvent(const sf::Event& event);
         private: // Variables
                 Constants constants;                                    // Constants for the GUI
                 sf::RenderWindow window;                                // The window to render to
