@@ -1,6 +1,11 @@
 1. Make GUI (gui.cpp)
    1. Finish scene class
+      1. Implement command pattern for GUI
+         1. Remove placeholder implementation from intervalTree.hpp
+         2. Properly implement the command pattern
+         3. Link with the GUI
    2. Think about the render and input system
+      1. Solution -> Command pattern
    3. Gui will load a scene and the scene will handle the objects
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
