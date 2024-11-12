@@ -1,5 +1,6 @@
 1. Make GUI (gui.cpp)
-   1. Finish object and scene classes
-   2. Gui will load a scene and the scene will handle the objects
+   1. Finish scene class
+   2. Think about the render and input system
+   3. Gui will load a scene and the scene will handle the objects
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
