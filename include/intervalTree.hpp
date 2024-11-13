@@ -7,6 +7,7 @@ Interval tree used to determine which object was clicked in the scene. (leafs ar
 #ifndef INTERVAL_TREE_HPP
 #define INTERVAL_TREE_HPP
 
+#include "command.hpp"
 #include "object.hpp"
 #include <functional>
 #include <memory>
@@ -15,14 +16,6 @@ Interval tree used to determine which object was clicked in the scene. (leafs ar
 
 namespace Tool
 {
-        // TODO: Implement properly Command
-        struct Command
-        {
-                std::string name;
-                std::function<void()> command;
-        };
-        // DELETE Above and implement properly
-
         class IntervalTree
         {
         public: // Methods
@@ -30,7 +23,8 @@ namespace Tool
                 ~IntervalTree();
         // Operations
                 void insert(std::weak_ptr<System::Rectangle> object);
-                void query(float x, float y, Command& command);
+                void query(float x, float y,
+                        std::weak_ptr<System::Command>& command);
         private: // Variables
                 struct Node
                 {

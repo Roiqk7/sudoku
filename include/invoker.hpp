@@ -21,10 +21,10 @@ namespace System
                 Invoker();
                 ~Invoker();
         // Invoker methods
-                void submitCommand(std::shared_ptr<Command> command);
+                void submitCommand(std::weak_ptr<Command> command);
                 void processCommands();
         private: // Variables
-                std::queue<std::shared_ptr<Command>> commands;
+                std::queue<std::weak_ptr<Command>> commands;
         };
 }
 
