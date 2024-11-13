@@ -18,7 +18,7 @@ namespace System
                 Command(std::function<void()> command);
                 ~Command() = default;
         // Command methods
-                virtual void execute() = 0;
+                void execute();
         private: // Variables
                 std::function<void()> command;
         };
