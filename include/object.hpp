@@ -7,6 +7,7 @@ Object class stores the properties of an object in the scene.
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
+#include "command.hpp"
 #include <filesystem>
 #include <memory>
 #include <SFML/Graphics.hpp>
@@ -29,7 +30,7 @@ namespace System
         public: // Methods
         // Class methods
                 Object(const std::string& name, int x, int y,
-                        std::filesystem::path path, ObjectType type);
+                        ObjectType type);
                 virtual ~Object() = default;
         // Object methods
                 virtual void load() = 0;
@@ -40,7 +41,6 @@ namespace System
         protected: // Variables
         // General
                 std::string name;                                      // Name of the object
-                std::filesystem::path path;                            // Path to the resource
                 bool loaded = false;                                   // If the object is loaded
         // Rendering
                 int x;                                                  // X position of the object
@@ -61,6 +61,7 @@ namespace System
                 void load() override;
                 void render(sf::RenderWindow& window) override;
         private: // Variables
+                std::filesystem::path path;                             // Path to the resource
                 sf::Texture texture;                                    // Texture of the sprite
                 sf::Sprite sprite;                                      // Sprite to render
                 float xScale;                                           // X scale of the sprite
@@ -79,6 +80,7 @@ namespace System
                 void load() override;
                 void render(sf::RenderWindow& window) override;
         private: // Variables
+                std::filesystem::path path;                             // Path to the resource
                 sf::Text text;                                          // Text to render
                 sf::Font font;                                          // Font of the text
                 int fontSize;                                           // Size of the font
@@ -89,8 +91,8 @@ namespace System
         public: // Methods
         // Class methods
                 Rectangle(const std::string& name, int x, int y,
-                        std::filesystem::path path, int width, int height,
-                        sf::RectangleShape rectangle, sf::Color color);
+                        int width, int height, sf::RectangleShape rectangle,
+                        sf::Color color, std::shared_ptr<Command> command = nullptr);
                 ~Rectangle() override;
         // Object methods
                 void load() override;
@@ -100,6 +102,7 @@ namespace System
                 int height;                                             // Height of the object
                 sf::RectangleShape rectangle;                           // Rectangle to render
                 sf::Color color;                                        // Color of the rectangle
+                std::shared_ptr<Command> command;                       // Command to execute
         };
 }
 

@@ -22,14 +22,14 @@ namespace System
         @param name Name of the object.
         @param x X position of the object.
         @param y Y position of the object.
-        @param path Path to the resource.
         @param type Type of the object.
         */
         Object::Object(const std::string& name, int x, int y,
-                std::filesystem::path path, ObjectType type)
-                : name(name), x(x), y(y), path(path), type(type),
+                ObjectType type)
+                : name(name), x(x), y(y), type(type),
                 loaded(false)
         {
+                LOG_TRACE("Object::Object() called.");
         }
 // Sprite class
         /*
@@ -46,9 +46,12 @@ namespace System
         Sprite::Sprite(const std::string& name, int x, int y,
                 std::filesystem::path path, sf::Texture texture,
                 float xScale, float yScale)
-                : Object(name, x, y, path, ObjectType::SPRITE),
-                texture(texture), xScale(xScale), yScale(yScale)
+                : Object(name, x, y, ObjectType::SPRITE),
+                path(path), texture(texture), xScale(xScale),
+                yScale(yScale)
         {
+                LOG_TRACE("Sprite::Sprite() called.");
+
                 load();
         }
 
@@ -57,6 +60,7 @@ namespace System
         */
         Sprite::~Sprite()
         {
+                LOG_TRACE("Sprite destroyed");
         }
 
         /*
@@ -66,6 +70,8 @@ namespace System
         */
         void Sprite::load()
         {
+                LOG_TRACE("Sprite::load() called.");
+
                 if (!texture.loadFromFile(path))
                 {
                         throw std::runtime_error("Failed to load texture: " +
@@ -84,6 +90,8 @@ namespace System
         */
         void Sprite::render(sf::RenderWindow& window)
         {
+                LOG_TRACE("Sprite::render() called.");
+
                 if (loaded)
                 {
                         window.draw(sprite);
@@ -102,9 +110,12 @@ namespace System
         Text::Text(const std::string& name, int x, int y,
                 std::filesystem::path path, sf::Font font,
                 sf::Text text, int fontSize)
-                : Object(name, x, y, path, ObjectType::TEXT),
-                font(font), text(text), fontSize(fontSize)
+                : Object(name, x, y, ObjectType::TEXT),
+                path(path), font(font), text(text),
+                fontSize(fontSize)
         {
+                LOG_TRACE("Text::Text() called.");
+
                 load();
         }
 
@@ -113,6 +124,7 @@ namespace System
         */
         Text::~Text()
         {
+                LOG_TRACE("Text::~Text() called.");
         }
 
         /*
@@ -122,6 +134,8 @@ namespace System
         */
         void Text::load()
         {
+                LOG_TRACE("Text::load() called.");
+
                 if (!font.loadFromFile(path))
                 {
                         throw std::runtime_error("Failed to load font: " +
@@ -141,6 +155,8 @@ namespace System
         */
         void Text::render(sf::RenderWindow& window)
         {
+                LOG_TRACE("Text::render() called.");
+
                 if (loaded)
                 {
                         window.draw(text);
@@ -153,19 +169,21 @@ namespace System
         @param name Name of the object.
         @param x X position of the object.
         @param y Y position of the object.
-        @param path Path to the resource.
         @param width Width of the object.
         @param height Height of the object.
         @param rectangle Rectangle to render.
         @param color Color of the rectangle.
+        @param command Command to execute
         */
         Rectangle::Rectangle(const std::string& name, int x, int y,
-                std::filesystem::path path, int width, int height,
-                sf::RectangleShape rectangle, sf::Color color)
-                : Object(name, x, y, path, ObjectType::RECTANGLE),
+                int width, int height, sf::RectangleShape rectangle,
+                sf::Color color, std::shared_ptr<Command> command)
+                : Object(name, x, y, ObjectType::RECTANGLE),
                 width(width), height(height), rectangle(rectangle),
-                color(color)
+                color(color), command(command)
         {
+                LOG_TRACE("Rectangle::Rectangle() called.");
+
                 load();
         }
 
@@ -174,6 +192,7 @@ namespace System
         */
         Rectangle::~Rectangle()
         {
+                LOG_TRACE("Rectangle destroyed");
         }
 
         /*
@@ -181,6 +200,8 @@ namespace System
         */
         void Rectangle::load()
         {
+                LOG_TRACE("Rectangle::load() called.");
+
                 rectangle.setSize(sf::Vector2f(width, height));
                 rectangle.setPosition(sf::Vector2f(x, y));
                 rectangle.setFillColor(color);
@@ -194,6 +215,8 @@ namespace System
         */
         void Rectangle::render(sf::RenderWindow& window)
         {
+                LOG_TRACE("Rectangle::render() called.");
+
                 if (loaded)
                 {
                         window.draw(rectangle);
