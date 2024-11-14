@@ -38,15 +38,12 @@ namespace System
         public: // Variables
         // Resource specific
                 ObjectType type;                                       // Type of the object
-        protected: // Variables
         // General
                 std::string name;                                      // Name of the object
                 bool loaded = false;                                   // If the object is loaded
         // Rendering
                 int x;                                                  // X position of the object
                 int y;                                                  // Y position of the object
-                int width;                                              // Width of the object
-                int height;                                             // Height of the object
         };
 // Sprite class
         class Sprite : public Object
@@ -92,17 +89,19 @@ namespace System
         // Class methods
                 Rectangle(const std::string& name, int x, int y,
                         int width, int height, sf::RectangleShape rectangle,
-                        sf::Color color, std::shared_ptr<Command> command = nullptr);
+                        sf::Color color, std::shared_ptr<Command>
+                        command = nullptr);
                 ~Rectangle() override;
         // Object methods
                 void load() override;
                 void render(sf::RenderWindow& window) override;
-        private: // Variables
+        public: // Variables
                 int width;                                              // Width of the object
                 int height;                                             // Height of the object
+                std::shared_ptr<Command> command;                       // Command to execute
+        private: // Variables
                 sf::RectangleShape rectangle;                           // Rectangle to render
                 sf::Color color;                                        // Color of the rectangle
-                std::shared_ptr<Command> command;                       // Command to execute
         };
 }
 
