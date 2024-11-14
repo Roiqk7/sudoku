@@ -59,7 +59,7 @@ namespace System
                         {
                                 window.close();
                         }
-                        else
+                        else if (isRelevantEvent(event))
                         {
                                 handleEvent(event);
                                 render();
@@ -75,8 +75,11 @@ namespace System
                 LOG_TRACE("GUI::render() called");
 
                 window.clear();
-                auto& scene = scenes.top();
-                scene.render(window);
+                if (!scenes.empty())
+                {
+                        auto& scene = scenes.top();
+                        scene.render(window);
+                }
                 window.display();
         }
 
@@ -136,4 +139,17 @@ namespace System
                 return event.type == sf::Event::Closed;
         }
 
+        /*
+        Check if the event is relevant.
+
+        @param event The event to check.
+
+        @return True if the event is relevant, false otherwise.
+        */
+        bool GUI::isRelevantEvent(const sf::Event& event) const
+        {
+                LOG_TRACE("GUI::isRelevantEvent() called");
+
+                return event.type == sf::Event::MouseButtonPressed;
+        }
 } // namespace System
