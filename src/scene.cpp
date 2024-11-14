@@ -34,6 +34,21 @@ namespace System
         }
 // Scene methods
         /*
+        Render the scene.
+
+        @param window Window to render to.
+        */
+        void Scene::render(sf::RenderWindow& window)
+        {
+                LOG_TRACE("Scene::render() called.");
+
+                for (const auto& object : objects)
+                {
+                        object->render(window);
+                }
+        }
+
+        /*
         Add an object to the scene.
 
         @param object Object to add.
@@ -43,6 +58,11 @@ namespace System
         void Scene::addObject(const std::shared_ptr<Object>& object)
         {
                 LOG_TRACE("Scene::addObject() called.");
+
+                if (!object)
+                {
+                        return;
+                }
 
                 objects.push_back(object);
         }
@@ -55,6 +75,11 @@ namespace System
         void Scene::addClickableObject(const std::unique_ptr<Rectangle>& object)
         {
                 LOG_TRACE("Scene::addClickableObject() called.");
+
+                if (!object)
+                {
+                        return;
+                }
 
                 clickableObjects.push_back(std::move(object));
         }
