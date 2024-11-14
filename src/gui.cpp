@@ -27,27 +27,37 @@ namespace System
         }
 // GUI methods
         /*
-        Render the GUI.
-        */
-        void GUI::render()
-        {
-                // TODO: Implement render method
-        }
-
-        /*
-        Update the window.
-        */
-        void GUI::update()
-        {
-                // TODO: Implement update method
-        }
-
-        /*
         Wait for an event to occur.
         */
         void GUI::waitEvent()
         {
-                // TODO: Implement waitEvent method
+                while (window.isOpen())
+                {
+                        sf::Event event;
+                        while (window.waitEvent(event))
+                        {
+                                if (shouldClose(event))
+                                {
+                                        window.close();
+                                }
+                                else
+                                {
+                                        handleEvent(event);
+                                        render();
+                                }
+                        }
+                }
+        }
+
+        /*
+        Render the GUI.
+        */
+        void GUI::render()
+        {
+                window.clear();
+                auto& scene = scenes.top();
+                scene.render(window);
+                window.display();
         }
 
         /*
