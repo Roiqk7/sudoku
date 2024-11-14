@@ -47,22 +47,9 @@ namespace System
         {
                 LOG_TRACE("Application::init() called");
 
-                bool successFlag = true;
+                runFlag = RunFlag::RUN;
 
-                // TODO: Implement the initialization
-
-                if (successFlag)
-                {
-                        runFlag = RunFlag::RUN;
-
-                        LOG_INFO("Application initialized");
-                }
-                else
-                {
-                        LOG_ERROR("Application failed to initialize");
-
-                        close();
-                }
+                LOG_INFO("Application initialized");
         }
         /*
         Runs the application.
@@ -86,7 +73,9 @@ namespace System
         {
                 LOG_TRACE("Application::controlFlow() called");
 
-                // TODO: Implement the control flow
+                gui.run();
+
+                runFlag = RunFlag::WILL_STOP;
         }
 
         /*
