@@ -24,7 +24,7 @@ namespace System
         // Scene methods
                 void render(sf::RenderWindow& window);
                 void addObject(const std::shared_ptr<Object>& object);
-                void addClickableObject(const std::unique_ptr<Rectangle>& object);
+                void addClickableObject(std::unique_ptr<Rectangle> object);
                 void retrieveClickedCommand(int x, int y,
                         std::weak_ptr<Command>& command);
         private: // Methods

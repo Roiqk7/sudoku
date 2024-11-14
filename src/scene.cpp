@@ -72,7 +72,7 @@ namespace System
 
         @param object Clickable object to add.
         */
-        void Scene::addClickableObject(const std::unique_ptr<Rectangle>& object)
+        void Scene::addClickableObject(std::unique_ptr<Rectangle> object)
         {
                 LOG_TRACE("Scene::addClickableObject() called.");
 

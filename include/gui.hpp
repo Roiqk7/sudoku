@@ -18,12 +18,6 @@ GUI class controls the graphical user interface of the program.
 
 namespace System
 {
-        struct Constants
-        {
-                const int WINDOW_WIDTH = 800;                           // Width of the window
-                const int WINDOW_HEIGHT = 600;                          // Height of the window
-        };
-
         class GUI
         {
         public: // Methods
@@ -31,15 +25,23 @@ namespace System
                 GUI();
                 ~GUI();
         // GUI methods
-                void waitEvent();
-                void render();
+                void run();
         private: // Methods
         // GUI methods
+                void waitEvent();
+                void render();
                 void init();
                 void handleEvent(const sf::Event& event);
         // Checker
                 bool shouldClose(const sf::Event& event) const;
         private: // Variables
+        // Constants
+                struct Constants
+                {
+                        const unsigned int WINDOW_WIDTH = 800;          // Width of the window
+                        const unsigned int WINDOW_HEIGHT = 600;         // Height of the window
+                };
+        // Variables
                 Constants constants;                                    // Constants for the GUI
                 Invoker invoker;                                        // Invoker to execute commands in the GUI
                 sf::RenderWindow window;                                // The window to render to
