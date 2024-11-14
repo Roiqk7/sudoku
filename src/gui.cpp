@@ -19,6 +19,8 @@ namespace System
         */
         GUI::GUI()
         {
+                LOG_TRACE("GUI::GUI() called");
+
                 init();
         }
 
@@ -27,6 +29,7 @@ namespace System
         */
         GUI::~GUI()
         {
+                LOG_TRACE("GUI::~GUI() called");
         }
 // GUI methods
         /*
@@ -34,6 +37,8 @@ namespace System
         */
         void GUI::run()
         {
+                LOG_TRACE("GUI::run() called");
+
                 while (window.isOpen())
                 {
                         waitEvent();
@@ -45,6 +50,8 @@ namespace System
         */
         void GUI::waitEvent()
         {
+                LOG_TRACE("GUI::waitEvent() called");
+
                 sf::Event event;
                 while (window.waitEvent(event))
                 {
@@ -65,6 +72,8 @@ namespace System
         */
         void GUI::render()
         {
+                LOG_TRACE("GUI::render() called");
+
                 window.clear();
                 auto& scene = scenes.top();
                 scene.render(window);
@@ -78,6 +87,8 @@ namespace System
         */
         void GUI::init()
         {
+                LOG_TRACE("GUI::init() called");
+
                 const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
                 // Setups the window
@@ -91,6 +102,8 @@ namespace System
         */
         void GUI::handleEvent(const sf::Event& event)
         {
+                LOG_TRACE("GUI::handleEvent() called");
+
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
@@ -118,6 +131,8 @@ namespace System
         */
         bool GUI::shouldClose(const sf::Event& event) const
         {
+                LOG_TRACE("GUI::shouldClose() called");
+
                 return event.type == sf::Event::Closed;
         }
 
