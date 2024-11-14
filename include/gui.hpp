@@ -36,14 +36,7 @@ namespace System
                 bool shouldClose(const sf::Event& event) const;
                 bool isRelevantEvent(const sf::Event& event) const;
         private: // Variables
-        // Constants
-                struct Constants
-                {
-                        const unsigned int WINDOW_WIDTH = 800;          // Width of the window
-                        const unsigned int WINDOW_HEIGHT = 600;         // Height of the window
-                };
         // Variables
-                Constants constants;                                    // Constants for the GUI
                 Invoker invoker;                                        // Invoker to execute commands in the GUI
                 sf::RenderWindow window;                                // The window to render to
                 Sudoku::GameHandler gameHandler;                        // Interface for the game logic
