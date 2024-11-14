@@ -21,7 +21,7 @@ namespace System
                 Invoker();
                 ~Invoker();
         // Invoker methods
-                void submitCommand(std::weak_ptr<Command> command);
+                void submitCommand(const std::weak_ptr<Command>& command) noexcept;
                 void processCommands();
                 bool empty() const noexcept;
         private: // Variables

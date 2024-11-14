@@ -31,8 +31,10 @@ namespace System
 // Invoker methods
         /*
         Submit a command to the invoker.
+
+        @param command Command to submit.
         */
-        void Invoker::submitCommand(std::weak_ptr<Command> command)
+        void Invoker::submitCommand(const std::weak_ptr<Command>& command) noexcept
         {
                 LOG_TRACE("Invoker::submitCommand() called.");
 
