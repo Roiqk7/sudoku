@@ -22,6 +22,7 @@ namespace System
                 Scene(const std::string& name);
                 ~Scene();
         // Scene methods
+                void render(sf::RenderWindow& window);
                 void addObject(const std::shared_ptr<Object>& object);
                 void addClickableObject(const std::unique_ptr<Rectangle>& object);
                 void retrieveClickedCommand(int x, int y,
