@@ -23,7 +23,7 @@ namespace System
         // Invoker methods
                 void submitCommand(std::weak_ptr<Command> command);
                 void processCommands();
-                bool empty() const;
+                bool empty() const noexcept;
         private: // Variables
                 std::queue<std::weak_ptr<Command>> commands;
         };

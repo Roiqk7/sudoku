@@ -32,7 +32,7 @@ namespace System
         /*
         Submit a command to the invoker.
         */
-        void Invoker::submitCommand(std::shared_ptr<Command> command)
+        void Invoker::submitCommand(std::weak_ptr<Command> command)
         {
                 LOG_TRACE("Invoker::submitCommand() called.");
 
@@ -48,9 +48,24 @@ namespace System
 
                 while (!commands.empty())
                 {
-                        auto& command = commands.front();
-                        command->execute();
+                        const auto& command = commands.front().lock();
+                        if (command)
+                        {
+                                command->execute();
+                        }
                         commands.pop();
                 }
+        }
+
+        /*
+        Check if the queue is empty.
+
+        @return True if the queue is empty, false otherwise.
+        */
+        bool Invoker::empty() const noexcept
+        {
+                LOG_TRACE("Invoker::empty() called.");
+
+                return commands.empty();
         }
 }
