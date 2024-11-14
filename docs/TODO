@@ -1,11 +1,10 @@
-1. Make GUI (gui.cpp)
-   1. Finish scene class
-      1. Finish interval tree class
-      2. Implement scene class
-   2. Finish gui class
-      1. Finish command pattern
-      2. Figure code flow
-   3. Gui will load a scene and the scene will handle the objects
+1. Make working scenes
+        0. Make sure the screens can be created and the commands are ok
+        1. Make a scene for the welcome screen
+        2. Main menu
+        3. Game
+        4. Game pause
+        5. Game over
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
 4. Add more tests
