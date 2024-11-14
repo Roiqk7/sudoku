@@ -34,6 +34,7 @@ namespace System
                 void handleEvent(const sf::Event& event);
         // Checker
                 bool shouldClose(const sf::Event& event) const;
+                bool isRelevantEvent(const sf::Event& event) const;
         private: // Variables
         // Constants
                 struct Constants
