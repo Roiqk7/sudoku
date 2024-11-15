@@ -140,11 +140,6 @@ namespace System
         {
                 LOG_TRACE("Text::load() called.");
 
-                if (!font.loadFromFile(path))
-                {
-                        throw std::runtime_error("Failed to load font: " +
-                                path.string());
-                }
                 text.setString(textString);
                 text.setFont(font);
                 text.setCharacterSize(fontSize);
@@ -164,6 +159,7 @@ namespace System
 
                 if (loaded)
                 {
+                        // TODO: This line is causing a segfault
                         window.draw(text);
                 }
         }
