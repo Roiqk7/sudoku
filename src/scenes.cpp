@@ -52,14 +52,14 @@ namespace System
                 auto sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
-                sf::RectangleShape backgroundRect(sf::Vector2f(size.x, size.y));
-                std::shared_ptr<Object> background = std::make_shared<Rectangle>(
-                        "Background", topLeft.x, topLeft.y, size.x, size.y,
-                        backgroundRect, Colors::BLACK);
-                scene.addObject(background);
+                Rectangle background = Rectangle("Background", topLeft.x, topLeft.y,
+                        size.x, size.y, Colors::LIGHT_SKY_BLUE);
+                std::shared_ptr<Object> pBackground = std::make_shared<Rectangle>(background);
+                scene.addObject(pBackground);
 
                 // Set the update function
-                scene.setUpdateFunction([&scene, &window](Scene& s) {
+                scene.setUpdateFunction([&scene, &window](Scene& s)
+                {
                         createDefaultScene(scene, window);
                 });
         }
