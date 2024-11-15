@@ -33,9 +33,12 @@ namespace System
 
         @note This scene is used to render error messages etc.
         */
-        void createDefaultScene(Scene& scene, const sf::RenderWindow& window)
+        void createDefaultScene(Scene& scene, const sf::RenderWindow& window,
+                bool update)
         {
                 LOG_TRACE("createDefaultScene() called.");
+
+                scene.clear();
 
                 scene.name = "Default";
 
@@ -63,11 +66,14 @@ namespace System
                 std::shared_ptr<Object> pYellow = std::make_shared<Rectangle>(yellow);
                 scene.addObject(pYellow);
 
-                // Set the update function
-                scene.setUpdateFunction([&scene, &window](Scene& s)
+                if (!update)
                 {
-                        createDefaultScene(scene, window);
-                });
+                        // Set the update function
+                        scene.setUpdateFunction([&window](Scene& s)
+                        {
+                                createDefaultScene(s, window, true);
+                        });
+                }
         }
 
 } // namespace System
