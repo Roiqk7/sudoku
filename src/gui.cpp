@@ -177,6 +177,7 @@ namespace System
         {
                 LOG_TRACE("GUI::isRelevantEvent() called");
 
-                return event.type == sf::Event::MouseButtonPressed;
+                return event.type == sf::Event::MouseButtonPressed
+                        || event.type == sf::Event::Resized;
         }
 } // namespace System
