@@ -22,6 +22,10 @@ namespace System
         // Class methods
                 Scene(const std::string& name);
                 ~Scene();
+                Scene(const Scene&) = delete;
+                Scene& operator=(const Scene&) = delete;
+                Scene(Scene&& other) noexcept;
+                Scene& operator=(Scene&& other) noexcept;
         // Scene methods
                 void render(sf::RenderWindow& window) const noexcept;
                 void update() noexcept;

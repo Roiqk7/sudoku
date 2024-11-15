@@ -32,6 +32,40 @@ namespace System
         {
                 LOG_TRACE("Scene::~Scene() called.");
         }
+
+        /*
+        Move construct the Scene object.
+
+        @param other Scene to move.
+        */
+        Scene::Scene(Scene&& other) noexcept
+                : name(std::move(other.name)),
+                objects(std::move(other.objects)),
+                clickableObjects(std::move(other.clickableObjects)),
+                updateFunction(std::move(other.updateFunction))
+        {
+                LOG_TRACE("Scene::Scene() called.");
+        }
+
+        /*
+        Move assign the Scene object.
+
+        @param other Scene to move.
+        */
+        Scene& Scene::operator=(Scene&& other) noexcept
+        {
+                LOG_TRACE("Scene::operator=() called.");
+
+                if (this != &other)
+                {
+                        name = std::move(other.name);
+                        objects = std::move(other.objects);
+                        clickableObjects = std::move(other.clickableObjects);
+                        updateFunction = std::move(other.updateFunction);
+                }
+
+                return *this;
+        }
 // Scene methods
         /*
         Render the scene.
