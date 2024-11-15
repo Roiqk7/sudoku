@@ -15,11 +15,11 @@ namespace System
 {
 // Window helper functions
         sf::Vector2u getWindowSize(const sf::RenderWindow& window) noexcept;
-        sf::Vector2u getWindowCenter(const sf::Vector2u& windowSize) noexcept;
-        sf::Vector2u getWindowTopLeftCorner() noexcept;
-        sf::Vector2u getWindowTopRightCorner(const sf::Vector2u& windowSize) noexcept;
-        sf::Vector2u getWindowBottomLeftCorner(const sf::Vector2u& windowSize) noexcept;
-        sf::Vector2u getWindowBottomRightCorner(const sf::Vector2u& windowSize) noexcept;
+        sf::Vector2i getWindowCenter(const sf::Vector2u& windowSize) noexcept;
+        sf::Vector2i getWindowTopLeftCorner() noexcept;
+        sf::Vector2i getWindowTopRightCorner(const sf::Vector2u& windowSize) noexcept;
+        sf::Vector2i getWindowBottomLeftCorner(const sf::Vector2u& windowSize) noexcept;
+        sf::Vector2i getWindowBottomRightCorner(const sf::Vector2u& windowSize) noexcept;
 } // namespace System
 
 
