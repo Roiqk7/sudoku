@@ -27,6 +27,7 @@ namespace System
                 void addClickableObject(std::unique_ptr<Rectangle> object);
                 void retrieveClickedCommand(int x, int y,
                         std::weak_ptr<Command>& command);
+                void clear() noexcept;
         private: // Methods
                 bool checkClicked(const std::unique_ptr<Rectangle>&
                         object, int x, int y);

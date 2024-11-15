@@ -113,6 +113,18 @@ namespace System
         }
 
         /*
+        Clear the scene.
+        */
+        void Scene::clear() noexcept
+        {
+                LOG_TRACE("Scene::clear() called.");
+
+                name.clear();
+                objects.clear();
+                clickableObjects.clear();
+        }
+
+        /*
         Check if the object was clicked.
 
         @param object Object to check.
