@@ -112,9 +112,10 @@ namespace System
         */
         Text::Text(const std::string& name, int x, int y,
                 std::filesystem::path path, sf::Font font,
-                sf::Text text, int fontSize, sf::Color color)
+                const std::string& text, int fontSize,
+                sf::Color color)
                 : Object(name, x, y, ObjectType::TEXT),
-                path(path), font(font), text(text),
+                path(path), font(font), textString(text),
                 fontSize(fontSize), color(color)
         {
                 LOG_TRACE("Text::Text() called.");
@@ -144,6 +145,7 @@ namespace System
                         throw std::runtime_error("Failed to load font: " +
                                 path.string());
                 }
+                text.setString(textString);
                 text.setFont(font);
                 text.setCharacterSize(fontSize);
                 text.setFillColor(color);
