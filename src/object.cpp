@@ -106,13 +106,16 @@ namespace System
         @param y Y position of the object.
         @param path Path to the resource.
         @param font Font of the object.
+        @param text Text to render.
+        @param fontSize Size of the font.
+        @param color Color of the text.
         */
         Text::Text(const std::string& name, int x, int y,
                 std::filesystem::path path, sf::Font font,
-                sf::Text text, int fontSize)
+                sf::Text text, int fontSize, sf::Color color)
                 : Object(name, x, y, ObjectType::TEXT),
                 path(path), font(font), text(text),
-                fontSize(fontSize)
+                fontSize(fontSize), color(color)
         {
                 LOG_TRACE("Text::Text() called.");
 

@@ -71,7 +71,7 @@ namespace System
         // Class methods
                 Text(const std::string& name, int x, int y,
                         std::filesystem::path path, sf::Font font,
-                        sf::Text text, int fontSize);
+                        sf::Text text, int fontSize, sf::Color color);
                 ~Text() override;
         // Object methods
                 void load() override;
@@ -80,6 +80,7 @@ namespace System
                 std::filesystem::path path;                             // Path to the resource
                 sf::Text text;                                          // Text to render
                 sf::Font font;                                          // Font of the text
+                sf::Color color;                                        // Color of the text
                 int fontSize;                                           // Size of the font
         };
 // Rectangle class
