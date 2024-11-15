@@ -138,6 +138,15 @@ namespace System
                         }
                 }
 
+                // Update the scenes if the window is resized
+                if (event.type == sf::Event::Resized)
+                {
+                        for (auto& scene : scenes)
+                        {
+                                scene.update();
+                        }
+                }
+
                 // Add more events if needed...
 
                 invoker.processCommands();
