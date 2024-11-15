@@ -6,6 +6,8 @@ GUI class controls the graphical user interface of the program.
 
 #include "../include/macros.hpp"
 #include "../include/gui.hpp"
+#include "../include/scenes.hpp"
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -77,8 +79,10 @@ namespace System
                 window.clear();
                 if (!scenes.empty())
                 {
-                        auto& scene = scenes.top();
-                        scene.render(window);
+                        for (const auto& scene : scenes)
+                        {
+                                scene.render(window);
+                        }
                 }
                 window.display();
         }
@@ -96,6 +100,14 @@ namespace System
 
                 // Setups the window
                 window.create(desktop, "Sudoku");
+
+                // Create the default scene
+                Scene scene("Default");
+                createDefaultScene(scene, window);
+                scenes.push_back(std::move(scene));
+
+                // Render the default scene
+                render();
         }
 
         /*
@@ -110,13 +122,19 @@ namespace System
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
-                        auto& scene = scenes.top();
-                        std::weak_ptr<Command> command;
-                        scene.retrieveClickedCommand(event.mouseButton.x,
-                                event.mouseButton.y, command);
-                        if (!command.expired())
-                        {
-                                invoker.submitCommand(command);
+                        // We assume the most relevant scene is at the back
+                        // thus we iterate in reverse and return first valid command
+                        for (auto it = scenes.rbegin(); it != scenes.rend(); ++it) {
+                                auto& scene = *it;
+                                std::weak_ptr<Command> command;
+                                scene.retrieveClickedCommand(event.mouseButton.x,
+                                        event.mouseButton.y, command);
+                                if (!command.expired())
+                                {
+                                        invoker.submitCommand(command);
+                                        // Exit the loop once a valid command is found
+                                        break;
+                                }
                         }
                 }
 
