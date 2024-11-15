@@ -92,20 +92,27 @@ namespace System
 
         @throw std::runtime_error if the font failed to load.
         */
-        std::pair<std::filesystem::path, sf::Font>
-                getFont(const std::string& name)
+        std::pair<std::filesystem::path, sf::Font> getFont(const std::string& name)
         {
                 LOG_TRACE("getFont() called.");
 
                 sf::Font font;
-                std::filesystem::path path = "assets/fonts/" + name + ".ttf";
-                if (!font.loadFromFile(path))
+                std::filesystem::path exePath = std::filesystem::current_path();
+                std::filesystem::path fontPath = exePath / "assets/" / (name + ".ttf");
+
+                if (!std::filesystem::exists(fontPath))
                 {
-                        throw std::runtime_error("Failed to load font: " +
-                                path.string());
+                        LOG_CRITICAL("Font file does not exist: {}", fontPath.string());
+                        throw std::runtime_error("Font file does not exist: " + fontPath.string());
                 }
 
-                return std::make_pair(path, font);
+                if (!font.loadFromFile(fontPath))
+                {
+                        LOG_CRITICAL("Failed to load font: {} from {}", fontPath.string(), exePath.string());
+                        throw std::runtime_error("Failed to load font: " + fontPath.string());
+                }
+
+                return std::make_pair(fontPath, font);
         }
 
 
