@@ -7,10 +7,11 @@ This file contains helper functions for the GUI.
 #ifndef GUI_HELPER_HPP
 #define GUI_HELPER_HPP
 
-#include <utility>
+#include <filesystem>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <utility>
 
 namespace System
 {
