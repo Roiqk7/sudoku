@@ -146,7 +146,7 @@ namespace System
                 }
                 text.setFont(font);
                 text.setCharacterSize(fontSize);
-                text.setFillColor(sf::Color::White);
+                text.setFillColor(color);
                 text.setPosition(sf::Vector2f(x, y));
                 loaded = true;
         }
