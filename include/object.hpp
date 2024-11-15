@@ -91,9 +91,8 @@ namespace System
         public: // Methods
         // Class methods
                 Rectangle(const std::string& name, int x, int y,
-                        int width, int height, sf::RectangleShape rectangle,
-                        sf::Color color, std::shared_ptr<Command>
-                        command = nullptr);
+                        int width, int height, sf::Color color,
+                        std::shared_ptr<Command> command = nullptr);
                 ~Rectangle() override;
         // Object methods
                 void load() override;

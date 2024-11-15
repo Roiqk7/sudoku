@@ -176,16 +176,15 @@ namespace System
         @param y Y position of the object.
         @param width Width of the object.
         @param height Height of the object.
-        @param rectangle Rectangle to render.
         @param color Color of the rectangle.
         @param command Command to execute
         */
         Rectangle::Rectangle(const std::string& name, int x, int y,
-                int width, int height, sf::RectangleShape rectangle,
-                sf::Color color, std::shared_ptr<Command> command)
+                int width, int height, sf::Color color,
+                std::shared_ptr<Command> command)
                 : Object(name, x, y, ObjectType::RECTANGLE),
-                width(width), height(height), rectangle(rectangle),
-                color(color), command(command)
+                width(width), height(height), color(color),
+                command(command)
         {
                 LOG_TRACE("Rectangle::Rectangle() called.");
 
