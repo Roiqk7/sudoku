@@ -42,11 +42,11 @@ namespace System
                 // Text
                 auto center = getWindowCenter(getWindowSize(window));
                 auto font = getFont("font");
-                std::shared_ptr<Object> text = std::make_shared<Text>(
-                        "Default scene text", center.x, center.y,
-                        font.first, font.second,
-                        "THIS SHOULD BE HIDDEN", Colors::WHITE, 50);
-                scene.addObject(text);
+                Text text = Text("Default scene text", center.x, center.y,
+                        font.first, font.second, "THIS SHOULD BE HIDDEN", 50,
+                        Colors::WHITE);
+                std::shared_ptr<Object> pText = std::make_shared<Text>(text);
+                scene.addObject(pText);
 
                 // Background
                 auto sizeU = getWindowSize(window);
