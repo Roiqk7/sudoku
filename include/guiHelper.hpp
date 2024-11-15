@@ -7,6 +7,7 @@ This file contains helper functions for the GUI.
 #ifndef GUI_HELPER_HPP
 #define GUI_HELPER_HPP
 
+#include <utility>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -20,6 +21,9 @@ namespace System
         sf::Vector2i getWindowTopRightCorner(const sf::Vector2u& windowSize) noexcept;
         sf::Vector2i getWindowBottomLeftCorner(const sf::Vector2u& windowSize) noexcept;
         sf::Vector2i getWindowBottomRightCorner(const sf::Vector2u& windowSize) noexcept;
+// Assets helper functions
+        std::pair<std::filesystem::path, sf::Font>
+                getFont(const std::string& name);
 } // namespace System
 
 
