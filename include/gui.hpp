@@ -14,7 +14,7 @@ GUI class controls the graphical user interface of the program.
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <stack>
+#include <vector>
 
 namespace System
 {
@@ -40,7 +40,7 @@ namespace System
                 Invoker invoker;                                        // Invoker to execute commands in the GUI
                 sf::RenderWindow window;                                // The window to render to
                 Sudoku::GameHandler gameHandler;                        // Interface for the game logic
-                std::stack<Scene> scenes;                               // Scenes in the GUI (top is current)
+                std::vector<Scene> scenes;                              // Scenes in the GUI (top is current)
         };
 }
 
