@@ -64,7 +64,7 @@ namespace System
                 float xScale;                                           // X scale of the sprite
                 float yScale;                                           // Y scale of the sprite
         };
-// Font class
+// Text class
         class Text : public Object
         {
         public: // Methods
