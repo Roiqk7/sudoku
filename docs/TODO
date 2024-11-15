@@ -1,10 +1,6 @@
 1. Make working scenes
-        0. Make sure the screens can be created and the commands are ok
-        1. Make a scene for the welcome screen
-        2. Main menu
-        3. Game
-        4. Game pause
-        5. Game over
+        0. Fix the scenes stuff and debug text segfault
+        1. Add other scenes
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
 4. Add more tests
