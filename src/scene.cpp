@@ -38,20 +38,23 @@ namespace System
 
         @param window Window to render to.
         */
-        void Scene::render(sf::RenderWindow& window)
+        void Scene::render(sf::RenderWindow& window) const noexcept
         {
                 LOG_TRACE("Scene::render() called.");
 
                 for (const auto& object : objects)
                 {
-                        object->render(window);
+                        if (object)
+                        {
+                                object->render(window);
+                        }
                 }
         }
 
         /*
         Update the scene.
         */
-        void Scene::update()
+        void Scene::update() noexcept
         {
                 LOG_TRACE("Scene::update() called.");
 

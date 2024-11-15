@@ -23,8 +23,8 @@ namespace System
                 Scene(const std::string& name);
                 ~Scene();
         // Scene methods
-                void render(sf::RenderWindow& window);
-                void update();
+                void render(sf::RenderWindow& window) const noexcept;
+                void update() noexcept;
                 void setUpdateFunction(std::function<void(Scene&)> function);
         // Object methods
                 void addObject(const std::shared_ptr<Object>& object);
