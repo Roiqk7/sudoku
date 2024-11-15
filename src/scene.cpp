@@ -49,6 +49,31 @@ namespace System
         }
 
         /*
+        Update the scene.
+        */
+        void Scene::update()
+        {
+                LOG_TRACE("Scene::update() called.");
+
+                if (updateFunction)
+                {
+                        updateFunction(*this);
+                }
+        }
+
+        /*
+        Set the update function of the scene.
+
+        @param function Function to set.
+        */
+        void Scene::setUpdateFunction(std::function<void(Scene&)> function)
+        {
+                LOG_TRACE("Scene::setUpdateFunction() called.");
+
+                updateFunction = function;
+        }
+// Object methods
+        /*
         Add an object to the scene.
 
         @param object Object to add.

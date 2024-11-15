@@ -9,6 +9,7 @@ Scene class stores one scene of the application and all the objects in it.
 
 #include "command.hpp"
 #include "object.hpp"
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -23,6 +24,9 @@ namespace System
                 ~Scene();
         // Scene methods
                 void render(sf::RenderWindow& window);
+                void update();
+                void setUpdateFunction(std::function<void(Scene&)> function);
+        // Object methods
                 void addObject(const std::shared_ptr<Object>& object);
                 void addClickableObject(std::unique_ptr<Rectangle> object);
                 void retrieveClickedCommand(int x, int y,
@@ -37,6 +41,7 @@ namespace System
                 std::vector<std::shared_ptr<Object>> objects;           // Objects in the scene
                 std::vector<std::unique_ptr<Rectangle>>
                         clickableObjects;                               // Clickable objects in the scene
+                std::function<void(Scene&)> updateFunction;             // Function to update the scene
         };
 }
 
