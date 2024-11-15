@@ -60,7 +60,7 @@ namespace System
         */
         Sprite::~Sprite()
         {
-                LOG_TRACE("Sprite destroyed");
+                LOG_TRACE("Sprite::~Sprite() called.");
         }
 
         /*
@@ -160,7 +160,7 @@ namespace System
                 if (loaded)
                 {
                         // TODO: This line is causing a segfault
-                        window.draw(text);
+                        // window.draw(text);
                 }
         }
 // Rectangle class
@@ -192,7 +192,7 @@ namespace System
         */
         Rectangle::~Rectangle()
         {
-                LOG_TRACE("Rectangle destroyed");
+                LOG_TRACE("Rectangle::~Rectangle() called.");
         }
 
         /*
