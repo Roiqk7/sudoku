@@ -15,20 +15,20 @@ Note: All scenes are expected to be cleared before creating a new one.
 namespace System
 {
 // System scenes
-        void createDefaultScene(Scene& scene);
+        void createDefaultScene(Scene& scene, const sf::RenderWindow& window);
 // Non-game scenes
-        void createWelcomeScene(Scene& scene);
-        void createMainMenuScene(Scene& scene);
-        void createSettingsScene(Scene& scene);
-        void createCreditsScene(Scene& scene);
+        void createWelcomeScene(Scene& scene, const sf::RenderWindow& window);
+        void createMainMenuScene(Scene& scene, const sf::RenderWindow& window);
+        void createSettingsScene(Scene& scene, const sf::RenderWindow& window);
+        void createCreditsScene(Scene& scene, const sf::RenderWindow& window);
 // Game scenes
-        void createNewGameScene(Scene& scene);
-        void createGameScene(Scene& scene);
-        void createPauseScene(Scene& scene);
-        void createEndScene(Scene& scene);
+        void createNewGameScene(Scene& scene, const sf::RenderWindow& window);
+        void createGameScene(Scene& scene, const sf::RenderWindow& window);
+        void createPauseScene(Scene& scene, const sf::RenderWindow& window);
+        void createEndScene(Scene& scene, const sf::RenderWindow& window);
 // Development scenes
-        void createDebugScene(Scene& scene);
-        void createExecutionTimeScene(Scene& scene);
+        void createDebugScene(Scene& scene, const sf::RenderWindow& window);
+        void createExecutionTimeScene(Scene& scene, const sf::RenderWindow& window);
 }
 
 #endif // !SCENES_HPP
