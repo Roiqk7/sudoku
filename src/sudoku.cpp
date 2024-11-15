@@ -12,7 +12,7 @@ int main()
         LOG_TRACE("main() called");
 
         #ifdef DEVELOPMENT
-        SET_LOG_LEVEL_DEBUG();
+        SET_LOG_LEVEL_TRACE();
         #endif // DEVELOPMENT
 
         System::Application app;
