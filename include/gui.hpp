@@ -28,10 +28,10 @@ namespace System
                 void run();
         private: // Methods
         // GUI methods
+                void init();
                 void waitEvent();
                 void render();
                 void update();
-                void init();
         // Event handling
                 void handleEvent(const sf::Event& event);
                 void handleMouseClick(const sf::Event& event);

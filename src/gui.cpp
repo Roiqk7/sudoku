@@ -48,6 +48,29 @@ namespace System
         }
 
         /*
+        Initialize the GUI.
+
+        @throw std::runtime_error if the assets failed to load.
+        */
+        void GUI::init()
+        {
+                LOG_TRACE("GUI::init() called");
+
+                const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+                // Setups the window
+                window.create(desktop, "Sudoku");
+
+                // Create the default scene
+                Scene scene("Default");
+                createDefaultScene(scene, window);
+                scenes.push_back(std::move(scene));
+
+                // Render the default scene
+                render();
+        }
+
+        /*
         Wait for an event to occur.
         */
         void GUI::waitEvent()
@@ -80,8 +103,6 @@ namespace System
         {
                 LOG_TRACE("GUI::render() called");
 
-                LOG_DEBUG("GUI scene count: {}", scenes.size());
-
                 window.clear();
                 if (!scenes.empty())
                 {
@@ -106,29 +127,6 @@ namespace System
                         LOG_DEBUG("Updating {} scene with {} objects", scene.name, scene.size());
                         scene.update();
                 }
-        }
-
-        /*
-        Initialize the GUI.
-
-        @throw std::runtime_error if the assets failed to load.
-        */
-        void GUI::init()
-        {
-                LOG_TRACE("GUI::init() called");
-
-                const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-
-                // Setups the window
-                window.create(desktop, "Sudoku");
-
-                // Create the default scene
-                Scene scene("Default");
-                createDefaultScene(scene, window);
-                scenes.push_back(std::move(scene));
-
-                // Render the default scene
-                render();
         }
 // Event handling
         /*
