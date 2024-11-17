@@ -48,26 +48,26 @@ namespace System
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
 
-                // Text
-                auto font = getFont("font");
-                Text text = Text("Text", center.x, center.y,
-                        font.first, font.second, "THIS SHOULD BE HIDDEN", 50,
-                        Colors::WHITE);
-                std::shared_ptr<Object> pText = std::make_shared<Text>(text);
-                // scene.addObject(pText);
-
                 // Yellow Background
-                Rectangle background = Rectangle("Yellow Background", topLeft.x, topLeft.y,
+                std::shared_ptr<Object> background = std::make_shared<Rectangle>(
+                        "Yellow Background", topLeft.x, topLeft.y,
                         size.x, size.y, Colors::YELLOW);
-                std::shared_ptr<Object> pBackground = std::make_shared<Rectangle>(background);
-                scene.addObject(pBackground);
+                scene.addObject(background);
 
                 // Black rectangle
-                Rectangle rect = Rectangle("Black Rectangle", topLeft.x + size.x / 10,
-                        topLeft.y + size.y / 10, size.x - size.x / 5, size.y - size.y / 5,
-                        Colors::BLACK);
-                std::shared_ptr<Object> pRect = std::make_shared<Rectangle>(rect);
-                scene.addObject(pRect);
+                std::shared_ptr<Object> rect = std::make_shared<Rectangle>(
+                        "Black Rectangle", topLeft.x + size.x / 10,
+                        topLeft.y + size.y / 10, size.x - size.x / 5,
+                        size.y - size.y / 5, Colors::BLACK);
+                scene.addObject(rect);
+
+                // Text
+                auto font = getFont("font");
+                std::shared_ptr<Object> text = std::make_shared<Text>(
+                        "Text", center.x/2, center.y, font.first,
+                        font.second, "THIS SHOULD BE HIDDEN", center.y / 5,
+                        Colors::WHITE);
+                scene.addObject(text);
 
                 if (!update)
                 {
