@@ -54,7 +54,7 @@ namespace System
                         font.first, font.second, "THIS SHOULD BE HIDDEN", 50,
                         Colors::WHITE);
                 std::shared_ptr<Object> pText = std::make_shared<Text>(text);
-                scene.addObject(pText);
+                //scene.addObject(pText);
 
                 // Yellow Background
                 Rectangle background = Rectangle("Background", topLeft.x, topLeft.y,
