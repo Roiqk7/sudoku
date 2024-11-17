@@ -21,6 +21,7 @@ namespace Sudoku
         Grid::Grid()
         {
                 LOG_TRACE("Grid::Grid() called");
+
                 Grid::fill(0);
         }
 
@@ -44,6 +45,7 @@ namespace Sudoku
         int Grid::getCell(int i) const
         {
                 LOG_TRACE("Grid::getCell() called");
+
                 if (!Grid::checkIndex(i, true))
                 {
                         LOG_ERROR("Index out of range");
@@ -65,7 +67,9 @@ namespace Sudoku
         int Grid::getCell(int row, int col) const
         {
                 LOG_TRACE("Grid::getCell() called");
+
                 const int index = Grid::convertIndex(row, col);
+
                 return grid[Grid::convertIndex(row, col)];
         }
 
@@ -80,11 +84,13 @@ namespace Sudoku
         void Grid::getRow(int row, std::array<int, 9>& rowArray) const
         {
                 LOG_TRACE("Grid::getRow() called");
+
                 if (!Grid::checkIndex(row, false))
                 {
                         LOG_ERROR("Row out of range");
                         throw std::out_of_range("Row out of range");
                 }
+
                 for (int i = 0; i < 9; i++)
                 {
                         rowArray[i] = grid[Grid::convertIndex(row, i)];
@@ -102,11 +108,13 @@ namespace Sudoku
         void Grid::getCol(int col, std::array<int, 9>& colArray) const
         {
                 LOG_TRACE("Grid::getCol() called");
+
                 if (!Grid::checkIndex(col, false))
                 {
                         LOG_ERROR("Column out of range");
                         throw std::out_of_range("Column out of range");
                 }
+
                 for (int i = 0; i < 9; i++)
                 {
                         colArray[i] = grid[Grid::convertIndex(i, col)];
@@ -124,14 +132,18 @@ namespace Sudoku
         void Grid::getBox(int box, std::array<int, 9>& boxArray) const
         {
                 LOG_TRACE("Grid::getBox() called");
+
                 if (!Grid::checkIndex(box, false))
                 {
                         LOG_ERROR("Box out of range");
                         throw std::out_of_range("Box out of range");
                 }
+
                 const std::array<int, 9>
                         startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
+
                 int rowStartIndex = startIndex[box];
+
                 for (int i = 0; i < 3; i++)
                 {
                         for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
@@ -184,8 +196,8 @@ namespace Sudoku
                 std::random_device rd;
                 std::mt19937 gen(rd());
                 std::uniform_int_distribution<int> dis(0, 80);
-                int index;
 
+                int index;
                 for (int i = 0; i < count; i++)
                 {
                         do
@@ -209,16 +221,19 @@ namespace Sudoku
         void Grid::setCell(int i, int value)
         {
                 LOG_TRACE("Grid::setCell() called");
+
                 if (!Grid::checkIndex(i, true))
                 {
                         LOG_ERROR("Index out of range");
                         throw std::out_of_range("Index out of range");
                 }
+
                 if (value < 0 || value > 9)
                 {
                         LOG_ERROR("Value out of range");
                         throw std::invalid_argument("Value out of range");
                 }
+
                 grid[i] = value;
         }
 
@@ -235,12 +250,15 @@ namespace Sudoku
         void Grid::setCell(int row, int col, int value)
         {
                 LOG_TRACE("Grid::setCell() called");
+
                 const int index = Grid::convertIndex(row, col);
+
                 if (value < 0 || value > 9)
                 {
                         LOG_ERROR("Value out of range");
                         throw std::invalid_argument("Value out of range");
                 }
+
                 grid[index] = value;
         }
 
@@ -255,11 +273,13 @@ namespace Sudoku
         void Grid::setRow(int row, const std::array<int, 9>& rowArray)
         {
                 LOG_TRACE("Grid::setRow() called");
+
                 if (!Grid::checkIndex(row, false))
                 {
                         LOG_ERROR("Row out of range");
                         throw std::out_of_range("Row out of range");
                 }
+
                 for (int i = 0; i < 9; i++)
                 {
                         grid[Grid::convertIndex(row, i)] = rowArray[i];
@@ -277,11 +297,13 @@ namespace Sudoku
         void Grid::setCol(int col, const std::array<int, 9>& colArray)
         {
                 LOG_TRACE("Grid::setCol() called");
+
                 if (!Grid::checkIndex(col, false))
                 {
                         LOG_ERROR("Column out of range");
                         throw std::out_of_range("Column out of range");
                 }
+
                 for (int i = 0; i < 9; i++)
                 {
                         grid[Grid::convertIndex(i, col)] = colArray[i];
@@ -299,14 +321,17 @@ namespace Sudoku
         void Grid::setBox(int box, const std::array<int, 9>& boxArray)
         {
                 LOG_TRACE("Grid::setBox() called");
+
                 if (!Grid::checkIndex(box, false))
                 {
                         LOG_ERROR("Box out of range");
                         throw std::out_of_range("Box out of range");
                 }
+
                 const std::array<int, 9>
                         startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
                 int rowStartIndex = startIndex[box];
+
                 for (int i = 0; i < 3; i++)
                 {
                         for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
@@ -327,6 +352,7 @@ namespace Sudoku
         size_t Grid::size() const noexcept
         {
                 LOG_TRACE("Grid::size() called");
+
                 return grid.size();
         }
 
@@ -336,6 +362,7 @@ namespace Sudoku
         void Grid::clear() noexcept
         {
                 LOG_TRACE("Grid::clear() called");
+
                 Grid::fill(0);
         }
 
@@ -347,6 +374,7 @@ namespace Sudoku
         void Grid::fill(int value) noexcept
         {
                 LOG_TRACE("Grid::fill() called");
+
                 for (int i = 0; i < 81; i++)
                 {
                         grid[i] = value;
@@ -366,11 +394,13 @@ namespace Sudoku
         int Grid::convertIndex(int row, int col) const
         {
                 LOG_TRACE("Grid::convertIndex() called");
+
                 if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
                 {
                         LOG_ERROR("Row or column out of range");
                         throw std::out_of_range("Row or column out of range");
                 }
+
                 return row * 9 + col;
         }
 
@@ -408,6 +438,7 @@ namespace Sudoku
         int Grid::count(int value) const noexcept
         {
                 LOG_TRACE("Grid::count() called");
+
                 return std::count(grid.begin(), grid.end(), value);
         }
 // Check methods
@@ -422,10 +453,12 @@ namespace Sudoku
         bool Grid::checkIndex(int index, bool cell) const noexcept
         {
                 LOG_TRACE("Grid::checkIndex() called");
+
                 if (cell)
                 {
                         return 0 <= index && index < 81;
                 }
+
                 return 0 <= index && index < 9;
         }
 
@@ -437,6 +470,7 @@ namespace Sudoku
         bool Grid::isSolved() const noexcept
         {
                 LOG_TRACE("Grid::isSolved() called");
+
                 // Grid is solved if it is valid and has no zeros
                 return Grid::isValid() && std::none_of(grid.begin(), grid.end(), [](int value)
                 {
@@ -460,6 +494,7 @@ namespace Sudoku
         bool Grid::isValidValue(int row, int col, int value) const noexcept
         {
                 LOG_TRACE("Grid::isValidValue() called");
+
                 if (value <= 0 || value > 9)
                 {
                         return false;
@@ -476,13 +511,11 @@ namespace Sudoku
                 {
                         return val == value;
                 })
-                &&
-                std::none_of(colArray.begin(), colArray.end(), [value](int val)
+                && std::none_of(colArray.begin(), colArray.end(), [value](int val)
                 {
                         return val == value;
                 })
-                &&
-                std::none_of(boxArray.begin(), boxArray.end(), [value](int val)
+                && std::none_of(boxArray.begin(), boxArray.end(), [value](int val)
                 {
                         return val == value;
                 });
@@ -504,7 +537,9 @@ namespace Sudoku
         bool Grid::isValidCell(int row, int col, bool includeZero) const noexcept
         {
                 LOG_TRACE("Grid::isValidCell() called");
+
                 const int value = grid[Grid::convertIndex(row, col)];
+
                 return 0 <= value && value <= 9;
         }
 
@@ -544,8 +579,10 @@ namespace Sudoku
         bool Grid::isValidCol(int col) const noexcept
         {
                 LOG_TRACE("Grid::isValidCol() called");
+
                 std::array<int, 9> colArray;
                 Grid::getCol(col, colArray);
+
                 return std::all_of(colArray.begin(), colArray.end(), [this, col](int value)
                 {
                         return Grid::isValidCell(value, col, true);
@@ -566,8 +603,10 @@ namespace Sudoku
         bool Grid::isValidBox(int box) const noexcept
         {
                 LOG_TRACE("Grid::isValidBox() called");
+
                 std::array<int, 9> boxArray;
                 Grid::getBox(box, boxArray);
+
                 return std::all_of(boxArray.begin(), boxArray.end(), [this, box](int value)
                 {
                         return Grid::isValidCell(value, box, true);
@@ -584,21 +623,25 @@ namespace Sudoku
         bool Grid::isValid() const noexcept
         {
                 LOG_TRACE("Grid::isValid() called");
+
                 const bool validRows = std::all_of(
                         std::begin(grid), std::end(grid), [this](int value)
                         {
                                 return Grid::isValidRow(value);
                         });
+
                 const bool validCols = std::all_of(
                         std::begin(grid), std::end(grid), [this](int value)
                         {
                                 return Grid::isValidCol(value);
                         });
+
                 const bool validBoxes = std::all_of(
                         std::begin(grid), std::end(grid), [this](int value)
                         {
                                 return Grid::isValidBox(value);
                         });
+
                 return validRows && validCols && validBoxes;
         }
 
