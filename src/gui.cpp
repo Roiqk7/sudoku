@@ -76,13 +76,14 @@ namespace System
         {
                 LOG_TRACE("GUI::render() called");
 
-                LOG_DEBUG("Scene count: {}", scenes.size());
+                LOG_DEBUG("GUI scene count: {}", scenes.size());
 
                 window.clear();
                 if (!scenes.empty())
                 {
                         for (const auto& scene : scenes)
                         {
+                                LOG_DEBUG("Rendering {} scene with {} objects", scene.name, scene.size());
                                 scene.render(window);
                         }
                 }
