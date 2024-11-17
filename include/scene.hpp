@@ -38,6 +38,7 @@ namespace System
                         std::weak_ptr<Command>& command);
                 void clear() noexcept;
         private: // Methods
+        // Checker
                 bool checkClicked(const std::unique_ptr<Rectangle>&
                         object, int x, int y);
         public: // Variables

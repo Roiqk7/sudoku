@@ -198,7 +198,7 @@ namespace System
                 objects.clear();
                 clickableObjects.clear();
         }
-
+// Checker
         /*
         Check if the object was clicked.
 
