@@ -29,6 +29,7 @@ namespace System
         // Scene methods
                 void render(sf::RenderWindow& window) const noexcept;
                 void update() noexcept;
+                size_t size() const noexcept;
                 void setUpdateFunction(std::function<void(Scene&)> function);
         // Object methods
                 void addObject(const std::shared_ptr<Object>& object);

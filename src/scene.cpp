@@ -99,6 +99,18 @@ namespace System
         }
 
         /*
+        Retrieve the size of the scene.
+
+        @return Size of the scene.
+        */
+        size_t Scene::size() const noexcept
+        {
+                LOG_TRACE("Scene::size() called.");
+
+                return objects.size();
+        }
+
+        /*
         Set the update function of the scene.
 
         @param function Function to set.
@@ -143,6 +155,7 @@ namespace System
                         return;
                 }
 
+                objects.push_back(std::move(object));
                 clickableObjects.push_back(std::move(object));
         }
 
