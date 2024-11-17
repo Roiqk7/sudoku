@@ -17,8 +17,11 @@ int main()
         SET_LOG_LEVEL_DEBUG();
         #endif // DEVELOPMENT
 
-        signal(SIGSEGV, signalHandler);
+        // Set up signal handling
+        std::signal(SIGINT, signalHandler);
+        std::signal(SIGSEGV, signalHandler);
 
+        // Run the application
         System::Application app;
 
         return 0;
