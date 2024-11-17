@@ -72,7 +72,7 @@ namespace System
                 Text(const std::string& name, int x, int y,
                         std::filesystem::path path, sf::Font font,
                         const std::string& textString, int fontSize,
-                        sf::Color color);
+                        sf::Color color = sf::Color::White);
                 ~Text() override;
         // Object methods
                 void load() override;

@@ -106,7 +106,7 @@ namespace System
         @param y Y position of the object.
         @param path Path to the resource.
         @param font Font of the object.
-        @param textString Text to render.
+        @param textString String of the text.
         @param fontSize Size of the font.
         @param color Color of the text.
         */
