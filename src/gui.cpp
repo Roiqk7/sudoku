@@ -61,6 +61,8 @@ namespace System
                 // Setups the window
                 window.create(desktop, "Sudoku");
 
+                LOG_DEBUG("Window created with size {}x{}", desktop.width, desktop.height);
+
                 // Create the default scene
                 scenes.emplace_back("Default");
                 createDefaultScene(scenes.back(), window);
@@ -103,14 +105,16 @@ namespace System
                 LOG_TRACE("GUI::render() called");
 
                 window.clear();
+
                 if (!scenes.empty())
                 {
                         for (const auto& scene : scenes)
                         {
-                                LOG_DEBUG("Rendering {} scene with {} objects", scene.name, scene.size());
+                                LOG_TRACE("Rendering {} scene with {} objects", scene.name, scene.size());
                                 scene.render(window);
                         }
                 }
+
                 window.display();
         }
 
@@ -123,7 +127,7 @@ namespace System
 
                 for (auto& scene : scenes)
                 {
-                        LOG_DEBUG("Updating {} scene with {} objects", scene.name, scene.size());
+                        LOG_TRACE("Updating {} scene with {} objects", scene.name, scene.size());
                         scene.update();
                 }
         }
@@ -136,8 +140,6 @@ namespace System
         void GUI::handleEvent(const sf::Event& event)
         {
                 LOG_TRACE("GUI::handleEvent() called");
-
-                LOG_DEBUG("GUI has {} scenes", scenes.size());
 
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
