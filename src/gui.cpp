@@ -76,6 +76,8 @@ namespace System
         {
                 LOG_TRACE("GUI::render() called");
 
+                LOG_DEBUG("Scene count: {}", scenes.size());
+
                 window.clear();
                 if (!scenes.empty())
                 {
