@@ -71,7 +71,7 @@ namespace System
         // Class methods
                 Text(const std::string& name, int x, int y,
                         std::filesystem::path path, sf::Font font,
-                        const std::string& text, int fontSize,
+                        const std::string& textString, int fontSize,
                         sf::Color color);
                 ~Text() override;
         // Object methods
