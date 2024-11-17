@@ -57,10 +57,14 @@ namespace System
                 sf::Event event;
                 while (window.waitEvent(event))
                 {
+                        // Close the window if the event is a close event
                         if (shouldClose(event))
                         {
                                 window.close();
+                                // Start the close process of the application
+                                break;
                         }
+                        // Otherwise, handle the event
                         else if (isRelevantEvent(event))
                         {
                                 handleEvent(event);
