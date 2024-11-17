@@ -50,21 +50,22 @@ namespace System
 
                 // Text
                 auto font = getFont("font");
-                Text text = Text("Default scene text", center.x, center.y,
+                Text text = Text("Text", center.x, center.y,
                         font.first, font.second, "THIS SHOULD BE HIDDEN", 50,
                         Colors::WHITE);
                 std::shared_ptr<Object> pText = std::make_shared<Text>(text);
-                scene.addObject(pText);
+                // scene.addObject(pText);
 
                 // Yellow Background
-                Rectangle background = Rectangle("Background", topLeft.x, topLeft.y,
+                Rectangle background = Rectangle("Yellow Background", topLeft.x, topLeft.y,
                         size.x, size.y, Colors::YELLOW);
                 std::shared_ptr<Object> pBackground = std::make_shared<Rectangle>(background);
                 scene.addObject(pBackground);
 
                 // Black rectangle
-                Rectangle rect = Rectangle("Background", topLeft.x + 10, topLeft.y + 10,
-                        size.x - 20, size.y - 20, Colors::BLACK);
+                Rectangle rect = Rectangle("Black Rectangle", topLeft.x + size.x / 10,
+                        topLeft.y + size.y / 10, size.x - size.x / 5, size.y - size.y / 5,
+                        Colors::BLACK);
                 std::shared_ptr<Object> pRect = std::make_shared<Rectangle>(rect);
                 scene.addObject(pRect);
 
