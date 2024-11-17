@@ -42,8 +42,13 @@ namespace System
 
                 scene.name = "Default";
 
+                // Get necessary window information
+                sf::Vector2i center = getWindowCenter(getWindowSize(window));
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i size(sizeU.x, sizeU.y);
+                sf::Vector2i topLeft = getWindowTopLeftCorner();
+
                 // Text
-                auto center = getWindowCenter(getWindowSize(window));
                 auto font = getFont("font");
                 Text text = Text("Default scene text", center.x, center.y,
                         font.first, font.second, "THIS SHOULD BE HIDDEN", 50,
@@ -52,9 +57,6 @@ namespace System
                 scene.addObject(pText);
 
                 // Yellow Background
-                auto sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
                 Rectangle background = Rectangle("Background", topLeft.x, topLeft.y,
                         size.x, size.y, Colors::YELLOW);
                 std::shared_ptr<Object> pBackground = std::make_shared<Rectangle>(background);

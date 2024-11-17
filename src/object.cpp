@@ -159,8 +159,7 @@ namespace System
 
                 if (loaded)
                 {
-                        // TODO: This line is causing a segfault
-                        // window.draw(text);
+                        window.draw(text);
                 }
         }
 // Rectangle class
