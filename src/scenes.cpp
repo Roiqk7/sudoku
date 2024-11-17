@@ -51,20 +51,20 @@ namespace System
                 std::shared_ptr<Object> pText = std::make_shared<Text>(text);
                 scene.addObject(pText);
 
-                // Black Background
+                // Yellow Background
                 auto sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
                 Rectangle background = Rectangle("Background", topLeft.x, topLeft.y,
-                        size.x, size.y, Colors::BLACK);
+                        size.x, size.y, Colors::YELLOW);
                 std::shared_ptr<Object> pBackground = std::make_shared<Rectangle>(background);
                 scene.addObject(pBackground);
 
-                // Yellow rectangle
-                Rectangle yellow = Rectangle("Background", topLeft.x + 10, topLeft.y + 10,
-                        size.x - 20, size.y - 20, Colors::YELLOW);
-                std::shared_ptr<Object> pYellow = std::make_shared<Rectangle>(yellow);
-                scene.addObject(pYellow);
+                // Black rectangle
+                Rectangle rect = Rectangle("Background", topLeft.x + 10, topLeft.y + 10,
+                        size.x - 20, size.y - 20, Colors::BLACK);
+                std::shared_ptr<Object> pRect = std::make_shared<Rectangle>(rect);
+                scene.addObject(pRect);
 
                 if (!update)
                 {
