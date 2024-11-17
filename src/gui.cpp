@@ -91,6 +91,20 @@ namespace System
         }
 
         /*
+        Update the GUI.
+        */
+        void GUI::update()
+        {
+                LOG_TRACE("GUI::update() called");
+
+                for (auto& scene : scenes)
+                {
+                        LOG_DEBUG("Updating {} scene with {} objects", scene.name, scene.size());
+                        scene.update();
+                }
+        }
+
+        /*
         Initialize the GUI.
 
         @throw std::runtime_error if the assets failed to load.
@@ -112,7 +126,7 @@ namespace System
                 // Render the default scene
                 render();
         }
-
+// Event handling
         /*
         Handle an event.
 
@@ -125,35 +139,42 @@ namespace System
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
-                        // We assume the most relevant scene is at the back
-                        // thus we iterate in reverse and return first valid command
-                        for (auto it = scenes.rbegin(); it != scenes.rend(); ++it)
-                        {
-                                auto& scene = *it;
-                                std::weak_ptr<Command> command;
-                                scene.retrieveClickedCommand(event.mouseButton.x,
-                                        event.mouseButton.y, command);
-                                if (!command.expired())
-                                {
-                                        invoker.submitCommand(command);
-                                        // Exit the loop once a valid command is found
-                                        break;
-                                }
-                        }
+                        handleMouseClick(event);
                 }
 
                 // Update the scenes if the window is resized
                 if (event.type == sf::Event::Resized)
                 {
-                        for (auto& scene : scenes)
-                        {
-                                scene.update();
-                        }
+                        update();
                 }
 
                 // Add more events if needed...
 
                 invoker.processCommands();
+        }
+
+        /*
+        Handle a mouse click event.
+
+        @param event The event to handle.
+        */
+        void GUI::handleMouseClick(const sf::Event& event)
+        {
+                // We assume the most relevant scene is at the back
+                // thus we iterate in reverse and return first valid command
+                for (auto it = scenes.rbegin(); it != scenes.rend(); ++it)
+                {
+                        auto& scene = *it;
+                        std::weak_ptr<Command> command;
+                        scene.retrieveClickedCommand(event.mouseButton.x,
+                                event.mouseButton.y, command);
+                        if (!command.expired())
+                        {
+                                invoker.submitCommand(command);
+                                // Exit the loop once a valid command is found
+                                break;
+                        }
+                }
         }
 // Checker
         /*

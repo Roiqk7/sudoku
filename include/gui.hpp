@@ -30,8 +30,11 @@ namespace System
         // GUI methods
                 void waitEvent();
                 void render();
+                void update();
                 void init();
+        // Event handling
                 void handleEvent(const sf::Event& event);
+                void handleMouseClick(const sf::Event& event);
         // Checker
                 bool shouldClose(const sf::Event& event) const;
                 bool isRelevantEvent(const sf::Event& event) const;
