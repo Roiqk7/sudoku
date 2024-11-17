@@ -127,7 +127,8 @@ namespace System
                 {
                         // We assume the most relevant scene is at the back
                         // thus we iterate in reverse and return first valid command
-                        for (auto it = scenes.rbegin(); it != scenes.rend(); ++it) {
+                        for (auto it = scenes.rbegin(); it != scenes.rend(); ++it)
+                        {
                                 auto& scene = *it;
                                 std::weak_ptr<Command> command;
                                 scene.retrieveClickedCommand(event.mouseButton.x,
