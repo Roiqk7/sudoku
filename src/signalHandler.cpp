@@ -7,10 +7,6 @@ void signalHandler(int signal)
 {
         switch (signal)
         {
-                // Interrupt signal (Ctrl + C)
-                case SIGINT:
-                        LOG_CRITICAL("SIGINT received. Exiting...");
-                        break;
                 // Segmentation fault
                 case SIGSEGV:
                         LOG_CRITICAL("SIGSEGV received. Exiting...");
