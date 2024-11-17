@@ -138,6 +138,8 @@ namespace System
         {
                 LOG_TRACE("GUI::handleEvent() called");
 
+                LOG_DEBUG("GUI has {} scenes", scenes.size());
+
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
