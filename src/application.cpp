@@ -73,7 +73,16 @@ namespace System
         {
                 LOG_TRACE("Application::controlFlow() called");
 
-                gui.run();
+                // Run the GUI
+                try
+                {
+                        gui.run();
+                }
+                // Catch any exceptions
+                catch (const std::exception& e)
+                {
+                        LOG_ERROR("Exception caught: {}", e.what());
+                }
 
                 runFlag = RunFlag::WILL_STOP;
         }
