@@ -133,8 +133,6 @@ namespace System
 
         /*
         Load the font.
-
-        @throw std::runtime_error if the font failed to load.
         */
         void Text::load()
         {
