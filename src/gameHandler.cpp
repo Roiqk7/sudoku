@@ -23,11 +23,6 @@ namespace Sudoku
         GameHandler::GameHandler()
         {
                 LOG_TRACE("GameHandler::GameHandler() called");
-
-                // Initialize the variables
-                grid = Grid();
-                generator = Generator();
-                solver = Solver();
         }
 
         /*

@@ -62,9 +62,8 @@ namespace System
                 window.create(desktop, "Sudoku");
 
                 // Create the default scene
-                Scene scene("Default");
-                createDefaultScene(scene, window);
-                scenes.push_back(std::move(scene));
+                scenes.emplace_back("Default");
+                createDefaultScene(scenes.back(), window);
 
                 // Render the default scene
                 render();
