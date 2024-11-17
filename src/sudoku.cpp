@@ -6,6 +6,8 @@ Description: This file contains the main function.
 
 #include "../include/application.hpp"
 #include "../include/macros.hpp"
+#include "../include/signalHandler.hpp"
+#include <csignal>
 
 int main()
 {
@@ -14,6 +16,8 @@ int main()
         #ifdef DEVELOPMENT
         SET_LOG_LEVEL_DEBUG();
         #endif // DEVELOPMENT
+
+        signal(SIGSEGV, signalHandler);
 
         System::Application app;
 
