@@ -16,6 +16,7 @@ namespace System
 {
 // System scenes
         void createDefaultScene(Scene& scene, const sf::RenderWindow& window);
+        void createBackgroundScene(Scene& scene, const sf::RenderWindow& window);
 // Non-game scenes
         void createWelcomeScene(Scene& scene, const sf::RenderWindow& window);
         void createMainMenuScene(Scene& scene, const sf::RenderWindow& window);

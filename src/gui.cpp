@@ -57,7 +57,7 @@ namespace System
                 LOG_TRACE("GUI::init() called");
 
                 // Setups the window
-                sf::VideoMode mode = sf::VideoMode(900, 800);
+                sf::VideoMode mode = sf::VideoMode(1400, 800);
                 window.create(mode, "SUDOKU!");
 
                 LOG_DEBUG("Window created with size {}x{}", mode.width, mode.height);
@@ -66,7 +66,14 @@ namespace System
                 scenes.emplace_back("Default");
                 createDefaultScene(scenes.back(), window);
 
-                // Render the default scene
+                // Create the background scene
+                scenes.emplace_back("Background");
+                createBackgroundScene(scenes.back(), window);
+
+                // Create the welcome scene
+                scenes.emplace_back("Welcome");
+                createWelcomeScene(scenes.back(), window);
+
                 render();
         }
 

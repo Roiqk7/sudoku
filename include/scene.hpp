@@ -31,19 +31,19 @@ namespace System
                 size_t size() const noexcept;
         // Object methods
                 void addObject(const std::shared_ptr<Object>& object);
-                void addClickableObject(std::unique_ptr<Rectangle> object);
+                void addClickableObject(std::shared_ptr<Rectangle> object);
                 void retrieveClickedCommand(int x, int y,
                         std::weak_ptr<Command>& command);
                 void clear() noexcept;
         private: // Methods
         // Checker
-                bool checkClicked(const std::unique_ptr<Rectangle>&
+                bool checkClicked(const std::shared_ptr<Rectangle>&
                         object, int x, int y);
         public: // Variables
                 std::string name;                                       // Name of the scene (unique)
         private: // Variables
                 std::vector<std::shared_ptr<Object>> objects;           // Objects in the scene
-                std::vector<std::unique_ptr<Rectangle>>
+                std::vector<std::shared_ptr<Rectangle>>
                         clickableObjects;                               // Clickable objects in the scene
         };
 }

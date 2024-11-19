@@ -119,7 +119,7 @@ namespace System
 
         @param object Clickable object to add.
         */
-        void Scene::addClickableObject(std::unique_ptr<Rectangle> object)
+        void Scene::addClickableObject(std::shared_ptr<Rectangle> object)
         {
                 LOG_TRACE("Scene::addClickableObject() called.");
 
@@ -128,8 +128,8 @@ namespace System
                         return;
                 }
 
-                objects.push_back(std::move(object));
-                clickableObjects.push_back(std::move(object));
+                objects.push_back(object);
+                clickableObjects.push_back(object); 
         }
 
         /*
@@ -181,7 +181,7 @@ namespace System
 
         @return True if the object was clicked, false otherwise.
         */
-        bool Scene::checkClicked(const std::unique_ptr<Rectangle>& object,
+        bool Scene::checkClicked(const std::shared_ptr<Rectangle>& object,
                 int x, int y)
         {
                 LOG_TRACE("Scene::checkClicked() called.");
