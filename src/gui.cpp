@@ -136,8 +136,6 @@ namespace System
                 scenes.erase(std::remove_if(scenes.begin(), scenes.end(),
                         [](const Scene& scene) { return !scene.active; }),
                         scenes.end());
-
-                LOG_CRITICAL("Scenes remaining: {}", scenes.size());
         }
 // Event handling
         /*
