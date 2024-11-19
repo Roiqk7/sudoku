@@ -18,6 +18,8 @@ namespace System
         {
                 LOG_TRACE("Application::Application() called");
 
+                LOG_INFO("Initializing application...");
+
                 runFlag = RunFlag::NONE;
 
                 init();
