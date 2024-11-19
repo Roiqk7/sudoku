@@ -133,7 +133,7 @@ namespace System
 
                 // Click-to-continue function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene]() { scene.~Scene(); });
+                        [&scene]() { scene.active = false; });
 
                 // Click-to-continue rectangle
                 std::shared_ptr<Rectangle> rect = std::make_shared<Rectangle>(

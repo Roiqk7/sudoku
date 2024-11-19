@@ -20,7 +20,7 @@ namespace System
         {
         public: // Methods
         // Class methods
-                Scene(const std::string& name);
+                explicit Scene(const std::string& name);
                 ~Scene();
                 Scene(const Scene&) = delete;
                 Scene& operator=(const Scene&) = delete;
@@ -41,6 +41,7 @@ namespace System
                         object, int x, int y);
         public: // Variables
                 std::string name;                                       // Name of the scene (unique)
+                bool active = true;                                     // If the scene is active
         private: // Variables
                 std::vector<std::shared_ptr<Object>> objects;           // Objects in the scene
                 std::vector<std::shared_ptr<Rectangle>>
