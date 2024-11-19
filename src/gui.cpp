@@ -7,6 +7,7 @@ GUI class controls the graphical user interface of the program.
 #include "../include/macros.hpp"
 #include "../include/gui.hpp"
 #include "../include/scenes.hpp"
+#include <algorithm>
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -98,6 +99,7 @@ namespace System
                         else if (isRelevantEvent(event))
                         {
                                 handleEvent(event);
+                                removeInactiveScenes();
                                 render();
                         }
                 }
@@ -122,6 +124,20 @@ namespace System
                 }
 
                 window.display();
+        }
+
+        /*
+        Remove inactive scenes.
+        */
+        void GUI::removeInactiveScenes()
+        {
+                LOG_TRACE("GUI::removeInactiveScenes() called");
+
+                scenes.erase(std::remove_if(scenes.begin(), scenes.end(),
+                        [](const Scene& scene) { return !scene.active; }),
+                        scenes.end());
+
+                LOG_CRITICAL("Scenes remaining: {}", scenes.size());
         }
 // Event handling
         /*
@@ -153,7 +169,7 @@ namespace System
         {
                 // We assume the most relevant scene is at the back
                 // thus we iterate in reverse and return first valid command
-                for (auto it = scenes.rbegin(); it != scenes.rend(); ++it)
+                for (auto it = scenes.rbegin(); it != scenes.rend(); it++)
                 {
                         auto& scene = *it;
                         std::weak_ptr<Command> command;
