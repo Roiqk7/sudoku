@@ -56,12 +56,11 @@ namespace System
         {
                 LOG_TRACE("GUI::init() called");
 
-                const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-
                 // Setups the window
-                window.create(desktop, "Sudoku");
+                sf::VideoMode mode = sf::VideoMode(900, 800);
+                window.create(mode, "SUDOKU!");
 
-                LOG_DEBUG("Window created with size {}x{}", desktop.width, desktop.height);
+                LOG_DEBUG("Window created with size {}x{}", mode.width, mode.height);
 
                 // Create the default scene
                 scenes.emplace_back("Default");
@@ -147,12 +146,6 @@ namespace System
                         handleMouseClick(event);
                 }
 
-                // Update the scenes if the window is resized
-                if (event.type == sf::Event::Resized)
-                {
-                        update();
-                }
-
                 // Add more events if needed...
 
                 invoker.processCommands();
@@ -207,7 +200,6 @@ namespace System
         {
                 LOG_TRACE("GUI::isRelevantEvent() called");
 
-                return event.type == sf::Event::MouseButtonPressed
-                        || event.type == sf::Event::Resized;
+                return event.type == sf::Event::MouseButtonPressed;
         }
 } // namespace System

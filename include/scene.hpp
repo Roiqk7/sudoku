@@ -28,9 +28,7 @@ namespace System
                 Scene& operator=(Scene&& other) noexcept;
         // Scene methods
                 void render(sf::RenderWindow& window) const noexcept;
-                void update() noexcept;
                 size_t size() const noexcept;
-                void setUpdateFunction(std::function<void(Scene&)> function);
         // Object methods
                 void addObject(const std::shared_ptr<Object>& object);
                 void addClickableObject(std::unique_ptr<Rectangle> object);
@@ -47,7 +45,6 @@ namespace System
                 std::vector<std::shared_ptr<Object>> objects;           // Objects in the scene
                 std::vector<std::unique_ptr<Rectangle>>
                         clickableObjects;                               // Clickable objects in the scene
-                std::function<void(Scene&)> updateFunction;             // Function to update the scene
         };
 }
 

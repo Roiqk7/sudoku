@@ -31,7 +31,6 @@ namespace System
                 void init();
                 void waitEvent();
                 void render();
-                void update();
         // Event handling
                 void handleEvent(const sf::Event& event);
                 void handleMouseClick(const sf::Event& event);

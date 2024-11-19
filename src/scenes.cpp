@@ -33,8 +33,7 @@ namespace System
 
         @note This scene is used to render error messages etc.
         */
-        void createDefaultScene(Scene& scene, const sf::RenderWindow& window,
-                bool update)
+        void createDefaultScene(Scene& scene, const sf::RenderWindow& window)
         {
                 LOG_TRACE("createDefaultScene() called.");
 
@@ -68,15 +67,6 @@ namespace System
                         font.second, "THIS SHOULD BE HIDDEN", center.y / 5,
                         Colors::WHITE);
                 scene.addObject(text);
-
-                if (!update)
-                {
-                        // Set the update function
-                        scene.setUpdateFunction([&window](Scene& s)
-                        {
-                                createDefaultScene(s, window, true);
-                        });
-                }
         }
 
 } // namespace System

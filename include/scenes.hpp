@@ -15,8 +15,7 @@ Note: All scenes are expected to be cleared before creating a new one.
 namespace System
 {
 // System scenes
-        void createDefaultScene(Scene& scene, const sf::RenderWindow& window,
-                bool update = false);
+        void createDefaultScene(Scene& scene, const sf::RenderWindow& window);
 // Non-game scenes
         void createWelcomeScene(Scene& scene, const sf::RenderWindow& window);
         void createMainMenuScene(Scene& scene, const sf::RenderWindow& window);

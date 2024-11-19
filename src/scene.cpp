@@ -41,8 +41,7 @@ namespace System
         Scene::Scene(Scene&& other) noexcept
                 : name(std::move(other.name)),
                 objects(std::move(other.objects)),
-                clickableObjects(std::move(other.clickableObjects)),
-                updateFunction(std::move(other.updateFunction))
+                clickableObjects(std::move(other.clickableObjects))
         {
                 LOG_TRACE("Scene::Scene() called.");
         }
@@ -61,7 +60,6 @@ namespace System
                         name = std::move(other.name);
                         objects = std::move(other.objects);
                         clickableObjects = std::move(other.clickableObjects);
-                        updateFunction = std::move(other.updateFunction);
                 }
 
                 return *this;
@@ -86,19 +84,6 @@ namespace System
         }
 
         /*
-        Update the scene.
-        */
-        void Scene::update() noexcept
-        {
-                LOG_TRACE("Scene::update() called.");
-
-                if (updateFunction)
-                {
-                        updateFunction(*this);
-                }
-        }
-
-        /*
         Retrieve the size of the scene.
 
         @return Size of the scene.
@@ -108,18 +93,6 @@ namespace System
                 LOG_TRACE("Scene::size() called.");
 
                 return objects.size();
-        }
-
-        /*
-        Set the update function of the scene.
-
-        @param function Function to set.
-        */
-        void Scene::setUpdateFunction(std::function<void(Scene&)> function)
-        {
-                LOG_TRACE("Scene::setUpdateFunction() called.");
-
-                updateFunction = function;
         }
 // Object methods
         /*
