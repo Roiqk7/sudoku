@@ -116,20 +116,6 @@ namespace System
 
                 window.display();
         }
-
-        /*
-        Update the GUI.
-        */
-        void GUI::update()
-        {
-                LOG_TRACE("GUI::update() called");
-
-                for (auto& scene : scenes)
-                {
-                        LOG_TRACE("Updating {} scene with {} objects", scene.name, scene.size());
-                        scene.update();
-                }
-        }
 // Event handling
         /*
         Handle an event.
