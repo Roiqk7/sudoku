@@ -115,8 +115,16 @@ namespace System
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i center = getWindowCenter(sizeU);
 
+                // Sudoku! text
+                auto titleFont = getFont("title");
+                std::shared_ptr<Object> title = std::make_shared<Text>(
+                        "Text", center.x/2+100, -50, titleFont.first,
+                        titleFont.second, "Sudoku", 280,
+                        Colors::WHITE);
+                scene.addObject(title);
+
                 // Welcome text
-                auto font = getFont("title");
+                auto font = getFont("font");
                 std::shared_ptr<Object> text = std::make_shared<Text>(
                         "Text", center.x/4 + 10, center.y-80, font.first,
                         font.second, "Welcome!", center.y / 5,
@@ -124,7 +132,6 @@ namespace System
                 scene.addObject(text);
 
                 // Click to continue text
-                font = getFont("font");
                 std::shared_ptr<Object> text2 = std::make_shared<Text>(
                         "Text", center.x/4 + 10, center.y+80, font.first,
                         font.second, "Click anywhere to continue", center.y / 10,
