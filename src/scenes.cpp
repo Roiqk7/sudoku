@@ -103,8 +103,6 @@ namespace System
         {
                 LOG_TRACE("createWelcomeScene() called."); 
 
-                // TODO: Finish scene style
-
                 scene.clear();
 
                 scene.name = "Welcome";
