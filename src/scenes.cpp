@@ -103,7 +103,7 @@ namespace System
         {
                 LOG_TRACE("createWelcomeScene() called."); 
 
-                // TODO: Finish this function and find better way to handle the click-to-continue
+                // TODO: Finish scene style
 
                 scene.clear();
 
@@ -133,7 +133,10 @@ namespace System
 
                 // Click-to-continue function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene]() { scene.active = false; });
+                        [&scene, &window]() 
+                        { 
+                                createMainMenuScene(scene, window);
+                        });
 
                 // Click-to-continue rectangle
                 std::shared_ptr<Rectangle> rect = std::make_shared<Rectangle>(
@@ -142,5 +145,33 @@ namespace System
                 scene.addClickableObject(rect); 
         }
 
+        /*
+        Create the main menu scene.
+
+        @param scene Scene to create.
+        @param window Window to render to.
+        */
+        void createMainMenuScene(Scene& scene, const sf::RenderWindow& window)
+        {
+                LOG_TRACE("createMainMenuScene() called.");
+
+                scene.clear();
+
+                scene.name = "Main Menu";
+
+                // Get necessary window information
+                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i size(sizeU.x, sizeU.y);
+                sf::Vector2i center = getWindowCenter(sizeU);
+
+                // TODO: Finish scene 
+                // DELETE: Test code - works
+                // Background
+                std::shared_ptr<Object> background = std::make_shared<Rectangle>(
+                        "Background", topLeft.x, topLeft.y,
+                        size.x, size.y, Colors::YELLOW);
+                scene.addObject(background);
+        }
 
 } // namespace System
