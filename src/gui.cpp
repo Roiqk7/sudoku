@@ -64,6 +64,8 @@ namespace System
                 LOG_DEBUG("Window created with size {}x{}", mode.width, mode.height);
 
                 // Create the default scene
+                // This scene is always active but should stay hidden
+                // behind other scenes
                 scenes.emplace_back("Default");
                 createDefaultScene(scenes.back(), window);
 
