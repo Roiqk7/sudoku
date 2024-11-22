@@ -293,11 +293,11 @@ namespace System
                 // Credits text
                 auto font = getFont("font");
                 std::string credits = "Thank you for trying my sudoku game! ";
-                credits += "I hope you are\nenjoying the game and that it has not caused\nyou too much stress. ";
-                credits += "Please feel free to reach out to\nme with any feedback or suggestions. ";
+                credits += "I hope you are\nenjoying the game and that it has not caused you too\nmuch stress. ";
+                credits += "Please feel free to reach out to me with\nany feedback or suggestions. ";
                 credits += "\n\n\t\t\t\t\t\tCreated by: github.com/Roiqk7";
                 std::shared_ptr<Object> text = std::make_shared<Text>(
-                        "Credits text", center.x/4 + 10, center.y - 80, font.first,
+                        "Credits text", center.x/4 + 10, center.y - 110, font.first,
                         font.second, credits, center.y / 12,
                         Colors::WHITE);
                 scene.addObject(text);
