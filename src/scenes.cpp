@@ -221,7 +221,7 @@ namespace System
                 
                 // Credits clickable black rectangle
                 std::shared_ptr<Rectangle> creditsClickRect = std::make_shared<Rectangle>(
-                        "New Game Clickable", center.x - 210, center.y + 20,      
+                        "Credits Clickable", center.x - 210, center.y + 20,
                         size.x/5 + 120, size.y/8, Colors::BLACK, command2);
                 scene.addClickableObject(creditsClickRect); 
 
@@ -326,6 +326,69 @@ namespace System
                         "Black Rectangle", topLeft.x, topLeft.y,
                         size.x, size.y, Colors::TRANSPARENT, command);
                 scene.addClickableObject(rect); 
+        }
+
+        /*
+        Create the help scene.
+
+        @param scene Scene to create.
+        @param gui Gui to add the scene to.
+        */
+        void createHelpScene(Scene& scene, GUI& gui)
+        {
+                LOG_TRACE("createHelpScene() called.");
+
+                scene.clear();
+
+                scene.name = "Help";
+
+                // Get necessary window information
+                auto& window = gui.getWindow();
+                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i size(sizeU.x, sizeU.y);
+                sf::Vector2i center = getWindowCenter(sizeU);
+
+                // Sudoku title
+                auto titleFont = getFont("title");
+                std::shared_ptr<Object> title = std::make_shared<Text>(
+                        "Text", center.x/2+100, -50, titleFont.first,
+                        titleFont.second, "Sudoku", 280,
+                        Colors::WHITE);
+                scene.addObject(title);
+
+                // Help text
+                auto font = getFont("font");
+                std::string help = "The objective is to fill a 9x9 grid with digits so that\n";
+                help += "each column, each row, and each of the nine 3x3 subgrids\nthat ";
+                help += "compose the grid (also called 'boxes', 'blocks', or\n'regions')";
+                help += " contains all of the digits from 1 to 9.\n\nThe puzzle setter provides ";
+                help += "a partially completed grid,\nwhich has a single solution.";
+                std::shared_ptr<Object> text = std::make_shared<Text>(
+                        "Help text", center.x/4 + 10, center.y - 110, font.first,
+                        font.second, help, center.y / 12,
+                        Colors::WHITE);
+                scene.addObject(text);
+
+                // Click to return text
+                std::shared_ptr<Object> text2 = std::make_shared<Text>(
+                        "Click to return text", center.x/4 + 10, center.y + 180, font.first,
+                        font.second, "Click anywhere to return", center.y / 10,
+                        Colors::WHITE);
+                scene.addObject(text2);
+
+                // Click-to-return function
+                std::shared_ptr<Command> command = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                createMainMenuScene(scene, gui);
+                        });
+
+                // Click-to-return rectangle
+                std::shared_ptr<Rectangle> rect = std::make_shared<Rectangle>(
+                        "Black Rectangle", topLeft.x, topLeft.y,
+                        size.x, size.y, Colors::TRANSPARENT, command);
+                scene.addClickableObject(rect);
         }
 // Game scenes
         /*
@@ -511,7 +574,122 @@ namespace System
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i center = getWindowCenter(sizeU);
 
+                createPauseScene(scene, gui);
+
                 // TODO: Implement game scene
+        }
+
+        /*
+        Create the pause scene.
+
+        @param scene Scene to create.
+        @param gui Gui to add the scene to.
+        */
+        void createPauseScene(Scene& scene, GUI& gui)
+        {
+                LOG_TRACE("createPauseScene() called.");
+
+                scene.clear();
+
+                scene.name = "Pause";
+
+                // Get necessary window information
+                auto& window = gui.getWindow();
+                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i size(sizeU.x, sizeU.y);
+                sf::Vector2i center = getWindowCenter(sizeU);
+
+                // Sudoku title
+                auto titleFont = getFont("title");
+                std::shared_ptr<Object> title = std::make_shared<Text>(
+                        "Title", center.x/2+100, -50, titleFont.first,
+                        titleFont.second, "Sudoku", 280,
+                        Colors::WHITE);
+                scene.addObject(title);
+
+        // Resume Button
+                // Resume clickable black rectangle
+                // Resume function
+                std::shared_ptr<Command> command = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                createGameScene(scene, gui);
+                        });
+
+                // Resume clickable black rectangle
+                std::shared_ptr<Rectangle> resumeClickRect = std::make_shared<Rectangle>(
+                        "Resume Clickable", center.x - 210, center.y - 100,
+                        size.x/5 + 120, size.y/8, Colors::BLACK, command);
+                scene.addClickableObject(resumeClickRect);
+
+                // Resume white rectangle
+                std::shared_ptr<Object> resumeRect = std::make_shared<Rectangle>(
+                        "Resume", center.x - 200, center.y - 90,
+                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
+                scene.addObject(resumeRect);
+
+                // Resume text
+                auto font = getFont("font");
+                std::shared_ptr<Object> newGameText = std::make_shared<Text>(
+                        "Resume Text", center.x - 200, center.y - 100, font.first,
+                        font.second, "Resume", center.y / 5,
+                        Colors::BLACK);
+                scene.addObject(newGameText);
+        // Help Button
+                // Help clickable black rectangle
+                // Help function
+                std::shared_ptr<Command> command2 = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                createHelpScene(scene, gui);
+                        });
+
+                // Help clickable black rectangle
+                std::shared_ptr<Rectangle> helpClickRect = std::make_shared<Rectangle>(
+                        "Help Clickable", center.x - 210, center.y + 20,
+                        size.x/5 + 120, size.y/8, Colors::BLACK, command2);
+                scene.addClickableObject(helpClickRect);
+
+                // Help white rectangle
+                std::shared_ptr<Object> helpRect = std::make_shared<Rectangle>(
+                        "Help", center.x - 200, center.y + 30,
+                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
+                scene.addObject(helpRect);
+
+                // Help text
+                std::shared_ptr<Object> helpText = std::make_shared<Text>(
+                        "Help Text", center.x - 180, center.y + 20, font.first,
+                        font.second, "Help", center.y / 5,
+                        Colors::BLACK);
+                scene.addObject(helpText);
+        // Exit Button
+                // Exit clickable black rectangle
+                // Exit function
+                std::shared_ptr<Command> command3 = std::make_shared<Command>(
+                        [&window]()
+                        {
+                                window.close();
+                        });
+
+                // Exit clickable black rectangle
+                std::shared_ptr<Rectangle> exitClickRect = std::make_shared<Rectangle>(
+                        "Exit Clickable", center.x - 210, center.y + 140,
+                        size.x/5 + 120, size.y/8, Colors::BLACK, command3);
+                scene.addClickableObject(exitClickRect);
+
+                // Exit white rectangle
+                std::shared_ptr<Object> exitRect = std::make_shared<Rectangle>(
+                        "Exit", center.x - 200, center.y + 150,
+                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
+                scene.addObject(exitRect);
+
+                // Exit text
+                std::shared_ptr<Object> exitText = std::make_shared<Text>(
+                        "Exit Text", center.x - 110, center.y + 140, font.first,
+                        font.second, "Exit", center.y / 5,
+                        Colors::BLACK);
+                scene.addObject(exitText);
         }
 
 } // namespace System

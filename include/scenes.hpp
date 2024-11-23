@@ -22,6 +22,7 @@ namespace System
         void createWelcomeScene(Scene& scene, GUI& gui);
         void createMainMenuScene(Scene& scene, GUI& gui);
         void createCreditsScene(Scene& scene, GUI& gui);
+        void createHelpScene(Scene& scene, GUI& gui);
 // Game scenes 
         void createNewGameScene(Scene& scene, GUI& gui);
         void createGameScene(Scene& scene, GUI& gui);
