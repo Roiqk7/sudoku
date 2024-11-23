@@ -9,6 +9,7 @@ GUI class controls the graphical user interface of the program.
 
 #include "gameHandler.hpp"
 #include "invoker.hpp"
+#include "music.hpp"
 #include "scene.hpp"
 #include <memory>
 #include <list>
@@ -47,6 +48,7 @@ namespace System
                 sf::RenderWindow window;                                // The window to render to
                 Sudoku::GameHandler gameHandler;                        // Interface for the game logic
                 std::list<Scene> scenes;                                // Scenes in the GUI
+                Music music;                                            // Music in the application
         };
 }
 
