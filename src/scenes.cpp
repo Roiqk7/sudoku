@@ -6,6 +6,7 @@ This file contains pre-made scenes for the GUI.
 
 #include "../include/colors.hpp"
 #include "../include/command.hpp"
+#include "../include/gui.hpp"
 #include "../include/guiHelper.hpp"
 #include "../include/macros.hpp"
 #include "../include/object.hpp"
