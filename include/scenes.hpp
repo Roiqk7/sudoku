@@ -32,7 +32,6 @@ namespace System
         void createPauseScene(Scene& scene, GUI& gui);
         void createEndScene(Scene& scene, GUI& gui);
 // Development scenes
-        void createDebugScene(Scene& scene, GUI& gui);
         void createExecutionTimeScene(Scene& scene, GUI& gui,
                 const std::chrono::microseconds& time);
 }
