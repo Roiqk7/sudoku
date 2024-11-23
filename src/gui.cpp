@@ -74,6 +74,8 @@ namespace System
                 createBackgroundScene(scenes.back(), window);
 
                 // Create the welcome scene
+                // Welcome scene is used as general scene used by
+                // the application and will be rewritten by other scenes
                 scenes.emplace_back("Welcome");
                 createWelcomeScene(scenes.back(), window);
 
@@ -81,13 +83,16 @@ namespace System
         }
 
         /*
-        Wait for an event to occur.
+        Wait for an event to occur. This is the main loop of the GUI.
+
+        @note This function is blocking.
         */
         void GUI::waitEvent()
         {
                 LOG_TRACE("GUI::waitEvent() called");
 
                 sf::Event event;
+                // Main loop
                 while (window.waitEvent(event))
                 {
                         // Close the window if the event is a close event
