@@ -49,6 +49,7 @@ namespace Sudoku
                 void setGrid(const Grid& grid);
         public: // Variables
                 int mistakes = 0;                                               // Number of mistakes made (max 3)
+                bool notesMode = false;                                         // If notes mode is enabled
                 std::bitset<81*9> notes;                                        // Notes for each cell
                 std::chrono::seconds time;                                      // Time taken to solve the grid (in seconds)
         private: // Variables
