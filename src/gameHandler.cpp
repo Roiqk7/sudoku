@@ -50,7 +50,7 @@ namespace Sudoku
 
                 // Remove cells based on the difficulty
                 int cells = static_cast<int>(difficulty);
-                grid.setZero(cells);
+                grid.setZero(81 - cells);
         }
 
         /*
