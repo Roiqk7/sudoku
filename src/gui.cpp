@@ -8,6 +8,7 @@ GUI class controls the graphical user interface of the program.
 #include "../include/gui.hpp"
 #include "../include/scenes.hpp"
 #include <algorithm>
+#include <chrono>
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -119,6 +120,10 @@ namespace System
                 // Main loop
                 while (window.waitEvent(event))
                 {
+                        #ifdef DEVELOPMENT
+                        auto start = std::chrono::high_resolution_clock::now();
+                        #endif // DEVELOPMENT
+
                         // Close the window if the event is a close event
                         if (shouldClose(event))
                         {
@@ -131,7 +136,27 @@ namespace System
                         {
                                 handleEvent(event);
                                 removeInactiveScenes();
+
+                                {
+                                        #ifdef DEVELOPMENT
+                                        auto end = std::chrono::high_resolution_clock::now();
+                                        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+                                        scenes.emplace_back("Execution Time");
+                                        createExecutionTimeScene(scenes.back(), *this, duration);
+                                        #endif // DEVELOPMENT
+                                }
+
                                 render();
+
+                                {
+                                        #ifdef DEVELOPMENT
+                                        // Delete the execution time scene
+                                        if (scenes.back().name == "Execution Time")
+                                        {
+                                                scenes.pop_back();
+                                        }
+                                        #endif // DEVELOPMENT
+                                }
                         }
                 }
         }

@@ -16,7 +16,9 @@ This file contains pre-made scenes for the GUI.
 #include <chrono>
 #include <filesystem>
 #include <functional>
+#include <iomanip>
 #include <memory>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -381,7 +383,7 @@ namespace System
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
-                                createMainMenuScene(scene, gui);
+                                createPauseScene(scene, gui);
                         });
 
                 // Click-to-return rectangle
@@ -632,7 +634,7 @@ namespace System
                 // Resume text
                 auto font = getFont("font");
                 std::shared_ptr<Object> newGameText = std::make_shared<Text>(
-                        "Resume Text", center.x - 200, center.y - 100, font.first,
+                        "Resume Text", center.x - 160, center.y - 100, font.first,
                         font.second, "Resume", center.y / 5,
                         Colors::BLACK);
                 scene.addObject(newGameText);
@@ -648,18 +650,18 @@ namespace System
                 // Help clickable black rectangle
                 std::shared_ptr<Rectangle> helpClickRect = std::make_shared<Rectangle>(
                         "Help Clickable", center.x - 210, center.y + 20,
-                        size.x/5 + 120, size.y/8, Colors::BLACK, command2);
+                        size.x/5 + 120, size.y/8 + 5, Colors::BLACK, command2);
                 scene.addClickableObject(helpClickRect);
 
                 // Help white rectangle
                 std::shared_ptr<Object> helpRect = std::make_shared<Rectangle>(
                         "Help", center.x - 200, center.y + 30,
-                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
+                        size.x/5 + 100, size.y/8 - 15, Colors::WHITE);
                 scene.addObject(helpRect);
 
                 // Help text
                 std::shared_ptr<Object> helpText = std::make_shared<Text>(
-                        "Help Text", center.x - 180, center.y + 20, font.first,
+                        "Help Text", center.x - 110, center.y + 20, font.first,
                         font.second, "Help", center.y / 5,
                         Colors::BLACK);
                 scene.addObject(helpText);
@@ -667,29 +669,72 @@ namespace System
                 // Exit clickable black rectangle
                 // Exit function
                 std::shared_ptr<Command> command3 = std::make_shared<Command>(
-                        [&window]()
+                        [&scene, &gui]()
                         {
-                                window.close();
+                                createMainMenuScene(scene, gui);
                         });
 
                 // Exit clickable black rectangle
                 std::shared_ptr<Rectangle> exitClickRect = std::make_shared<Rectangle>(
-                        "Exit Clickable", center.x - 210, center.y + 140,
+                        "Exit Clickable", center.x - 210, center.y + 145,
                         size.x/5 + 120, size.y/8, Colors::BLACK, command3);
                 scene.addClickableObject(exitClickRect);
 
                 // Exit white rectangle
                 std::shared_ptr<Object> exitRect = std::make_shared<Rectangle>(
-                        "Exit", center.x - 200, center.y + 150,
+                        "Exit", center.x - 200, center.y + 155,
                         size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
                 scene.addObject(exitRect);
 
                 // Exit text
                 std::shared_ptr<Object> exitText = std::make_shared<Text>(
-                        "Exit Text", center.x - 110, center.y + 140, font.first,
+                        "Exit Text", center.x - 110, center.y + 145, font.first,
                         font.second, "Exit", center.y / 5,
                         Colors::BLACK);
                 scene.addObject(exitText);
         }
+// Development scenes
+        /*
+        Create the execution time scene.
 
+        @param scene Scene to create.
+        @param gui Gui to add the scene to.
+        @param time Execution time in microseconds.
+        */
+        void createExecutionTimeScene(Scene& scene, GUI& gui,
+                const std::chrono::microseconds& time)
+        {
+                LOG_TRACE("createExecutionTimeScene() called.");
+
+                scene.clear();
+
+                scene.name = "Execution Time";
+
+                // Get necessary window information
+                auto& window = gui.getWindow();
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i bottomRight = getWindowBottomRightCorner(sizeU);
+
+                // Execution time text
+                auto font = getFont("font");
+                std::string timeStr = "Execution time:";
+
+                auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(time).count();
+                if (microseconds < 1000000)
+                {
+                        std::stringstream ss;
+                        ss << std::fixed << std::setprecision(3) << std::setw(7) << std::setfill(' ') << (microseconds / 1000.0);
+                        timeStr += ss.str() + " ms";
+                }
+                else
+                {
+                        timeStr += " > 1 s";
+                }
+
+                std::shared_ptr<Object> text = std::make_shared<Text>(
+                        "Execution Time", bottomRight.x - 310, bottomRight.y - 30,
+                        font.first, font.second, timeStr, 20,
+                        Colors::WHITE);
+                scene.addObject(text);
+        }
 } // namespace System

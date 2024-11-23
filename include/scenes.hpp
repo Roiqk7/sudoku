@@ -12,6 +12,9 @@ Note: All scenes are expected to be cleared before creating a new one.
 #include "object.hpp"
 #include "gui.hpp"
 #include "scene.hpp"
+#include <chrono>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 namespace System
 {
@@ -30,7 +33,8 @@ namespace System
         void createEndScene(Scene& scene, GUI& gui);
 // Development scenes
         void createDebugScene(Scene& scene, GUI& gui);
-        void createExecutionTimeScene(Scene& scene, GUI& gui);
+        void createExecutionTimeScene(Scene& scene, GUI& gui,
+                const std::chrono::microseconds& time);
 }
 
 #endif // !SCENES_HPP
