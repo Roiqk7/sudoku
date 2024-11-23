@@ -700,6 +700,8 @@ namespace System
         @param scene Scene to create.
         @param gui Gui to add the scene to.
         @param time Execution time in microseconds.
+
+        @note Displays the time of the GUI::handleEvent() function.
         */
         void createExecutionTimeScene(Scene& scene, GUI& gui,
                 const std::chrono::microseconds& time)

@@ -120,9 +120,6 @@ namespace System
                 // Main loop
                 while (window.waitEvent(event))
                 {
-                        #ifdef DEVELOPMENT
-                        auto start = std::chrono::high_resolution_clock::now();
-                        #endif // DEVELOPMENT
 
                         // Close the window if the event is a close event
                         if (shouldClose(event))
@@ -134,8 +131,12 @@ namespace System
                         // Otherwise, handle the event
                         else if (isRelevantEvent(event))
                         {
+                                #ifdef DEVELOPMENT
+                                auto start = std::chrono::high_resolution_clock::now();
+                                #endif // DEVELOPMENT
+
                                 handleEvent(event);
-                                removeInactiveScenes();
+                                // Note: Does nothing removeInactiveScenes();
 
                                 {
                                         #ifdef DEVELOPMENT
