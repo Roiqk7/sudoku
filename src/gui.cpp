@@ -120,7 +120,6 @@ namespace System
                 // Main loop
                 while (window.waitEvent(event))
                 {
-
                         // Close the window if the event is a close event
                         if (shouldClose(event))
                         {
