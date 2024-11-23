@@ -48,6 +48,7 @@ namespace Sudoku
         // Setters
                 void setGrid(const Grid& grid);
         public: // Variables
+                Difficulty difficulty = Difficulty::NONE;                       // The difficulty of the game
                 int mistakes = 0;                                               // Number of mistakes made (max 3)
                 bool notesMode = false;                                         // If notes mode is enabled
                 std::bitset<81*9> notes;                                        // Notes for each cell

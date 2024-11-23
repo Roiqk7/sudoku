@@ -42,6 +42,9 @@ namespace Sudoku
         {
                 LOG_TRACE("GameHandler::newGame() called");
 
+                // Set the difficulty
+                this->difficulty = difficulty;
+
                 // Generate a new grid
                 generator.generate(grid);
 
