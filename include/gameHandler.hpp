@@ -10,6 +10,8 @@ Game handler makes the connection between the GUI and the game logic.
 #include "generator.hpp"
 #include "grid.hpp"
 #include "solver.hpp"
+#include <bitset>
+#include <chrono>
 
 namespace Sudoku
 {
@@ -45,6 +47,10 @@ namespace Sudoku
                 void getGrid(Grid& grid, bool solved = false) const;
         // Setters
                 void setGrid(const Grid& grid);
+        public: // Variables
+                int mistakes = 0;                                               // Number of mistakes made (max 3)
+                std::bitset<81*9> notes;                                        // Notes for each cell
+                std::chrono::seconds time;                                      // Time taken to solve the grid (in seconds)
         private: // Variables
                 Grid grid;                                                      // What the player sees
                 Grid solved;                                                    // The solved grid
