@@ -49,7 +49,10 @@ namespace Sudoku
 
                 bool result = backtrack(grid, 0, 0, zeroCount);
 
-                LOG_DEBUG("Solver::solve() result: {}", result);
+                const std::string resultStr = result ? "Successfully solved"
+                        : "Failed to solve";
+
+                LOG_DEBUG("Solver::solve() result: {} the puzzle", resultStr);
 
                 return result;
         }
