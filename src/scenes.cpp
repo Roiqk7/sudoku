@@ -7,6 +7,7 @@ This file contains pre-made scenes for the GUI.
 #include "../include/colors.hpp"
 #include "../include/command.hpp"
 #include "../include/gameHandler.hpp"
+#include "../include/grid.hpp"
 #include "../include/gui.hpp"
 #include "../include/guiHelper.hpp"
 #include "../include/macros.hpp"
@@ -575,10 +576,89 @@ namespace System
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i center = getWindowCenter(sizeU);
+                // Get the game handler
+                auto& gameHandler = gui.getGameHandler();
 
-                createPauseScene(scene, gui);
+                /*
+                The game scene includes:
+                        - sudoku board
+                        - pause button
+                        - difficulty level
+                        - hint button
+                        - mistakes counter
+                        - timer
+                        - notes switch
+                        - panel with numbers
+                */
+        // Sudoku board
+                // Actual sudoku board
+                // Get the necessary grid information
+                Sudoku::Grid grid;
+                gameHandler.getGrid(grid);
 
-                // TODO: Implement game scene
+                // Create the background frame
+                std::shared_ptr<Object> gridBackgroundFrame = std::make_shared<Rectangle>(
+                        "Grid Background", center.x - 370, topLeft.y + 80,
+                        720, 720, Colors::WHITE);
+                scene.addObject(gridBackgroundFrame);
+
+                // Create the grid background
+                const int GRID_SIZE = 680;
+                const int GRID_X = center.x - 350;
+                const int GRID_Y = topLeft.y + 100;
+                std::shared_ptr<Object> gridBackground = std::make_shared<Rectangle>(
+                        "Grid Background", GRID_X, GRID_Y,
+                        GRID_SIZE, GRID_SIZE, Colors::NAVAJO_WHITE);
+                scene.addObject(gridBackground);
+
+                // Create the grid lines
+                const int NUM_LINES = 9;
+                const int LINE_SIZE = 2;
+                // We temporarily store the thick lines to make sure they are rendered last
+                std::array<std::shared_ptr<Object>, 4> thickLines;
+                int thickLineIndex = 0;
+                for (int i = 1; i < NUM_LINES; i++)
+                {
+                        int offset = (GRID_SIZE / NUM_LINES) * i - LINE_SIZE / 2;
+                        bool thickLine = i % 3 == 0;
+                        // Determine the color of the line
+                        sf::Color color = thickLine ? Colors::LIGHT_SKY_BLUE
+                                : Colors::WHITE;
+
+                        // Horizontal lines
+                        std::shared_ptr<Object> lineH = std::make_shared<Rectangle>(
+                                "Grid Line Horizontal",
+                                GRID_X, GRID_Y + offset,
+                                GRID_SIZE, LINE_SIZE, color);
+                        if (thickLine)
+                        {
+                                thickLines[thickLineIndex++] = lineH;
+                        }
+                        else
+                        {
+                                scene.addObject(lineH);
+                        }
+
+                        // Vertical lines
+                        std::shared_ptr<Object> lineV = std::make_shared<Rectangle>(
+                                "Grid Line Vertical",
+                                GRID_X + offset, GRID_Y,
+                                LINE_SIZE, GRID_SIZE, color);
+
+                        if (thickLine)
+                        {
+                                thickLines[thickLineIndex++] = lineV;
+                        }
+                        else
+                        {
+                                scene.addObject(lineV);
+                        }
+                }
+                // Add the thick lines
+                for (const auto& line : thickLines)
+                {
+                        scene.addObject(line);
+                }
         }
 
         /*
