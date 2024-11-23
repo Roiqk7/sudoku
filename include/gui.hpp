@@ -26,6 +26,8 @@ namespace System
                 ~GUI();
         // GUI methods
                 void run();
+        // Getter
+                sf::RenderWindow& getWindow();
         private: // Methods
         // GUI methods
                 void init();

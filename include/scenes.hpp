@@ -10,6 +10,7 @@ Note: All scenes are expected to be cleared before creating a new one.
 #define SCENES_HPP
 
 #include "object.hpp"
+#include "gui.hpp"
 #include "scene.hpp"
 
 namespace System
@@ -18,17 +19,17 @@ namespace System
         void createDefaultScene(Scene& scene, sf::RenderWindow& window);
         void createBackgroundScene(Scene& scene, sf::RenderWindow& window);
 // Non-game scenes
-        void createWelcomeScene(Scene& scene, sf::RenderWindow& window);
-        void createMainMenuScene(Scene& scene, sf::RenderWindow& window);
-        void createCreditsScene(Scene& scene, sf::RenderWindow& window);
+        void createWelcomeScene(Scene& scene, GUI& gui);
+        void createMainMenuScene(Scene& scene, GUI& gui);
+        void createCreditsScene(Scene& scene, GUI& gui);
 // Game scenes 
-        void createNewGameScene(Scene& scene, sf::RenderWindow& window);
-        void createGameScene(Scene& scene, sf::RenderWindow& window);
-        void createPauseScene(Scene& scene, sf::RenderWindow& window);
-        void createEndScene(Scene& scene, sf::RenderWindow& window);
+        void createNewGameScene(Scene& scene, GUI& gui);
+        void createGameScene(Scene& scene, GUI& gui);
+        void createPauseScene(Scene& scene, GUI& gui);
+        void createEndScene(Scene& scene, GUI& gui);
 // Development scenes
-        void createDebugScene(Scene& scene, sf::RenderWindow& window);
-        void createExecutionTimeScene(Scene& scene, sf::RenderWindow& window);
+        void createDebugScene(Scene& scene, GUI& gui);
+        void createExecutionTimeScene(Scene& scene, GUI& gui);
 }
 
 #endif // !SCENES_HPP

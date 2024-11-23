@@ -47,7 +47,19 @@ namespace System
                         waitEvent();
                 }
         }
+// Getter
+        /*
+        Get the window.
 
+        @return The window.
+        */
+        sf::RenderWindow& GUI::getWindow()
+        {
+                LOG_TRACE("GUI::getWindow() called");
+
+                return window;
+        }
+// GUI methods
         /*
         Initialize the GUI.
 
@@ -77,7 +89,7 @@ namespace System
                 // Welcome scene is used as general scene used by
                 // the application and will be rewritten by other scenes
                 scenes.emplace_back("Welcome");
-                createWelcomeScene(scenes.back(), window);
+                createWelcomeScene(scenes.back(), *this);
 
                 render();
         }

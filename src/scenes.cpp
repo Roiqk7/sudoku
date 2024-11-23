@@ -98,9 +98,9 @@ namespace System
         Create the welcome scene.
 
         @param scene Scene to create.
-        @param window Window to render to.
+        @param gui Gui to add the scene to.
         */
-        void createWelcomeScene(Scene& scene, sf::RenderWindow& window)
+        void createWelcomeScene(Scene& scene, GUI& gui)
         {
                 LOG_TRACE("createWelcomeScene() called."); 
 
@@ -109,6 +109,7 @@ namespace System
                 scene.name = "Welcome";
 
                 // Get necessary window information
+                auto& window = gui.getWindow();
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
@@ -139,9 +140,9 @@ namespace System
 
                 // Click-to-continue function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         { 
-                                createMainMenuScene(scene, window);
+                                createMainMenuScene(scene, gui);
                         });
 
                 // Click-to-continue rectangle
@@ -155,9 +156,9 @@ namespace System
         Create the main menu scene.
 
         @param scene Scene to create.
-        @param window Window to render to.
+        @param gui Gui to add the scene to.
         */
-        void createMainMenuScene(Scene& scene, sf::RenderWindow& window)
+        void createMainMenuScene(Scene& scene, GUI& gui)
         {
                 LOG_TRACE("createMainMenuScene() called.");
 
@@ -166,6 +167,7 @@ namespace System
                 scene.name = "Main Menu";
 
                 // Get necessary window information
+                auto& window = gui.getWindow();
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
@@ -183,9 +185,9 @@ namespace System
                 // New Game clickable black rectangle
                 // New Game function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         { 
-                                createNewGameScene(scene, window);
+                                createNewGameScene(scene, gui);
                         });
         
                 // New Game clickable black rectangle
@@ -211,9 +213,9 @@ namespace System
                 // Credits clickable black rectangle
                 // Credits function 
                 std::shared_ptr<Command> command2 = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         {
-                                createCreditsScene(scene, window);
+                                createCreditsScene(scene, gui);
                         });
                 
                 // Credits clickable black rectangle
@@ -267,9 +269,9 @@ namespace System
         Create the credits scene.
 
         @param scene Scene to create.
-        @param window Window to render to.
+        @param gui Gui to add the scene to.
         */
-        void createCreditsScene(Scene& scene, sf::RenderWindow& window)
+        void createCreditsScene(Scene& scene, GUI& gui)
         {
                 LOG_TRACE("createCreditsScene() called.");
 
@@ -278,6 +280,7 @@ namespace System
                 scene.name = "Credits";
 
                 // Get necessary window information
+                auto& window = gui.getWindow();
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
@@ -312,9 +315,9 @@ namespace System
 
                 // Click-to-return function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         { 
-                                createMainMenuScene(scene, window);
+                                createMainMenuScene(scene, gui);
                         });
 
                 // Click-to-return rectangle
@@ -328,9 +331,9 @@ namespace System
         Create the new game scene.
 
         @param scene Scene to create.
-        @param window Window to render to.
+        @param gui Gui to add the scene to.
         */
-        void createNewGameScene(Scene& scene, sf::RenderWindow& window)
+        void createNewGameScene(Scene& scene, GUI& gui)
         {
                 LOG_TRACE("createNewGameScene() called.");
 
@@ -339,6 +342,7 @@ namespace System
                 scene.name = "New Game";
 
                 // Get necessary window information
+                auto& window = gui.getWindow();
                 sf::Vector2i topLeft = getWindowTopLeftCorner();
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
@@ -356,7 +360,7 @@ namespace System
                 // Expert Difficulty clickable black rectangle
                 // Expert Difficulty function 
                 std::shared_ptr<Command> command = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         { 
                                 // TODO: Set difficulty to expert
                                 // TODO: createGameScene(scene, window);
@@ -385,7 +389,7 @@ namespace System
                 // Hard Difficulty clickable black rectangle
                 // Hard Difficulty function 
                 std::shared_ptr<Command> command2 = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         {
                                 // TODO: Set difficulty to hard
                                 // TODO: createGameScene(scene, window);
@@ -413,7 +417,7 @@ namespace System
                 // Medium Difficulty clickable black rectangle
                 // Medium Difficulty function 
                 std::shared_ptr<Command> command3 = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         {
                                 // TODO: Set difficulty to medium
                                 // TODO: createGameScene(scene, window);
@@ -441,7 +445,7 @@ namespace System
                 // Easy Difficulty clickable black rectangle
                 // Easy Difficulty function 
                 std::shared_ptr<Command> command4 = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         {
                                 // TODO: Set difficulty to easy
                                 // TODO: createGameScene(scene, window);
@@ -469,9 +473,9 @@ namespace System
         // Click to return box
                 // Click-to-return function 
                 std::shared_ptr<Command> commandR = std::make_shared<Command>(
-                        [&scene, &window]() 
+                        [&scene, &gui]()
                         { 
-                                createMainMenuScene(scene, window);
+                                createMainMenuScene(scene, gui);
                         });
 
                 // Click-to-return rectangle
