@@ -510,6 +510,8 @@ namespace System
                 sf::Vector2u sizeU = getWindowSize(window);
                 sf::Vector2i size(sizeU.x, sizeU.y);
                 sf::Vector2i center = getWindowCenter(sizeU);
+
+                // TODO: Implement game scene
         }
 
 } // namespace System

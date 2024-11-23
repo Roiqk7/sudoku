@@ -1,6 +1,6 @@
 1. Make working scenes
-        1. Add other scenes
-        2. Figure a way to merge scenes and GUI inteligenty
+        1. Finish game scene and all its components
+        2. Add other scenes
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
 4. Add more tests
