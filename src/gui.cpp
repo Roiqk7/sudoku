@@ -59,6 +59,18 @@ namespace System
 
                 return window;
         }
+
+        /*
+        Get the game handler.
+
+        @return The game handler.
+        */
+        Sudoku::GameHandler& GUI::getGameHandler()
+        {
+                LOG_TRACE("GUI::getGameHandler() called");
+
+                return gameHandler;
+        }
 // GUI methods
         /*
         Initialize the GUI.

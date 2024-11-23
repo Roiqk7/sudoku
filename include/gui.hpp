@@ -28,6 +28,7 @@ namespace System
                 void run();
         // Getter
                 sf::RenderWindow& getWindow();
+                Sudoku::GameHandler& getGameHandler();
         private: // Methods
         // GUI methods
                 void init();
