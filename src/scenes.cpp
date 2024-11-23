@@ -578,6 +578,8 @@ namespace System
                 sf::Vector2i center = getWindowCenter(sizeU);
                 // Get the game handler
                 auto& gameHandler = gui.getGameHandler();
+                // Get the font
+                auto font = getFont("font");
 
                 /*
                 The game scene includes:
@@ -658,6 +660,146 @@ namespace System
                 for (const auto& line : thickLines)
                 {
                         scene.addObject(line);
+                }
+
+                // Create the numbers
+                const int NUM_SIZE = 70;
+                const int NUM_OFFSET = 80;
+
+                for (int row = 0; row < 9; row++)
+                {
+                        for (int col = 0; col < 9; col++)
+                        {
+                                int num = grid.getCell(row, col);
+                                if (num != 0)
+                                {
+                                        std::string numStr = std::to_string(num);
+                                        std::shared_ptr<Object> number = std::make_shared<Text>(
+                                                "numStr",
+                                                GRID_X + 12 + col * NUM_OFFSET - col * (NUM_OFFSET / 20),
+                                                GRID_Y - 8 + row * NUM_OFFSET - row * (NUM_OFFSET / 20),
+                                                font.first, font.second,
+                                                numStr, NUM_SIZE, Colors::WHITE);
+                                        scene.addObject(number);
+                                }
+                        }
+                }
+        // Pause Button
+                // Pause function
+                std::shared_ptr<Command> command = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                createPauseScene(scene, gui);
+                        });
+
+                // Pause clickable rectangle
+                std::shared_ptr<Rectangle> pauseClickRect = std::make_shared<Rectangle>(
+                        "Pause Clickable", GRID_X, topLeft.y + 10,
+                        60, 60, Colors::WHITE, command);
+                scene.addClickableObject(pauseClickRect);
+
+                // Pause symbol rectangles
+                std::shared_ptr<Object> pauseRect1 = std::make_shared<Rectangle>(
+                        "Pause 1", GRID_X + 5, topLeft.y + 15,
+                        20, 50, Colors::BLACK);
+                scene.addObject(pauseRect1);
+
+                std::shared_ptr<Object> pauseRect2 = std::make_shared<Rectangle>(
+                        "Pause 2", GRID_X + 35, topLeft.y + 15,
+                        20, 50, Colors::BLACK);
+                scene.addObject(pauseRect2);
+        // Difficulty Level
+                // Get the difficulty level
+                Sudoku::Difficulty difficulty = gameHandler.difficulty;
+                std::string difficultyStr = "Difficulty: ";
+
+                switch (difficulty)
+                {
+                        case Sudoku::Difficulty::EASY:
+                                difficultyStr += "Easy";
+                                break;
+                        case Sudoku::Difficulty::MEDIUM:
+                                difficultyStr += "Medium";
+                                break;
+                        case Sudoku::Difficulty::HARD:
+                                difficultyStr += "Hard";
+                                break;
+                        case Sudoku::Difficulty::EXPERT:
+                                difficultyStr += "Expert";
+                                break;
+                        default:
+                                difficultyStr += "??????";
+                                LOG_ERROR("Unknown difficulty level.");
+                                break;
+                }
+
+                // Difficulty text
+                std::shared_ptr<Object> difficultyText = std::make_shared<Text>(
+                        "Difficulty Text", center.x - 250, topLeft.y + 10, font.first,
+                        font.second, difficultyStr, 50,
+                        Colors::WHITE);
+                scene.addObject(difficultyText);
+
+        // TODO: other elements
+
+        // Number Panel
+                // Number panel frame
+                std::shared_ptr<Object> numberPanelFrame = std::make_shared<Rectangle>(
+                        "Number Panel Frame",
+                        GRID_X + GRID_SIZE + 30, center.y - 120,
+                        320, 320, Colors::WHITE);
+                scene.addObject(numberPanelFrame);
+
+                // Number panel background
+                const int NUM_PANEL_SIZE = 300;
+                std::shared_ptr<Object> numberPanelBackground = std::make_shared<Rectangle>(
+                        "Number Panel Background",
+                        GRID_X + GRID_SIZE + 40, center.y - 110,
+                        NUM_PANEL_SIZE, NUM_PANEL_SIZE,
+                        Colors::NAVAJO_WHITE);
+                scene.addObject(numberPanelBackground);
+
+                // Number panel lines
+                const int NUM_PANEL_NUM_LINES = 3;
+                const int NUM_PANEL_LINE_SIZE = 2;
+
+                for (int i = 1; i < NUM_PANEL_NUM_LINES; i++)
+                {
+                        int offset = (NUM_PANEL_SIZE / NUM_PANEL_NUM_LINES) * i - NUM_PANEL_LINE_SIZE / 2;
+
+                        // Horizontal lines
+                        std::shared_ptr<Object> lineH = std::make_shared<Rectangle>(
+                                "Number Panel Line Horizontal",
+                                GRID_X + GRID_SIZE + 40, center.y - 110 + offset,
+                                NUM_PANEL_SIZE, NUM_PANEL_LINE_SIZE, Colors::WHITE);
+                        scene.addObject(lineH);
+
+                        // Vertical lines
+                        std::shared_ptr<Object> lineV = std::make_shared<Rectangle>(
+                                "Number Panel Line Vertical",
+                                GRID_X + GRID_SIZE + 40 + offset, center.y - 110,
+                                NUM_PANEL_LINE_SIZE, NUM_PANEL_SIZE, Colors::WHITE);
+                        scene.addObject(lineV);
+                }
+
+                // Number panel numbers
+                const int NUM_PANEL_NUM_SIZE = 100;
+                const int NUM_PANEL_NUM_OFFSET = 100;
+
+                for (int row = 0; row < 3; row++)
+                {
+                        for (int col = 0; col < 3; col++)
+                        {
+                                int num = row * 3 + col + 1;
+                                std::string numStr = std::to_string(num);
+                                std::shared_ptr<Object> number = std::make_shared<Text>(
+                                        "Number Panel Number",
+                                        GRID_X + GRID_SIZE + 60 + col * NUM_PANEL_NUM_OFFSET,
+                                        center.y - 120 + row * NUM_PANEL_NUM_OFFSET,
+                                        font.first, font.second,
+                                        numStr, NUM_PANEL_NUM_SIZE, Colors::WHITE);
+                                scene.addObject(number);
+                        }
                 }
         }
 
