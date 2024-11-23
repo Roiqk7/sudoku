@@ -6,6 +6,7 @@ This file contains pre-made scenes for the GUI.
 
 #include "../include/colors.hpp"
 #include "../include/command.hpp"
+#include "../include/gameHandler.hpp"
 #include "../include/gui.hpp"
 #include "../include/guiHelper.hpp"
 #include "../include/macros.hpp"
@@ -362,8 +363,9 @@ namespace System
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
                         { 
-                                // TODO: Set difficulty to expert
-                                // TODO: createGameScene(scene, window);
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.newGame(Sudoku::Difficulty::EXPERT);
+                                createGameScene(scene, gui);
                         });
         
                 // Expert Difficulty clickable black rectangle
@@ -391,8 +393,9 @@ namespace System
                 std::shared_ptr<Command> command2 = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
-                                // TODO: Set difficulty to hard
-                                // TODO: createGameScene(scene, window);
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.newGame(Sudoku::Difficulty::HARD);
+                                createGameScene(scene, gui);
                         });
                 
                 // Hard Difficulty clickable black rectangle
@@ -419,8 +422,9 @@ namespace System
                 std::shared_ptr<Command> command3 = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
-                                // TODO: Set difficulty to medium
-                                // TODO: createGameScene(scene, window);
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.newGame(Sudoku::Difficulty::MEDIUM);
+                                createGameScene(scene, gui);
                         });
                 
                 // Medium Difficulty clickable black rectangle
@@ -447,8 +451,9 @@ namespace System
                 std::shared_ptr<Command> command4 = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
-                                // TODO: Set difficulty to easy
-                                // TODO: createGameScene(scene, window);
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.newGame(Sudoku::Difficulty::EASY);
+                                createGameScene(scene, gui);
                         });
                 
                 // Easy Difficulty clickable black rectangle
@@ -483,6 +488,28 @@ namespace System
                         "Black Rectangle", topLeft.x, topLeft.y,
                         size.x, size.y, Colors::TRANSPARENT, commandR);
                 scene.addClickableObject(rect); 
+        }
+
+        /*
+        Create the game scene.
+
+        @param scene Scene to create.
+        @param gui Gui to add the scene to.
+        */
+        void createGameScene(Scene& scene, GUI& gui)
+        {
+                LOG_TRACE("createGameScene() called.");
+
+                scene.clear();
+
+                scene.name = "Game";
+
+                // Get necessary window information
+                auto& window = gui.getWindow();
+                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                sf::Vector2u sizeU = getWindowSize(window);
+                sf::Vector2i size(sizeU.x, sizeU.y);
+                sf::Vector2i center = getWindowCenter(sizeU);
         }
 
 } // namespace System
