@@ -26,8 +26,8 @@ namespace System
                 }
                 else
                 {
-                        music.setLoop(true);
-                        music.setVolume(30);
+                        music->setLoop(true);
+                        music->setVolume(30);
                         playMusic();
                 }
         }
@@ -47,7 +47,7 @@ namespace System
         {
                 LOG_TRACE("Music::playMusic() called");
 
-                music.play();
+                music->play();
         }
 
         /*
@@ -57,7 +57,7 @@ namespace System
         {
                 LOG_TRACE("Music::stopMusic() called");
 
-                music.stop();
+                music->stop();
         }
 
         /*
@@ -69,6 +69,6 @@ namespace System
         {
                 LOG_TRACE("Music::loadMusic() called");
 
-                return music.openFromFile("assets/music.mp3");
+                return music->openFromFile("assets/music.mp3");
         }
 } // namespace System

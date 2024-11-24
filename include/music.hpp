@@ -1,12 +1,13 @@
 /*
 Date: 23/11/2024
 
-Music class manages the music in the application.
+Music class manages the music in the game.
 */
 
 #ifndef MUSIC_HPP
 #define MUSIC_HPP
 
+#include <memory>
 #include <SFML/Audio.hpp>
 
 namespace System
@@ -25,7 +26,7 @@ namespace System
                 bool loadMusic();
         private: // Variables
         // Variables
-                sf::Music music;                                        // Music to play
+                std::unique_ptr<sf::Music> music;                       // Background music
         };
 }
 
