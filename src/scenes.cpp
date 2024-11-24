@@ -887,7 +887,71 @@ namespace System
 
                 scene.name = "Game Over";
 
-                // TODO: implement game over scene
+                sf::RenderWindow& window = gui.getWindow();
+                auto wi = getWindowInfo(window);
+
+                // Sudoku title
+                scene.addObject(getTitle(window));
+
+                const int X_POS = wi.center.x - 250;
+                const int Y_POS = wi.topLeft.y + 260;
+                const int X_SIZE = wi.topLeft.x + 500;
+                const int Y_SIZE = wi.topLeft.y + 510;
+
+        // Background
+                auto& background = createButton("Background",
+                        X_POS, Y_POS,
+                        X_SIZE, Y_SIZE,
+                        10, Colors::WHITE, Colors::NAVAJO_WHITE);
+                scene.addObject(background.frame);
+                scene.addObject(background.background);
+        // Text
+                // Format information
+                auto& gameHandler = gui.getGameHandler();
+                std::string timeStr = getFormattedTime(gameHandler.time);
+                std::string difficultyStr = getFormattedDifficulty(gameHandler.difficulty);
+
+                // Information vector
+                std::vector<std::pair<std::string, std::string>> gameOverInfo = {
+                        {"Result", result},
+                        {"Difficulty", difficultyStr},
+                        {"Score", std::to_string(gameHandler.score)},
+                        {"Time", timeStr},
+                        {"Mistakes", std::to_string(gameHandler.mistakes)},
+                        {"Hints Used", std::to_string(gameHandler.hintsUsed)}
+                };
+
+                const size_t CHAR_NUM = 24;
+                auto font = getFont("font");
+                for (size_t i = 0; i < gameOverInfo.size(); i++)
+                {
+                        auto& info = gameOverInfo[i];
+                        auto& title = info.first;
+                        auto& value = info.second;
+
+                        // Merge the title and value by dots to fill the space
+                        std::string text = title
+                                + std::string(CHAR_NUM - title.size() - value.size(), '.')
+                                + value;
+
+                        // Text
+                        scene.addObject(std::make_shared<Text>(
+                                "Game Over Text " + std::to_string(i),
+                                X_POS + 22, Y_POS + 15 + 50 * i,
+                                font.first, font.second,
+                                text, 32, Colors::WHITE));
+                }
+
+        // Click to return box
+                // Click-to-return function
+                std::shared_ptr<Command> command = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                createMainMenuScene(scene, gui);
+                        });
+
+                // Click-to-return rectangle
+                scene.addClickableObject(createClickToContinue(command, window));
         }
 // Development scenes
         /*
