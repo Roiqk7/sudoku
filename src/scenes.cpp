@@ -471,14 +471,18 @@ namespace System
                         {
                                 sf::Event event = gui.getEvent();
 
-                                if (event.type == sf::Event::MouseButtonPressed)
+                                // Ignore if not a mouse click
+                                // Should not happen
+                                if (event.type != sf::Event::MouseButtonPressed)
                                 {
+                                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
                                         return;
                                 }
 
                                 auto& gameHandler = gui.getGameHandler();
                                 int selectedNumber = gameHandler.selectedNumber;
 
+                                // Check if the selected number is valid
                                 if (selectedNumber < 1 || selectedNumber > 9)
                                 {
                                         return;
@@ -495,6 +499,7 @@ namespace System
                                 gameHandler.getGrid(grid);
 
                                 // Check if the cell is empty
+                                // Note: row and col should be in the range [0, 8]
                                 if (grid.getCell(row, col) == 0)
                                 {
                                         auto& soundEffect = gui.getSoundEffect();
@@ -584,6 +589,7 @@ namespace System
                 const int NUM_SIZE = 70;
                 const int NUM_OFFSET = 80;
 
+                // Render the numbers
                 for (int row = 0; row < 9; row++)
                 {
                         for (int col = 0; col < 9; col++)
@@ -685,8 +691,11 @@ namespace System
                         {
                                 sf::Event event = gui.getEvent();
 
-                                if (event.type == sf::Event::MouseButtonPressed)
+                                // Ignore if not a mouse click
+                                // Should not happen
+                                if (event.type != sf::Event::MouseButtonPressed)
                                 {
+                                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
                                         return;
                                 }
 
@@ -862,6 +871,9 @@ namespace System
         void createGameOverScene(Scene& scene, GUI& gui, bool win)
         {
                 LOG_TRACE("createGameOverScene() called.");
+
+                const std::string result = win ? "won" : "lost";
+                LOG_DEBUG("Game result: Player " + result);
 
                 scene.clear();
 
