@@ -59,13 +59,13 @@ namespace Sudoku
         // Check methods
                 bool checkIndex(int index, bool cell = true) const noexcept;
                 bool isSolved() const noexcept;
-                bool isValidValue(int row, int col, int value) const noexcept;
+                bool isValidValue(int row, int col, int value) const;
                 bool isValidCell(
-                        int row, int col, bool includeZero = true) const noexcept;
-                bool isValidRow(int row) const noexcept;
-                bool isValidCol(int col) const noexcept;
-                bool isValidBox(int box) const noexcept;
-                bool isValid() const noexcept;
+                        int row, int col, bool includeZero = true) const;
+                bool isValidRow(int row) const;
+                bool isValidCol(int col) const;
+                bool isValidBox(int box) const;
+                bool isValid() const;
                 bool contains(int value) const noexcept;
         private: // Variables
                 std::array<int, 81> grid;                                               // Stores the sudoku grid as a 1D array

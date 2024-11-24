@@ -492,13 +492,19 @@ namespace Sudoku
 
         @note A valid value is in the range (0, 9] and does not conflict with the row, column, or box.
         */
-        bool Grid::isValidValue(int row, int col, int value) const noexcept
+        bool Grid::isValidValue(int row, int col, int value) const
         {
                 LOG_TRACE("Grid::isValidValue() called");
 
                 if (value <= 0 || value > 9)
                 {
                         return false;
+                }
+
+                if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
+                {
+                        LOG_ERROR("Row or column out of range");
+                        throw std::out_of_range("Row or column out of range");
                 }
 
                 std::array<int, 9> rowArray;
@@ -535,9 +541,15 @@ namespace Sudoku
 
         @note A valid cell has a value in the range [0, 9].
         */
-        bool Grid::isValidCell(int row, int col, bool includeZero) const noexcept
+        bool Grid::isValidCell(int row, int col, bool includeZero) const
         {
                 LOG_TRACE("Grid::isValidCell() called");
+
+                if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
+                {
+                        LOG_ERROR("Row or column out of range");
+                        throw std::out_of_range("Row or column out of range");
+                }
 
                 const int value = grid[Grid::convertIndex(row, col)];
 
@@ -547,7 +559,7 @@ namespace Sudoku
         /*
         Checks if the values in the specified row are valid.
 
-        @param row The row to check. Must be in the range [0, 9].
+        @param row The row to check. Must be in the range [0, 9).
 
         @return True if the values in the row are valid, false otherwise.
 
@@ -555,9 +567,16 @@ namespace Sudoku
 
         @note A valid row has values in the range [0, 9].
         */
-        bool Grid::isValidRow(int row) const noexcept
+        bool Grid::isValidRow(int row) const
         {
                 LOG_TRACE("Grid::isValidRow() called");
+
+                if (!Grid::checkIndex(row, false))
+                {
+                        LOG_ERROR("Row out of range");
+                        throw std::out_of_range("Row out of range");
+                }
+
                 std::array<int, 9> rowArray;
                 Grid::getRow(row, rowArray);
                 return std::all_of(rowArray.begin(), rowArray.end(), [this, row](int value)
@@ -577,9 +596,15 @@ namespace Sudoku
 
         @note A valid column has values in the range [0, 9].
         */
-        bool Grid::isValidCol(int col) const noexcept
+        bool Grid::isValidCol(int col) const
         {
                 LOG_TRACE("Grid::isValidCol() called");
+
+                if (!Grid::checkIndex(col, false))
+                {
+                        LOG_ERROR("Column out of range");
+                        throw std::out_of_range("Column out of range");
+                }
 
                 std::array<int, 9> colArray;
                 Grid::getCol(col, colArray);
@@ -601,9 +626,15 @@ namespace Sudoku
 
         @note A valid box has values in the range [0, 9].
         */
-        bool Grid::isValidBox(int box) const noexcept
+        bool Grid::isValidBox(int box) const
         {
                 LOG_TRACE("Grid::isValidBox() called");
+
+                if (!Grid::checkIndex(box, false))
+                {
+                        LOG_ERROR("Box out of range");
+                        throw std::out_of_range("Box out of range");
+                }
 
                 std::array<int, 9> boxArray;
                 Grid::getBox(box, boxArray);
@@ -621,7 +652,7 @@ namespace Sudoku
 
         @note A valid grid has valid rows, columns, and boxes.
         */
-        bool Grid::isValid() const noexcept
+        bool Grid::isValid() const
         {
                 LOG_TRACE("Grid::isValid() called");
 
