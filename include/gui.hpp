@@ -31,6 +31,7 @@ namespace System
         // Getter
                 sf::RenderWindow& getWindow();
                 Sudoku::GameHandler& getGameHandler();
+                sf::Event& getEvent();
         private: // Methods
         // GUI methods
                 void init();
@@ -51,6 +52,7 @@ namespace System
                 std::list<Scene> scenes;                                // Scenes in the GUI
                 Music music;                                            // Music in the application
                 SoundEffect soundEffect;                                // Sound effects in the application
+                sf::Event event;                                        // Event to handle
         };
 }
 

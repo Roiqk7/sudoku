@@ -75,6 +75,18 @@ namespace System
 
                 return gameHandler;
         }
+
+        /*
+        Get the event.
+
+        @return The event.
+        */
+        sf::Event& GUI::getEvent()
+        {
+                LOG_TRACE("GUI::getEvent() called");
+
+                return event;
+        }
 // GUI methods
         /*
         Initialize the GUI.
