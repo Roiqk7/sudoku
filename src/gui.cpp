@@ -34,6 +34,9 @@ namespace System
         GUI::~GUI()
         {
                 LOG_TRACE("GUI::~GUI() called");
+
+                window.close();
+                music.stopMusic();
         }
 // GUI methods
         /*
