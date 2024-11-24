@@ -6,6 +6,7 @@ Sound effect class manages the sound effects in the application.
 
 #include "../include/macros.hpp"
 #include "../include/soundEffect.hpp"
+#include <filesystem>
 #include <SFML/Audio.hpp>
 
 namespace System
@@ -31,6 +32,8 @@ namespace System
         Play a sound effect.
 
         @param sound The sound effect to play.
+
+        @note Expects the sound to be is assets/ and with .mp3 (which should not be included in the parameter).
         */
         void SoundEffect::playSound(const std::string& sound)
         {
@@ -56,7 +59,8 @@ namespace System
                 if (sounds.find(sound) == sounds.end())
                 {
                         std::shared_ptr<sf::Music> music = std::make_shared<sf::Music>();
-                        if (music->openFromFile(sound))
+                        std::string path = "assets/" + sound + ".mp3";
+                        if (music->openFromFile(path))
                         {
                                 sounds[sound] = music;
                                 return true;
