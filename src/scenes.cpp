@@ -498,6 +498,14 @@ namespace System
                                 Sudoku::Grid grid;
                                 gameHandler.getGrid(grid);
 
+                                // Validate the row and column
+                                // Note: row and col should be in the range [0, 8]
+                                if (!grid.checkIndex(grid.convertIndex(row, col)))
+                                {
+                                        LOG_ERROR("Invalid row x col: {} x {} (index: {}. This log message should not appear.", row, col, grid.convertIndex(row, col));
+                                        return;
+                                }
+
                                 // Check if the cell is empty
                                 // Note: row and col should be in the range [0, 8]
                                 if (grid.getCell(row, col) == 0)
@@ -506,13 +514,13 @@ namespace System
 
                                         if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
+                                                soundEffect.playSound("mistake");
+
                                                 // TODO: handle mistakes
-                                                if (gameHandler.mistakes++ == 3)
+                                                if (++gameHandler.mistakes == 3)
                                                 {
                                                         return createGameOverScene(scene, gui, false);
                                                 }
-
-                                                soundEffect.playSound("mistake");
                                         }
                                         // Correct input
                                         else
