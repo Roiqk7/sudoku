@@ -613,6 +613,57 @@ namespace System
                         GRID_SIZE, GRID_SIZE, Colors::NAVAJO_WHITE);
                 scene.addObject(gridBackground);
 
+                // Create the click function
+                std::shared_ptr<Command> boardClickCommand = std::make_shared<Command>(
+                        [&scene, &gui, GRID_SIZE, GRID_X, GRID_Y]()
+                        {
+                                sf::Event event = gui.getEvent();
+
+                                if (event.type == sf::Event::MouseButtonPressed)
+                                {
+                                        return;
+                                }
+
+                                auto& gameHandler = gui.getGameHandler();
+                                int selectedNumber = gameHandler.selectedNumber;
+
+                                if (selectedNumber < 1 || selectedNumber > 9)
+                                {
+                                        return;
+                                }
+
+                                auto& window = gui.getWindow();
+                                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                                int row = (mousePos.y - GRID_Y) / (GRID_SIZE / 9);
+                                int col = (mousePos.x - GRID_X) / (GRID_SIZE / 9);
+
+                                // Get the grid
+                                Sudoku::Grid grid;
+                                gameHandler.getGrid(grid);
+
+                                // Check if the cell is empty
+                                if (grid.getCell(row, col) == 0)
+                                {
+                                        if (gameHandler.checkUserInput(row, col, selectedNumber))
+                                        {
+                                                // Redraw the scene
+                                                return createGameScene(scene, gui);
+                                        }
+                                        else
+                                        {
+                                                // TODO: Handle invalid input
+                                        }
+                                }
+                        });
+
+                // Create the clickable rectangle
+                std::shared_ptr<Rectangle> clickableBoardRect = std::make_shared<Rectangle>(
+                        "Clickable board rect", GRID_X, GRID_Y,
+                        GRID_SIZE, GRID_SIZE, Colors::NAVAJO_WHITE,
+                        boardClickCommand);
+                scene.addClickableObject(clickableBoardRect);
+
                 // Create the grid lines
                 const int NUM_LINES = 9;
                 const int LINE_SIZE = 2;
@@ -752,12 +803,53 @@ namespace System
 
                 // Number panel background
                 const int NUM_PANEL_SIZE = 300;
+                const int NUM_PANEL_X = GRID_X + GRID_SIZE + 40;
+                const int NUM_PANEL_Y = center.y - 110;
                 std::shared_ptr<Object> numberPanelBackground = std::make_shared<Rectangle>(
                         "Number Panel Background",
-                        GRID_X + GRID_SIZE + 40, center.y - 110,
+                        NUM_PANEL_X, NUM_PANEL_Y,
                         NUM_PANEL_SIZE, NUM_PANEL_SIZE,
                         Colors::NAVAJO_WHITE);
                 scene.addObject(numberPanelBackground);
+
+                // Number panel click function
+                std::shared_ptr<Command> numberPanelClickCommand = std::make_shared<Command>(
+                        [&scene, &gui, NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y]()
+                        {
+                                sf::Event event = gui.getEvent();
+
+                                if (event.type == sf::Event::MouseButtonPressed)
+                                {
+                                        return;
+                                }
+
+                                auto& window = gui.getWindow();
+                                auto& gameHandler = gui.getGameHandler();
+                                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                                int row = (mousePos.y - NUM_PANEL_Y) / (NUM_PANEL_SIZE / 3);
+                                int col = (mousePos.x - NUM_PANEL_X) / (NUM_PANEL_SIZE / 3);
+
+                                /*
+                                Layout:
+                                        1 2 3
+                                        4 5 6
+                                        7 8 9
+                                */
+                                int num = row * 3 + col + 1;
+
+                                gameHandler.selectedNumber = num;
+
+                                LOG_TRACE("Selected number: " + std::to_string(num));
+                        });
+
+                // Number panel clickable rectangle
+                std::shared_ptr<Rectangle> numberPanelClickableRect = std::make_shared<Rectangle>(
+                        "Number Panel Clickable",
+                        GRID_X + GRID_SIZE + 40, center.y - 110,
+                        NUM_PANEL_SIZE, NUM_PANEL_SIZE,
+                        Colors::TRANSPARENT, numberPanelClickCommand);
+                scene.addClickableObject(numberPanelClickableRect);
 
                 // Number panel lines
                 const int NUM_PANEL_NUM_LINES = 3;
