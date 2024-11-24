@@ -1,7 +1,6 @@
 1. Make working scenes
         1. Finish game scene and all its components
         2. Add other scenes
-        3. Fix game scene bug (click at last row/column)
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
 4. Add more tests
