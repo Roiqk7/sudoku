@@ -167,3 +167,15 @@ namespace Sudoku
                 this->grid = grid;
         }
 }
+// Checker
+        /*
+        Checks if the player has won the game.
+
+        @return True if the player has won, false otherwise.
+        */
+        bool Sudoku::GameHandler::checkWin() const
+        {
+                LOG_TRACE("GameHandler::checkWin() called");
+
+                return grid.isSolved() && mistakes < 3;
+        }

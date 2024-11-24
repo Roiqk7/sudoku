@@ -47,6 +47,8 @@ namespace Sudoku
                 void getGrid(Grid& grid, bool solved = false) const;
         // Setters
                 void setGrid(const Grid& grid);
+        // Checker
+                bool checkWin() const;
         public: // Variables
                 int selectedCell = -1;                                          // The cell selected by the player
                 int selectedNumber = 0;                                         // The number selected by the player
