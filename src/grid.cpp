@@ -2,6 +2,10 @@
 Date: 09/11/2024
 
 This file implements the Grid class.
+
+@note This file was written among the first and it has been a while since I have done any C++ programming.
+        Thus this file may not be up to the standards of the rest of the project. I will refactor this file
+        in the future. (maybe)
 */
 
 #include "../include/macros.hpp"
@@ -472,10 +476,7 @@ namespace Sudoku
                 LOG_TRACE("Grid::isSolved() called");
 
                 // Grid is solved if it is valid and has no zeros
-                return Grid::isValid() && std::none_of(grid.begin(), grid.end(), [](int value)
-                {
-                        return value == 0;
-                });
+                return Grid::isValid() && !contains(0);
         }
 
         /*
@@ -645,5 +646,21 @@ namespace Sudoku
                 return validRows && validCols && validBoxes;
         }
 
+        /*
+        Checks if the grid contains the specified value.
+
+        @param value The value to check.
+
+        @return True if the grid contains the value, false otherwise.
+        */
+        bool Grid::contains(int value) const noexcept
+        {
+                LOG_TRACE("Grid::contains() called");
+
+                return std::any_of(grid.begin(), grid.end(), [value](int val)
+                {
+                        return val == value;
+                });
+        }
 
 } // namespace Sudoku
