@@ -645,15 +645,15 @@ namespace System
                                 // Check if the cell is empty
                                 if (grid.getCell(row, col) == 0)
                                 {
-                                        if (gameHandler.checkUserInput(row, col, selectedNumber))
+                                        if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
-                                                // Redraw the scene
-                                                return createGameScene(scene, gui);
+                                                // TODO: handle mistakes
+                                                if (gameHandler.mistakes++ == 3)
+                                                {
+                                                        // TODO: handle game over
+                                                }
                                         }
-                                        else
-                                        {
-                                                // TODO: Handle invalid input
-                                        }
+                                        return createGameScene(scene, gui);
                                 }
                         });
 
