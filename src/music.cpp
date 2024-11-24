@@ -20,6 +20,8 @@ namespace System
         {
                 LOG_TRACE("Music::Music() called");
 
+                music = std::make_unique<sf::Music>();
+
                 if (!loadMusic())
                 {
                         LOG_ERROR("Failed to load music");
