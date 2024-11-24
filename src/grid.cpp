@@ -579,9 +579,10 @@ namespace Sudoku
 
                 std::array<int, 9> rowArray;
                 Grid::getRow(row, rowArray);
+
                 return std::all_of(rowArray.begin(), rowArray.end(), [this, row](int value)
                 {
-                        return Grid::isValidCell(row, value, true);
+                        return value >= 0 && value <= 9;
                 });
         }
 
@@ -611,7 +612,7 @@ namespace Sudoku
 
                 return std::all_of(colArray.begin(), colArray.end(), [this, col](int value)
                 {
-                        return Grid::isValidCell(value, col, true);
+                        return value >= 0 && value <= 9;
                 });
         }
 
@@ -641,7 +642,7 @@ namespace Sudoku
 
                 return std::all_of(boxArray.begin(), boxArray.end(), [this, box](int value)
                 {
-                        return Grid::isValidCell(value, box, true);
+                        return value >= 0 && value <= 9;
                 });
         }
 
@@ -656,25 +657,16 @@ namespace Sudoku
         {
                 LOG_TRACE("Grid::isValid() called");
 
-                const bool validRows = std::all_of(
-                        std::begin(grid), std::end(grid), [this](int value)
+                for (int i = 0; i < 9; i++)
+                {
+                        if (!Grid::isValidRow(i) || !Grid::isValidCol(i)
+                                || !Grid::isValidBox(i))
                         {
-                                return Grid::isValidRow(value);
-                        });
+                                return false;
+                        }
+                }
 
-                const bool validCols = std::all_of(
-                        std::begin(grid), std::end(grid), [this](int value)
-                        {
-                                return Grid::isValidCol(value);
-                        });
-
-                const bool validBoxes = std::all_of(
-                        std::begin(grid), std::end(grid), [this](int value)
-                        {
-                                return Grid::isValidBox(value);
-                        });
-
-                return validRows && validCols && validBoxes;
+                return true;
         }
 
         /*
