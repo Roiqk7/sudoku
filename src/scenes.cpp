@@ -14,6 +14,7 @@ This file contains pre-made scenes for the GUI.
 #include "../include/object.hpp"
 #include "../include/scene.hpp"
 #include "../include/scenes.hpp"
+#include "../include/soundEffect.hpp"
 #include <chrono>
 #include <filesystem>
 #include <functional>
@@ -645,6 +646,8 @@ namespace System
                                 // Check if the cell is empty
                                 if (grid.getCell(row, col) == 0)
                                 {
+                                        auto& soundEffect = gui.getSoundEffect();
+
                                         if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
                                                 // TODO: handle mistakes
@@ -652,6 +655,12 @@ namespace System
                                                 {
                                                         // TODO: handle game over
                                                 }
+
+                                                soundEffect.playSound("mistake");
+                                        }
+                                        else
+                                        {
+                                                soundEffect.playSound("correct");
                                         }
                                         return createGameScene(scene, gui);
                                 }
