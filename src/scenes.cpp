@@ -658,6 +658,7 @@ namespace System
 
                                                 soundEffect.playSound("mistake");
                                         }
+                                        // Correct input
                                         else
                                         {
                                                 soundEffect.playSound("correct");
