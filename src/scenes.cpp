@@ -45,32 +45,21 @@ namespace System
 
                 scene.name = "Default";
 
-                // Get necessary window information
-                sf::Vector2i center = getWindowCenter(getWindowSize(window));
-                sf::Vector2u sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                auto wi = getWindowInfo(window);
 
-                // Yellow Background
-                std::shared_ptr<Object> background = std::make_shared<Rectangle>(
-                        "Yellow Background", topLeft.x, topLeft.y,
-                        size.x, size.y, Colors::YELLOW);
-                scene.addObject(background);
-
-                // Black rectangle
-                std::shared_ptr<Object> rect = std::make_shared<Rectangle>(
-                        "Black Rectangle", topLeft.x + size.x / 10,
-                        topLeft.y + size.y / 10, size.x - size.x / 5,
-                        size.y - size.y / 5, Colors::BLACK);
-                scene.addObject(rect);
+                auto button = createButton("Button",
+                        wi.topLeft.x, wi.topLeft.y,
+                        wi.size.x, wi.size.y, wi.size.x / 10,
+                        Colors::BLACK, Colors::SHADOW);
+                scene.addObject(button.frame);
+                scene.addObject(button.background);
 
                 // Text
                 auto font = getFont("font");
-                std::shared_ptr<Object> text = std::make_shared<Text>(
-                        "Text", center.x/4 + 10, center.y-80, font.first,
-                        font.second, "THIS SHOULD BE HIDDEN", center.y / 5,
-                        Colors::WHITE);
-                scene.addObject(text);
+                scene.addObject(std::make_shared<Text>(
+                        "Text", wi.center.x/4 + 10, wi.center.y-80, font.first,
+                        font.second, "THIS SHOULD BE HIDDEN", wi.center.y / 5,
+                        Colors::WHITE));
         }
 
         /*
@@ -87,15 +76,12 @@ namespace System
 
                 scene.name = "Background";
 
-                // Get necessary window information
-                sf::Vector2u sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
+                auto wi = getWindowInfo(window);
 
                 // Background
                 std::shared_ptr<Object> background = std::make_shared<Rectangle>(
-                        "Background", topLeft.x, topLeft.y,
-                        size.x, size.y, Colors::LIGHT_SKY_BLUE);
+                        "Background", wi.topLeft.x, wi.topLeft.y,
+                        wi.size.x, wi.size.y, Colors::LIGHT_SKY_BLUE);
                 scene.addObject(background);
         }
 // Non-game scenes
@@ -113,33 +99,24 @@ namespace System
 
                 scene.name = "Welcome";
 
-                // Get necessary window information
-                auto& window = gui.getWindow();
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
-                sf::Vector2u sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i center = getWindowCenter(sizeU);
+                sf::RenderWindow& window = gui.getWindow();
+                auto wi = getWindowInfo(window);
 
                 // Sudoku title
-                auto titleFont = getFont("title");
-                std::shared_ptr<Object> title = std::make_shared<Text>(
-                        "Title", center.x/2+100, -50, titleFont.first,
-                        titleFont.second, "Sudoku", 280,
-                        Colors::WHITE);
-                scene.addObject(title);
+                scene.addObject(getTitle(window));
 
                 // Welcome text
                 auto font = getFont("font");
                 std::shared_ptr<Object> text = std::make_shared<Text>(
-                        "Text", center.x/4 + 10, center.y-80, font.first,
-                        font.second, "Welcome!", center.y / 5,
+                        "Text", wi.center.x/4 + 10, wi.center.y-80, font.first,
+                        font.second, "Welcome!", wi.center.y / 5,
                         Colors::WHITE);
                 scene.addObject(text);
 
                 // Click to continue text
                 std::shared_ptr<Object> text2 = std::make_shared<Text>(
-                        "Click to Continue text", center.x/4 + 10, center.y+80, font.first,
-                        font.second, "Click anywhere to continue", center.y / 10,
+                        "Click to Continue text", wi.center.x/4 + 10, wi.center.y+80, font.first,
+                        font.second, "Click anywhere to continue", wi.center.y / 10,
                         Colors::WHITE);
                 scene.addObject(text2);
 
@@ -149,12 +126,7 @@ namespace System
                         { 
                                 createMainMenuScene(scene, gui);
                         });
-
-                // Click-to-continue rectangle
-                std::shared_ptr<Rectangle> rect = std::make_shared<Rectangle>(
-                        "Black Rectangle", topLeft.x, topLeft.y,
-                        size.x, size.y, Colors::TRANSPARENT, command);
-                scene.addClickableObject(rect); 
+                scene.addClickableObject(createClickToContinue(command, window));
         }
 
         /*
@@ -171,20 +143,11 @@ namespace System
 
                 scene.name = "Main Menu";
 
-                // Get necessary window information
-                auto& window = gui.getWindow();
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
-                sf::Vector2u sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i center = getWindowCenter(sizeU);
+                sf::RenderWindow& window = gui.getWindow();
+                auto wi = getWindowInfo(window);
 
                 // Sudoku title
-                auto titleFont = getFont("title");
-                std::shared_ptr<Object> title = std::make_shared<Text>(
-                        "Title", center.x/2+100, -50, titleFont.first,
-                        titleFont.second, "Sudoku", 280,
-                        Colors::WHITE);
-                scene.addObject(title);
+                scene.addObject(getTitle(window));
 
         // New Game Button
                 // New Game clickable black rectangle
@@ -194,26 +157,20 @@ namespace System
                         { 
                                 createNewGameScene(scene, gui);
                         });
-        
-                // New Game clickable black rectangle
-                std::shared_ptr<Rectangle> newGameClickRect = std::make_shared<Rectangle>(
-                        "New Game Clickable", center.x - 210, center.y - 100,
-                        size.x/5 + 120, size.y/8, Colors::BLACK, command);
-                scene.addClickableObject(newGameClickRect); 
 
-                // New Game white rectangle
-                std::shared_ptr<Object> newGameRect = std::make_shared<Rectangle>(
-                        "New Game", center.x - 200, center.y - 90,
-                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
-                scene.addObject(newGameRect);
+                auto NGButton = createButton("New Game", wi.center.x - 210, wi.center.y - 100,
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command);
+
+                scene.addObject(NGButton.frame);
+                scene.addClickableObject(NGButton.clickable);
+                scene.addObject(NGButton.background);
 
                 // New Game text
                 auto font = getFont("font");
-                std::shared_ptr<Object> newGameText = std::make_shared<Text>(
-                        "New Game Text", center.x - 200, center.y - 100, font.first,
-                        font.second, "New Game", center.y / 5,
-                        Colors::BLACK);
-                scene.addObject(newGameText);
+                scene.addObject(std::make_shared<Text>(
+                        "New Game Text", wi.center.x - 200, wi.center.y - 100, font.first,
+                        font.second, "New Game", wi.center.y / 5,
+                        Colors::BLACK));
         // Credits Button
                 // Credits clickable black rectangle
                 // Credits function 
@@ -222,25 +179,18 @@ namespace System
                         {
                                 createCreditsScene(scene, gui);
                         });
-                
-                // Credits clickable black rectangle
-                std::shared_ptr<Rectangle> creditsClickRect = std::make_shared<Rectangle>(
-                        "Credits Clickable", center.x - 210, center.y + 20,
-                        size.x/5 + 120, size.y/8, Colors::BLACK, command2);
-                scene.addClickableObject(creditsClickRect); 
 
-                // Credits white rectangle
-                std::shared_ptr<Object> creditsRect = std::make_shared<Rectangle>(
-                        "Credits", center.x - 200, center.y + 30,
-                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
-                scene.addObject(creditsRect);
+                auto creditsButton = createButton("Credits", wi.center.x - 210, wi.center.y + 20,
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command2);
+                scene.addObject(creditsButton.frame);
+                scene.addClickableObject(creditsButton.clickable);
+                scene.addObject(creditsButton.background);
 
                 // Credits text
-                std::shared_ptr<Object> creditsText = std::make_shared<Text>(
-                        "Credits Text", center.x - 180, center.y + 20, font.first,
-                        font.second, "Credits", center.y / 5,
-                        Colors::BLACK);
-                scene.addObject(creditsText);
+                scene.addObject(std::make_shared<Text>(
+                        "Credits Text", wi.center.x - 180, wi.center.y + 20, font.first,
+                        font.second, "Credits", wi.center.y / 5,
+                        Colors::BLACK));
         // Exit Button
                 // Exit clickable black rectangle
                 // Exit function 
@@ -249,25 +199,18 @@ namespace System
                         {
                                 window.close();
                         });
-                
-                // Exit clickable black rectangle
-                std::shared_ptr<Rectangle> exitClickRect = std::make_shared<Rectangle>(
-                        "Exit Clickable", center.x - 210, center.y + 140,      
-                        size.x/5 + 120, size.y/8, Colors::BLACK, command3);
-                scene.addClickableObject(exitClickRect); 
 
-                // Exit white rectangle
-                std::shared_ptr<Object> exitRect = std::make_shared<Rectangle>(
-                        "Exit", center.x - 200, center.y + 150,
-                        size.x/5 + 100, size.y/8 - 20, Colors::WHITE);
-                scene.addObject(exitRect);
+                auto exitButton = createButton("Exit", wi.center.x - 210, wi.center.y + 140,
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command3);
+                scene.addObject(exitButton.frame);
+                scene.addClickableObject(exitButton.clickable);
+                scene.addObject(exitButton.background);
 
                 // Exit text
-                std::shared_ptr<Object> exitText = std::make_shared<Text>(
-                        "Exit Text", center.x - 110, center.y + 140, font.first,
-                        font.second, "Exit", center.y / 5,
-                        Colors::BLACK);
-                scene.addObject(exitText);
+                scene.addObject(std::make_shared<Text>(
+                        "Exit Text", wi.center.x - 110, wi.center.y + 140, font.first,
+                        font.second, "Exit", wi.center.y / 5,
+                        Colors::BLACK));
         }
 
         /*
@@ -653,7 +596,7 @@ namespace System
                                                 // TODO: handle mistakes
                                                 if (gameHandler.mistakes++ == 3)
                                                 {
-                                                        // TODO: handle game over
+                                                        return createGameOverScene(scene, gui, false);
                                                 }
 
                                                 soundEffect.playSound("mistake");
@@ -662,6 +605,12 @@ namespace System
                                         else
                                         {
                                                 soundEffect.playSound("correct");
+
+                                                // Check win condition
+                                                if (gameHandler.checkWin())
+                                                {
+                                                        return createGameOverScene(scene, gui, true);
+                                                }
                                         }
                                         return createGameScene(scene, gui);
                                 }
@@ -1016,6 +965,24 @@ namespace System
                         font.second, "Exit", center.y / 5,
                         Colors::BLACK);
                 scene.addObject(exitText);
+        }
+
+        /*
+        Create the game over scene.
+
+        @param scene Scene to create.
+        @param gui Gui to add the scene to.
+        @param win True if the player won, false otherwise.
+        */
+        void createGameOverScene(Scene& scene, GUI& gui, bool win)
+        {
+                LOG_TRACE("createGameOverScene() called.");
+
+                scene.clear();
+
+                scene.name = "Game Over";
+
+                // TODO: implement game over scene
         }
 // Development scenes
         /*
