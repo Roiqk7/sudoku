@@ -30,7 +30,7 @@ namespace System
         void createNewGameScene(Scene& scene, GUI& gui);
         void createGameScene(Scene& scene, GUI& gui);
         void createPauseScene(Scene& scene, GUI& gui);
-        void createEndScene(Scene& scene, GUI& gui);
+        void createGameOverScene(Scene& scene, GUI& gui, bool win);
 // Development scenes
         void createExecutionTimeScene(Scene& scene, GUI& gui,
                 const std::chrono::microseconds& time);
