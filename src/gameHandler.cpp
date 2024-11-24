@@ -54,6 +54,17 @@ namespace Sudoku
                 // Remove cells based on the difficulty
                 int cells = static_cast<int>(difficulty);
                 grid.setZero(81 - cells);
+
+                #ifdef DEVELOPMENT
+                // Log the current grid and solved grid for debugging
+                Sudoku::Grid grid;
+                getGrid(grid);
+                LOG_DEBUG("Current grid:");
+                grid.print();
+                getGrid(grid, true);
+                LOG_DEBUG("Solved grid:");
+                grid.print();
+                #endif // DEVELOPMENT
         }
 
         /*
