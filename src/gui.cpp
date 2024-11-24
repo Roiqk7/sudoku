@@ -157,6 +157,8 @@ namespace System
                         // Otherwise, handle the event
                         else if (isRelevantEvent(event))
                         {
+                                this->event = event;
+
                                 #ifdef DEVELOPMENT
                                 auto start = std::chrono::high_resolution_clock::now();
                                 #endif // DEVELOPMENT
@@ -197,13 +199,12 @@ namespace System
 
                 window.clear();
 
-                if (!scenes.empty())
+                LOG_TRACE("Rendering {} scenes", scenes.size());
+
+                for (const auto& scene : scenes)
                 {
-                        for (const auto& scene : scenes)
-                        {
-                                LOG_TRACE("Rendering {} scene with {} objects", scene.name, scene.size());
-                                scene.render(window);
-                        }
+                        LOG_TRACE("\tRendering {} scene with {} objects", scene.name, scene.size());
+                        scene.render(window);
                 }
 
                 window.display();
