@@ -929,7 +929,8 @@ namespace System
                 }
                 else
                 {
-                        timeStr += " > 1 s";
+                        timeStr += " >1 s";
+                        LOG_WARN("Execution time >1 s: {} ms", microseconds / 1000);
                 }
 
                 std::shared_ptr<Object> text = std::make_shared<Text>(
