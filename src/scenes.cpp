@@ -897,11 +897,14 @@ namespace System
                 auto font = getFont("font");
                 std::string timeStr = "Execution time:";
 
-                auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(time).count();
+                auto microseconds = std::chrono::duration_cast<
+                        std::chrono::microseconds>(time).count();
                 if (microseconds < 1000000)
                 {
                         std::stringstream ss;
-                        ss << std::fixed << std::setprecision(3) << std::setw(7) << std::setfill(' ') << (microseconds / 1000.0);
+                        ss << std::fixed << std::setprecision(3)
+                                << std::setw(7) << std::setfill(' ')
+                                << (microseconds / 1000.0);
                         timeStr += ss.str() + " ms";
                 }
                 else
