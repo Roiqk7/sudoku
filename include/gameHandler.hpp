@@ -50,12 +50,14 @@ namespace Sudoku
         // Checker
                 bool checkWin() const;
         public: // Variables
+                int score = 0;                                                  // The score of the player
                 int selectedCell = -1;                                          // The cell selected by the player
                 int selectedNumber = 0;                                         // The number selected by the player
                 Difficulty difficulty = Difficulty::NONE;                       // The difficulty of the game
                 int mistakes = 0;                                               // Number of mistakes made (max 3)
                 bool notesMode = false;                                         // If notes mode is enabled
                 std::bitset<81*9> notes;                                        // Notes for each cell (1 if note is given)
+                int hintsUsed = 0;                                              // Number of hints used
                 std::bitset<81> hints;                                          // Hint for each cell (1 if hint is given)
                 std::chrono::seconds time;                                      // Time taken to solve the grid (in seconds)
         private: // Variables
