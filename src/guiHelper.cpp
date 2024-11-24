@@ -114,6 +114,147 @@ namespace System
 
                 return std::make_pair(fontPath, font);
         }
+// Helper structs
+        /*
+        Constructor for WindowInfo struct.
 
+        @param sizeU Size of the window.
+        @param size Size of the window.
+        @param center Center of the window.
+        @param topLeft Top left corner of the window.
+        @param topRight Top right corner of the window.
+        @param bottomLeft Bottom left corner of the window.
+        @param bottomRight Bottom right corner of the window.
+        */
+        WindowInfo::WindowInfo(const sf::Vector2u& sizeU,
+                const sf::Vector2i& size,
+                const sf::Vector2i& center,
+                const sf::Vector2i& topLeft,
+                const sf::Vector2i& topRight,
+                const sf::Vector2i& bottomLeft,
+                const sf::Vector2i& bottomRight)
+                : sizeU(sizeU), size(size), center(center),
+                topLeft(topLeft), topRight(topRight),
+                bottomLeft(bottomLeft), bottomRight(bottomRight)
+        {
+                LOG_TRACE("WindowInfo::WindowInfo() called.");
+        }
+
+        /*
+        Constructor for Button struct.
+
+        @param frame Frame of the button.
+        @param background Background of the button.
+        @param clickable Clickable object of the button.
+        @param command Command of the button.
+        */
+        Button::Button(const std::shared_ptr<Object>& frame,
+                const std::shared_ptr<Rectangle>& clickable,
+                const std::shared_ptr<Object>& background,
+                const std::shared_ptr<Command>& command)
+                : frame(frame), clickable(clickable),
+                background(background), command(command)
+        {
+                LOG_TRACE("Button::Button() called.");
+        }
+// Scenes helper
+        /*
+        Get the window information.
+
+        @param window Window to get the information from.
+
+        @return The window information.
+        */
+        WindowInfo getWindowInfo(const sf::RenderWindow& window)
+        {
+                LOG_TRACE("getWindowInfo() called.");
+
+                return WindowInfo(getWindowSize(window),
+                        sf::Vector2i(getWindowSize(window)),
+                        getWindowCenter(getWindowSize(window)),
+                        getWindowTopLeftCorner(),
+                        getWindowTopRightCorner(getWindowSize(window)),
+                        getWindowBottomLeftCorner(getWindowSize(window)),
+                        getWindowBottomRightCorner(getWindowSize(window)));
+        }
+
+        /*
+        Get the title object.
+
+        @param window Window to get the center information from.
+
+        @return The title object.
+        */
+        std::shared_ptr<Text> getTitle(const sf::RenderWindow& window)
+        {
+                LOG_TRACE("getTitle() called.");
+
+                auto center = getWindowCenter(getWindowSize(window));
+
+                auto titleFont = getFont("title");
+                return std::make_shared<Text>(
+                        "Title", center.x/2+100, -50, titleFont.first,
+                        titleFont.second, "Sudoku", 280,
+                        Colors::WHITE);
+        }
+
+        /*
+        Create a button.
+
+        @param name Name of the button.
+        @param x X position of the button.
+        @param y Y position of the button.
+        @param width Width of the button.
+        @param height Height of the button.
+        @param margin Margin of the button.
+        @param frameColor Color of the frame.
+        @param backgroundColor Color of the background.
+        @param command Command to execute.
+
+        @return Pointer to the button.
+
+        @note The button is created with a frame, background, and clickable object.
+        */
+        Button& createButton(const std::string& name,
+                        const int x, const int y,
+                        const int width, const int height,
+                        const int margin,
+                        const sf::Color frameColor,
+                        const sf::Color backgroundColor,
+                        const std::shared_ptr<Command>& command)
+        {
+                LOG_TRACE("createButton() called.");
+
+                auto frame = std::make_shared<Rectangle>(
+                        name + " Frame", x, y, width, height, frameColor);
+                auto background = std::make_shared<Rectangle>(
+                        name + " Background", x + margin, y + margin,
+                        width - 2 * margin, height - 2 * margin, backgroundColor);
+                auto clickable = command ? std::make_shared<Rectangle>(
+                                name + " Clickable", x, y, width, height,
+                                Colors::TRANSPARENT, command)
+                        : nullptr;
+                return *new Button(frame, clickable, background, command);
+        }
+
+        /*
+        Create a click anywhere to continue object.
+
+        @param command Command to execute.
+        @param window Window to get the size from.
+
+        @return Pointer to the click to continue object.
+        */
+        std::shared_ptr<Rectangle> createClickToContinue(
+                const std::shared_ptr<Command>& command,
+                const sf::RenderWindow& window)
+        {
+                LOG_TRACE("createClickToContinue() called.");
+
+                auto size = getWindowSize(window);
+                return std::make_shared<Rectangle>(
+                        "Click to continue", 0, 0, size.x, size.y,
+                        Colors::TRANSPARENT, command);
+        }
 
 } // namespace System

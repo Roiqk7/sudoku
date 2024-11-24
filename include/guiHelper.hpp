@@ -7,10 +7,17 @@ This file contains helper functions for the GUI.
 #ifndef GUI_HELPER_HPP
 #define GUI_HELPER_HPP
 
+#include "colors.hpp"
+#include "command.hpp"
+#include "object.hpp"
+#include "scene.hpp"
 #include <filesystem>
+#include <functional>
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <string>
 #include <utility>
 
 namespace System
@@ -25,6 +32,51 @@ namespace System
 // Assets helper functions
         std::pair<std::filesystem::path, sf::Font>
                 getFont(const std::string& name);
+// Helper structs
+        struct WindowInfo
+        {
+                sf::Vector2u sizeU;
+                sf::Vector2i size;
+                sf::Vector2i center;
+                sf::Vector2i topLeft;
+                sf::Vector2i topRight;
+                sf::Vector2i bottomLeft;
+                sf::Vector2i bottomRight;
+
+                WindowInfo(const sf::Vector2u& sizeU,
+                        const sf::Vector2i& size,
+                        const sf::Vector2i& center,
+                        const sf::Vector2i& topLeft,
+                        const sf::Vector2i& topRight,
+                        const sf::Vector2i& bottomLeft,
+                        const sf::Vector2i& bottomRight);
+        };
+
+        struct Button
+        {
+                std::shared_ptr<Object> frame;
+                std::shared_ptr<Rectangle> clickable;
+                std::shared_ptr<Object> background;
+                std::shared_ptr<Command> command;
+
+                Button(const std::shared_ptr<Object>& frame,
+                        const std::shared_ptr<Rectangle>& clickable,
+                        const std::shared_ptr<Object>& background,
+                        const std::shared_ptr<Command>& command);
+        };
+// Scenes helper
+        WindowInfo getWindowInfo(const sf::RenderWindow& window);
+        std::shared_ptr<Text> getTitle(const sf::RenderWindow& window);
+        Button& createButton(const std::string& name,
+                        const int x, const int y,
+                        const int width, const int height,
+                        const int margin,
+                        const sf::Color frameColor,
+                        const sf::Color backgroundColor,
+                        const std::shared_ptr<Command>& command = nullptr);
+        std::shared_ptr<Rectangle> createClickToContinue(
+                const std::shared_ptr<Command>& command,
+                const sf::RenderWindow& window);
 } // namespace System
 
 
