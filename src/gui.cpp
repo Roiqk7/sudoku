@@ -77,6 +77,18 @@ namespace System
         }
 
         /*
+        Get the sound effect.
+
+        @return The sound effect.
+        */
+        SoundEffect& GUI::getSoundEffect()
+        {
+                LOG_TRACE("GUI::getSoundEffect() called");
+
+                return soundEffect;
+        }
+
+        /*
         Get the event.
 
         @return The event.

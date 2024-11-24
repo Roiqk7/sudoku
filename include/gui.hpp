@@ -31,6 +31,7 @@ namespace System
         // Getter
                 sf::RenderWindow& getWindow();
                 Sudoku::GameHandler& getGameHandler();
+                SoundEffect& getSoundEffect();
                 sf::Event& getEvent();
         private: // Methods
         // GUI methods
