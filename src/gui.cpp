@@ -203,7 +203,7 @@ namespace System
 
                 for (const auto& scene : scenes)
                 {
-                        LOG_TRACE("\tRendering {} scene with {} objects", scene.name, scene.size());
+                        LOG_TRACE("Rendering {} scene with {} objects", scene.name, scene.size());
                         scene.render(window);
                 }
 
