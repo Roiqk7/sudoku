@@ -9,6 +9,7 @@ This file contains helper functions for the GUI.
 
 #include "colors.hpp"
 #include "command.hpp"
+#include "gameHandler.hpp"
 #include "object.hpp"
 #include "scene.hpp"
 #include <filesystem>
@@ -77,6 +78,8 @@ namespace System
         std::shared_ptr<Rectangle> createClickToContinue(
                 const std::shared_ptr<Command>& command,
                 const sf::RenderWindow& window);
+        std::string getFormattedTime(const std::chrono::microseconds& time);
+        std::string getFormattedDifficulty(const Sudoku::Difficulty& difficulty);
 } // namespace System
 
 

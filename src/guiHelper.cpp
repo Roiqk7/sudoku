@@ -7,9 +7,12 @@ This file contains helper functions for the GUI.
 #include "../include/guiHelper.hpp"
 #include "../include/macros.hpp"
 #include <filesystem>
+#include <iomanip>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <sstream>
+#include <string>
 #include <utility>
 
 namespace System
@@ -255,6 +258,55 @@ namespace System
                 return std::make_shared<Rectangle>(
                         "Click to continue", 0, 0, size.x, size.y,
                         Colors::TRANSPARENT, command);
+        }
+
+        /*
+        Get formatted time string.
+
+        @param time Time to format. (format is hh:mm:ss)
+
+        @return Formatted time string.
+        */
+        std::string getFormattedTime(const std::chrono::microseconds& time)
+        {
+                LOG_TRACE("getFormattedTime() called.");
+
+                auto hours = std::chrono::duration_cast<std::chrono::hours>(time);
+                auto minutes = std::chrono::duration_cast<std::chrono::minutes>(time % hours);
+                auto seconds = std::chrono::duration_cast<std::chrono::seconds>(time % minutes);
+
+                std::stringstream ss;
+                ss << std::setfill('0') << std::setw(2) << hours.count() << ":"
+                        << std::setfill('0') << std::setw(2) << minutes.count() << ":"
+                        << std::setfill('0') << std::setw(2) << seconds.count();
+
+                return ss.str();
+        }
+
+        /*
+        Get formatted game difficulty string.
+
+        @param difficulty Difficulty to format.
+
+        @return Formatted difficulty string.
+        */
+        std::string getFormattedDifficulty(const Sudoku::Difficulty& difficulty)
+        {
+                LOG_TRACE("getFormattedDifficulty() called.");
+
+                switch (difficulty)
+                {
+                        case Sudoku::Difficulty::EASY:
+                                return "Easy";
+                        case Sudoku::Difficulty::MEDIUM:
+                                return "Medium";
+                        case Sudoku::Difficulty::HARD:
+                                return "Hard";
+                        case Sudoku::Difficulty::EXPERT:
+                                return "Expert";
+                        default:
+                                return "None";
+                }
         }
 
 } // namespace System
