@@ -206,6 +206,7 @@ namespace System
                 // Click event
                 if (event.type == sf::Event::MouseButtonPressed)
                 {
+                        soundEffect.playSound("click");
                         handleMouseClick(event);
                 }
 
