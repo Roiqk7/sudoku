@@ -502,12 +502,12 @@ namespace System
                                 // Note: row and col should be in the range [0, 8]
                                 if (!grid.checkIndex(grid.convertIndex(row, col)))
                                 {
-                                        LOG_ERROR("Invalid row x col: {} x {} (index: {}. This log message should not appear.", row, col, grid.convertIndex(row, col));
+                                        LOG_WARN("Invalid row x col: {} x {} (index: {}. This log message should not appear.",
+                                                row, col, grid.convertIndex(row, col));
                                         return;
                                 }
 
                                 // Check if the cell is empty
-                                // Note: row and col should be in the range [0, 8]
                                 if (grid.getCell(row, col) == 0)
                                 {
                                         auto& soundEffect = gui.getSoundEffect();
