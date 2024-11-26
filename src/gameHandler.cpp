@@ -81,7 +81,7 @@ namespace Sudoku
                 LOG_TRACE("GameHandler::checkUserInput() called");
 
                 // Check if the value is correct
-                bool isCorrect = grid.isValidValue(row, col, value);
+                bool isCorrect = value == solved.getCell(row, col);
 
                 // If the value is correct, set it in the grid
                 if (isCorrect)
