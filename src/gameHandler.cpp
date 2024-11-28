@@ -56,6 +56,15 @@ namespace Sudoku
                 int cells = static_cast<int>(difficulty);
                 grid.setZero(81 - cells);
 
+                // Reset attributes
+                score = 0;
+                selectedCell = -1;
+                selectedNumber = 0;
+                hintsUsed = 0;
+                mistakes = 0;
+                notesMode = false;
+                notes.reset();
+
                 #ifdef DEVELOPMENT
                 // Log the current grid and solved grid for debugging
                 Sudoku::Grid grid;

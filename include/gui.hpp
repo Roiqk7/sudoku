@@ -33,11 +33,11 @@ namespace System
                 Sudoku::GameHandler& getGameHandler();
                 SoundEffect& getSoundEffect();
                 sf::Event& getEvent();
+                void render();
         private: // Methods
         // GUI methods
                 void init();
                 void waitEvent();
-                void render();
                 void removeInactiveScenes();
         // Event handling
                 void handleEvent(const sf::Event& event);
