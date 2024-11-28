@@ -507,6 +507,7 @@ namespace System
                                 {
                                         auto& soundEffect = gui.getSoundEffect();
 
+                                        // Either add a note or a guess
                                         if (gameHandler.notesMode)
                                         {
                                                 int index = grid.convertIndex(row, col) * 9 + selectedNumber - 1;
@@ -517,6 +518,7 @@ namespace System
 
                                                 return createGameScene(scene, gui);
                                         }
+                                        // Incorrect guess
                                         else if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
                                                 soundEffect.playSound("mistake");
@@ -527,7 +529,7 @@ namespace System
                                                         return createGameOverScene(scene, gui, false);
                                                 }
                                         }
-                                        // Correct input
+                                        // Correct guess
                                         else
                                         {
                                                 soundEffect.playSound("correct");
@@ -605,15 +607,17 @@ namespace System
                 // Render the numbers
                 for (int row = 0; row < 9; row++)
                 {
-                        int x, y;
+                        int x, y, num;
                         for (int col = 0; col < 9; col++)
                         {
-                                int num = grid.getCell(row, col);
+                                num = grid.getCell(row, col);
+
+                                x = GRID_X + 12 + col * NUM_OFFSET - col * (NUM_OFFSET / 20);
+                                y = GRID_Y - 8 + row * NUM_OFFSET - row * (NUM_OFFSET / 20);
+
+                                // Non-empty cell
                                 if (num != 0)
                                 {
-                                        x = GRID_X + 12 + col * NUM_OFFSET - col * (NUM_OFFSET / 20);
-                                        y = GRID_Y - 8 + row * NUM_OFFSET - row * (NUM_OFFSET / 20);
-
                                         // Board number
                                         std::string numStr = std::to_string(num);
                                         std::shared_ptr<Object> number = std::make_shared<Text>(
@@ -622,18 +626,27 @@ namespace System
                                                 font.first, font.second,
                                                 numStr, NUM_SIZE, Colors::WHITE);
                                         scene.addObject(number);
+                                }
+                                // Empty cell
+                                else
+                                {
+                                        // We correct x and y to align with the cell
+                                        x -= 10;
+                                        y += 5;
 
-                                        // Notes
-                                        if (gameHandler.notes.test(grid.convertIndex(row, col)))
+                                        // Check for notes
+                                        for (int val = 0; val < 9; val++)
                                         {
-                                                // Note number
-                                                std::string noteStr = std::to_string(num);
-                                                std::shared_ptr<Object> note = std::make_shared<Text>(
-                                                        "noteStr",
-                                                        x, y,
-                                                        font.first, font.second,
-                                                        noteStr, NUM_SIZE / 3, Colors::WHITE);
-                                                scene.addObject(note);
+                                                if (gameHandler.notes[grid.convertIndex(row, col) * 9 + val])
+                                                {
+                                                        // Note number
+                                                        std::string noteStr = std::to_string(val + 1);
+                                                        scene.addObject(std::make_shared<Text>(
+                                                                "noteStr" + noteStr,
+                                                                x + val % 3 * 25, y + val / 3 * 22,
+                                                                font.first, font.second,
+                                                                noteStr, NUM_SIZE / 3, Colors::WHITE));
+                                                }
                                         }
                                 }
                         }
@@ -708,15 +721,17 @@ namespace System
                 scene.addObject(scoreText);\
         // Mistakes counter
                 // Mistakes text
+                std::string mistakesStr = std::to_string(gameHandler.mistakes);
+                sf::Color mistakesColor = gameHandler.mistakes == 2 ? Colors::RED : Colors::WHITE;
                 std::shared_ptr<Object> mistakesText = std::make_shared<Text>(
                         "Mistakes Text",
                         GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y + 60,
                         font.first, font.second,
-                        "Mistakes: " + std::to_string(gameHandler.mistakes), 40,
+                        "Mistakes: " + mistakesStr, 40,
                         Colors::WHITE);
                 scene.addObject(mistakesText);
 
-                // Hints text
+        // Hints text
                 std::shared_ptr<Object> hintsText = std::make_shared<Text>(
                         "Hints Text",
                         GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN + 140,
@@ -733,6 +748,8 @@ namespace System
                                 auto& gameHandler = gui.getGameHandler();
                                 gameHandler.score = 0;
                                 gameHandler.difficulty = Sudoku::Difficulty::CHEAT;
+                                auto& soundEffect = gui.getSoundEffect();
+                                soundEffect.playSound("solve");
 
                                 int iterations = 0;
                                 while(!gameHandler.checkWin())
@@ -748,7 +765,6 @@ namespace System
 
                                 createGameOverScene(scene, gui, false);
                         });
-
                 auto solveButton = createButton("Solve",
                         wi.topLeft.x + 60, GRID_Y,
                         260, 100, 10, Colors::BLACK, Colors::WHITE, solveCommand);
@@ -767,6 +783,9 @@ namespace System
                         [&scene, &gui]()
                         {
                                 auto& gameHandler = gui.getGameHandler();
+                                auto& soundEffect = gui.getSoundEffect();
+                                soundEffect.playSound("hint");
+
                                 gameHandler.solve(1);
                                 gameHandler.hintsUsed++;
                                 createGameScene(scene, gui);
@@ -776,10 +795,13 @@ namespace System
                                         createGameOverScene(scene, gui, gameHandler.checkWin());
                                 }
                         });
-
+                sf::Color hintsColor = gameHandler.hintsUsed == 0 ? Colors::WHITE
+                        : gameHandler.hintsUsed == 1 ? Colors::GREEN
+                        : gameHandler.hintsUsed == 2 ? Colors::BLUE
+                        : Colors::WHITE;
                 auto hintButton = createButton("Hint",
                         wi.topLeft.x + 60, GRID_Y + 120,
-                        260, 100, 10, Colors::BLACK, Colors::WHITE, hintCommand);
+                        260, 100, 10, Colors::BLACK, hintsColor, hintCommand);
                 scene.addObject(hintButton.frame);
                 scene.addClickableObject(hintButton.clickable);
                 scene.addObject(hintButton.background);
@@ -799,9 +821,10 @@ namespace System
                                 createGameScene(scene, gui);
                         });
 
+                sf::Color notesSwitchColor = gameHandler.notesMode ? Colors::GREEN : Colors::WHITE;
                 auto& notesSwitchButton = createButton("Notes Switch",
                         wi.topLeft.x + 60, GRID_Y + 240,
-                        260, 100, 10, Colors::BLACK, Colors::WHITE, notesSwitchCommand);
+                        260, 100, 10, Colors::BLACK, notesSwitchColor, notesSwitchCommand);
                 scene.addObject(notesSwitchButton.frame);
                 scene.addClickableObject(notesSwitchButton.clickable);
                 scene.addObject(notesSwitchButton.background);
@@ -1078,16 +1101,28 @@ namespace System
                                 text, 32, Colors::WHITE));
                 }
 
-        // Click to return box
-                // Click-to-return function
+        // Exit Button
+                // Exit clickable black rectangle
+                // Exit function
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
                                 createMainMenuScene(scene, gui);
                         });
 
-                // Click-to-return rectangle
-                scene.addClickableObject(createClickToContinue(command, window));
+                auto& exitButton = createButton("Exit",
+                        wi.center.x - 210, wi.center.y + 220,
+                        wi.size.x/5 + 120, wi.size.y/8, 10,
+                        Colors::BLACK, Colors::WHITE, command);
+                scene.addObject(exitButton.frame);
+                scene.addClickableObject(exitButton.clickable);
+                scene.addObject(exitButton.background);
+
+                // Exit text
+                scene.addObject(std::make_shared<Text>(
+                        "Exit Text", wi.center.x - 110, wi.center.y + 220,
+                        font.first, font.second, "Exit", wi.center.y / 5,
+                        Colors::BLACK));
         }
 // Development scenes
         /*
