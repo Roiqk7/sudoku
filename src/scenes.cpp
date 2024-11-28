@@ -17,6 +17,7 @@ This file contains pre-made scenes for the GUI.
 #include "../include/soundEffect.hpp"
 #include <array>
 #include <chrono>
+#include <cmath>
 #include <filesystem>
 #include <functional>
 #include <iomanip>
@@ -26,6 +27,7 @@ This file contains pre-made scenes for the GUI.
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -95,7 +97,7 @@ namespace System
         */
         void createWelcomeScene(Scene& scene, GUI& gui)
         {
-                LOG_TRACE("createWelcomeScene() called."); 
+                LOG_TRACE("createWelcomeScene() called.");
 
                 scene.clear();
 
@@ -122,10 +124,10 @@ namespace System
                         Colors::WHITE);
                 scene.addObject(text2);
 
-                // Click-to-continue function 
+                // Click-to-continue function
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
-                        { 
+                        {
                                 createMainMenuScene(scene, gui);
                         });
                 scene.addClickableObject(createClickToContinue(command, window));
@@ -153,10 +155,10 @@ namespace System
 
         // New Game Button
                 // New Game clickable black rectangle
-                // New Game function 
+                // New Game function
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
-                        { 
+                        {
                                 createNewGameScene(scene, gui);
                         });
 
@@ -175,7 +177,7 @@ namespace System
                         Colors::BLACK));
         // Credits Button
                 // Credits clickable black rectangle
-                // Credits function 
+                // Credits function
                 std::shared_ptr<Command> command2 = std::make_shared<Command>(
                         [&scene, &gui]()
                         {
@@ -195,9 +197,9 @@ namespace System
                         Colors::BLACK));
         // Exit Button
                 // Exit clickable black rectangle
-                // Exit function 
+                // Exit function
                 std::shared_ptr<Command> command3 = std::make_shared<Command>(
-                        [&window]() 
+                        [&window]()
                         {
                                 window.close();
                         });
@@ -252,10 +254,10 @@ namespace System
                         font.second, "Click anywhere to return", wi.center.y / 10,
                         Colors::WHITE));
 
-                // Click-to-return function 
+                // Click-to-return function
                 std::shared_ptr<Command> command = std::make_shared<Command>(
                         [&scene, &gui]()
-                        { 
+                        {
                                 createMainMenuScene(scene, gui);
                         });
                 // Click-to-return rectangle
@@ -401,10 +403,10 @@ namespace System
                 Colors::BLACK));
 
         // Click to return box
-                // Click-to-return function 
+                // Click-to-return function
                 std::shared_ptr<Command> commandR = std::make_shared<Command>(
                         [&scene, &gui]()
-                        { 
+                        {
                                 createMainMenuScene(scene, gui);
                         });
                 scene.addClickableObject(createClickToContinue(commandR, window));
@@ -650,6 +652,9 @@ namespace System
                         case Sudoku::Difficulty::EXPERT:
                                 difficultyStr += "Expert";
                                 break;
+                        case Sudoku::Difficulty::CHEAT:
+                                difficultyStr += "Invalid (Cheat)";
+                                break;
                         default:
                                 difficultyStr += "??????";
                                 LOG_ERROR("Unknown difficulty level.");
@@ -667,7 +672,7 @@ namespace System
                 // Score text
                 std::shared_ptr<Object> scoreText = std::make_shared<Text>(
                         "Score Text",
-                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN - 60,
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y,
                         font.first, font.second,
                         "Score: " + std::to_string(gameHandler.score), 40,
                         Colors::WHITE);
@@ -676,7 +681,7 @@ namespace System
                 // Mistakes text
                 std::shared_ptr<Object> mistakesText = std::make_shared<Text>(
                         "Mistakes Text",
-                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN,
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y + 60,
                         font.first, font.second,
                         "Mistakes: " + std::to_string(gameHandler.mistakes), 40,
                         Colors::WHITE);
@@ -685,11 +690,76 @@ namespace System
                 // Hints text
                 std::shared_ptr<Object> hintsText = std::make_shared<Text>(
                         "Hints Text",
-                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN + 60,
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN + 140,
                         font.first, font.second,
                         "Hints: " + std::to_string(gameHandler.hintsUsed) + "/3", 40,
                         Colors::WHITE);
                 scene.addObject(hintsText);
+        // Solve Button
+                // Solve clickable rectangle
+                // Solve function
+                std::shared_ptr<Command> solveCommand = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.score = 0;
+                                gameHandler.difficulty = Sudoku::Difficulty::CHEAT;
+
+                                int iterations = 0;
+                                while(!gameHandler.checkWin())
+                                {
+                                        gameHandler.solve(1);
+                                        createGameScene(scene, gui);
+                                        gui.render();
+
+                                        // Sleep
+                                        auto sleepTime = std::chrono::milliseconds(1000 / iterations + 1);
+                                        std::this_thread::sleep_for(sleepTime);
+                                }
+
+                                createGameOverScene(scene, gui, true);
+                        });
+
+                auto solveButton = createButton("Solve",
+                        wi.topLeft.x + 60, GRID_Y,
+                        260, 100, 10, Colors::BLACK, Colors::WHITE, solveCommand);
+                scene.addObject(solveButton.frame);
+                scene.addClickableObject(solveButton.clickable);
+                scene.addObject(solveButton.background);
+        // Hint Button
+                // Hint clickable rectangle
+                // Hint function
+                std::shared_ptr<Command> hintCommand = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.solve(1);
+                                gameHandler.hintsUsed++;
+                                createGameScene(scene, gui);
+
+                                if (gameHandler.hintsUsed == 3)
+                                {
+                                        createGameOverScene(scene, gui, gameHandler.checkWin());
+                                }
+                        });
+
+                auto hintButton = createButton("Hint",
+                        wi.topLeft.x + 60, GRID_Y + 120,
+                        260, 100, 10, Colors::BLACK, Colors::WHITE, hintCommand);
+                scene.addObject(hintButton.frame);
+                scene.addClickableObject(hintButton.clickable);
+                scene.addObject(hintButton.background);
+
+                // Hint text
+                scene.addObject(std::make_shared<Text>(
+                        "Hint Text", wi.topLeft.x + 100, GRID_Y + 120,
+                        font.first, font.second, "Hint", 80, Colors::BLACK));
+
+                // Solve text
+                scene.addObject(std::make_shared<Text>(
+                        "Solve Text", wi.topLeft.x + 70, GRID_Y,
+                        font.first, font.second, "Solve", 80, Colors::BLACK));
+
 
         // Number Panel
                 // Number panel frame
@@ -913,7 +983,7 @@ namespace System
                 const int X_POS = wi.center.x - 250;
                 const int Y_POS = wi.topLeft.y + 260;
                 const int X_SIZE = wi.topLeft.x + 500;
-                const int Y_SIZE = wi.topLeft.y + 510;
+                const int Y_SIZE = wi.topLeft.y + 320;
 
         // Background
                 auto& background = createButton("Background",
