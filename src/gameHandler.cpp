@@ -226,15 +226,15 @@ namespace Sudoku
 
                         - 1800 or 30 minutes is used as the base score. We subtract current time in seconds from it
                                 to encourage faster solving.
-                        - 100 is multiplied by the difficulty multiplier to reward harder difficulties.
-                        - 20 is multiplied by the sum of hints and mistakes to penalize them. 20 is chosen as the
-                                maximum value of hints is 3 and mistakes 2 (3 + 2 = 5 * 20 = 100). This way we
+                        - 1000 is multiplied by the difficulty multiplier to reward harder difficulties.
+                        - 200 is multiplied by the sum of hints and mistakes to penalize them. 200 is chosen as the
+                                maximum value of hints is 3 and mistakes 2 (5 * 200 = 1000). This way we
                                 prevent negative scores.
                         - The worst score possible is 0.
                 */
-                score += (1000 - seconds)                                       // Time incentive
-                        + (100 * difficultyMultiplier)                          // Difficulty reward
-                        - (20 * (hintsUsed + mistakes));                        // Bad player penalty
+                score += (1800 - seconds)                                       // Time incentive
+                        + (1000 * difficultyMultiplier)                          // Difficulty reward
+                        - (200 * (hintsUsed + mistakes));                        // Bad player penalty
         }
 
 } // namespace Sudoku
