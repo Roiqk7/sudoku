@@ -759,7 +759,8 @@ namespace System
                 scene.addObject(std::make_shared<Text>(
                         "Hint Text", wi.topLeft.x + 90, GRID_Y + 120,
                         font.first, font.second, "Hint", 80, Colors::BLACK));
-
+        // Notes
+                // TODO: Implement notes
 
         // Number Panel
                 // Number panel frame
