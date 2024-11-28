@@ -304,6 +304,8 @@ namespace System
                                 return "Hard";
                         case Sudoku::Difficulty::EXPERT:
                                 return "Expert";
+                        case Sudoku::Difficulty::CHEAT:
+                                return "Invalid";
                         default:
                                 return "None";
                 }
