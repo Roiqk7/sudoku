@@ -62,7 +62,6 @@ namespace Sudoku
                 bool notesMode = false;                                         // If notes mode is enabled
                 std::bitset<81*9> notes;                                        // Notes for each cell (1 if note is given)
                 int hintsUsed = 0;                                              // Number of hints used
-                std::bitset<81> hints;                                          // Hint for each cell (1 if hint is given)
                 std::chrono::seconds time;                                      // Time taken to solve the grid (in seconds)
         private: // Variables
                 Grid grid;                                                      // What the player sees
