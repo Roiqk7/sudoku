@@ -27,6 +27,7 @@ namespace Sudoku
         enum class Difficulty
         {
                 NONE = 0,
+                CHEAT = 81,
                 EASY = 36,
                 MEDIUM = 31,
                 HARD = 26,
