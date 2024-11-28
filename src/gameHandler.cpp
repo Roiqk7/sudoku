@@ -10,6 +10,7 @@ Game handler makes the connection between the GUI and the game logic.
 #include "../include/grid.hpp"
 #include "../include/solver.hpp"
 #include <algorithm>
+#include <chrono>
 #include <random>
 
 namespace Sudoku
@@ -87,6 +88,8 @@ namespace Sudoku
                 if (isCorrect)
                 {
                         grid.setCell(row, col, value);
+
+                        updateScore();
                 }
 
                 return isCorrect;
@@ -166,7 +169,7 @@ namespace Sudoku
 
                 this->grid = grid;
         }
-}
+
 // Checker
         /*
         Checks if the player has won the game.
@@ -179,3 +182,59 @@ namespace Sudoku
 
                 return grid.isSolved() && mistakes < 3;
         }
+// Game handler methods
+        /*
+        Updates the score based on the difficulty and time.
+
+        @note This function is called after a correct user guess.
+        */
+        void GameHandler::updateScore()
+        {
+                LOG_TRACE("GameHandler::updateScore() called");
+
+                // Get the time in seconds
+                int seconds = time.count();
+
+                float difficultyMultiplier = 0.0;
+
+                // Calculate the difficulty multiplier
+                switch (difficulty)
+                {
+                        case Difficulty::EASY:
+                                difficultyMultiplier = 1;
+                                break;
+                        case Difficulty::MEDIUM:
+                                difficultyMultiplier = 1.25;
+                                break;
+                        case Difficulty::HARD:
+                                difficultyMultiplier = 1.5;
+                                break;
+                        case Difficulty::EXPERT:
+                                difficultyMultiplier = 2;
+                                break;
+                        default:
+                                LOG_ERROR("Invalid difficulty: {}",
+                                        static_cast<int>(difficulty));
+                                difficultyMultiplier = -1;
+                                return;
+                }
+
+                // Calculate the score
+                /*
+                Formula:
+                        score += 1800 - time (in seconds) + 100 * difficultyMultiplier - 20 * (hints + mistakes)
+
+                        - 1800 or 30 minutes is used as the base score. We subtract current time in seconds from it
+                                to encourage faster solving.
+                        - 100 is multiplied by the difficulty multiplier to reward harder difficulties.
+                        - 20 is multiplied by the sum of hints and mistakes to penalize them. 20 is chosen as the
+                                maximum value of hints is 3 and mistakes 2 (3 + 2 = 5 * 20 = 100). This way we
+                                prevent negative scores.
+                        - The worst score possible is 0.
+                */
+                score += (1000 - seconds)                                       // Time incentive
+                        + (100 * difficultyMultiplier)                          // Difficulty reward
+                        - (20 * (hintsUsed + mistakes));                        // Bad player penalty
+        }
+
+} // namespace Sudoku

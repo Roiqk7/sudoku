@@ -49,6 +49,9 @@ namespace Sudoku
                 void setGrid(const Grid& grid);
         // Checker
                 bool checkWin() const;
+        private: // Methods
+        // Game handler methods
+                void updateScore();
         public: // Variables
                 int score = 0;                                                  // The score of the player
                 int selectedCell = -1;                                          // The cell selected by the player
