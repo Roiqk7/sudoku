@@ -16,6 +16,7 @@ This file contains pre-made scenes for the GUI.
 #include "../include/scenes.hpp"
 #include "../include/soundEffect.hpp"
 #include <array>
+#include <bitset>
 #include <chrono>
 #include <cmath>
 #include <filesystem>
@@ -506,7 +507,12 @@ namespace System
                                 {
                                         auto& soundEffect = gui.getSoundEffect();
 
-                                        if (!gameHandler.checkUserInput(row, col, selectedNumber))
+                                        if (gameHandler.notesMode)
+                                        {
+                                                // Add the note
+                                                gameHandler.notes.flip(grid.convertIndex(row, col));
+                                        }
+                                        else if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
                                                 soundEffect.playSound("mistake");
 
@@ -593,19 +599,38 @@ namespace System
                 // Render the numbers
                 for (int row = 0; row < 9; row++)
                 {
+                        int x, y;
                         for (int col = 0; col < 9; col++)
                         {
                                 int num = grid.getCell(row, col);
                                 if (num != 0)
                                 {
+                                        x = GRID_X + 12 + col * NUM_OFFSET - col * (NUM_OFFSET / 20);
+                                        y = GRID_Y - 8 + row * NUM_OFFSET - row * (NUM_OFFSET / 20);
+
+                                        // Board number
                                         std::string numStr = std::to_string(num);
                                         std::shared_ptr<Object> number = std::make_shared<Text>(
                                                 "numStr",
-                                                GRID_X + 12 + col * NUM_OFFSET - col * (NUM_OFFSET / 20),
-                                                GRID_Y - 8 + row * NUM_OFFSET - row * (NUM_OFFSET / 20),
+                                                x, y,
                                                 font.first, font.second,
                                                 numStr, NUM_SIZE, Colors::WHITE);
                                         scene.addObject(number);
+
+                                        // Notes
+                                        // TODO: Fix
+                                        gameHandler.notes.flip(grid.convertIndex(row, col));
+                                        if (gameHandler.notes.test(grid.convertIndex(row, col)))
+                                        {
+                                                // Note number
+                                                std::string noteStr = std::to_string(num);
+                                                std::shared_ptr<Object> note = std::make_shared<Text>(
+                                                        "noteStr",
+                                                        x, y,
+                                                        font.first, font.second,
+                                                        noteStr, NUM_SIZE / 3, Colors::WHITE);
+                                                scene.addObject(note);
+                                        }
                                 }
                         }
                 }
@@ -759,9 +784,28 @@ namespace System
                 scene.addObject(std::make_shared<Text>(
                         "Hint Text", wi.topLeft.x + 90, GRID_Y + 120,
                         font.first, font.second, "Hint", 80, Colors::BLACK));
-        // Notes
-                // TODO: Implement notes
+        // Notes switch button
+                // Notes switch clickable rectangle
+                // Notes switch function
+                std::shared_ptr<Command> notesSwitchCommand = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.notesMode = !gameHandler.notesMode;
+                                createGameScene(scene, gui);
+                        });
 
+                auto& notesSwitchButton = createButton("Notes Switch",
+                        wi.topLeft.x + 60, GRID_Y + 240,
+                        260, 100, 10, Colors::BLACK, Colors::WHITE, notesSwitchCommand);
+                scene.addObject(notesSwitchButton.frame);
+                scene.addClickableObject(notesSwitchButton.clickable);
+                scene.addObject(notesSwitchButton.background);
+
+                // Notes switch text
+                scene.addObject(std::make_shared<Text>(
+                        "Notes Switch Text", wi.topLeft.x + 70, GRID_Y + 240,
+                        font.first, font.second, "Notes", 80, Colors::BLACK));
         // Number Panel
                 // Number panel frame
                 std::shared_ptr<Object> numberPanelFrame = std::make_shared<Rectangle>(
