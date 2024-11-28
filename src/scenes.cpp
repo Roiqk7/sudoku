@@ -332,12 +332,17 @@ namespace System
                 scene.addObject(getTitle(window));
 
         // Difficulty Buttons
-        std::array<std::tuple<std::string, Sudoku::Difficulty, sf::Color>, 4>
-                diffMap = {
-                        std::make_tuple("Expert", Sudoku::Difficulty::EXPERT, Colors::RED),
-                        std::make_tuple("Hard", Sudoku::Difficulty::HARD, Colors::ORANGE),
-                        std::make_tuple("Medium", Sudoku::Difficulty::MEDIUM, Colors::YELLOW),
-                        std::make_tuple("Easy", Sudoku::Difficulty::EASY, Colors::GREEN)
+        std::array<std::tuple<std::string,
+                Sudoku::Difficulty, sf::Color>, 4> diffMap =
+                {
+                        std::make_tuple("Expert",
+                                Sudoku::Difficulty::EXPERT, Colors::RED),
+                        std::make_tuple("Hard",
+                                Sudoku::Difficulty::HARD, Colors::ORANGE),
+                        std::make_tuple("Medium",
+                                Sudoku::Difficulty::MEDIUM, Colors::YELLOW),
+                        std::make_tuple("Easy",
+                                Sudoku::Difficulty::EASY, Colors::GREEN)
         };
 
         for (int i = 0; i < 4; i++)
@@ -421,13 +426,9 @@ namespace System
 
                 scene.name = "Game";
 
-                // Get necessary window information
-                // TODO: Replace with window info struct
-                auto& window = gui.getWindow();
-                sf::Vector2i topLeft = getWindowTopLeftCorner();
-                sf::Vector2u sizeU = getWindowSize(window);
-                sf::Vector2i size(sizeU.x, sizeU.y);
-                sf::Vector2i center = getWindowCenter(sizeU);
+                sf::RenderWindow& window = gui.getWindow();
+                auto wi = getWindowInfo(window);
+
                 // Get the game handler
                 auto& gameHandler = gui.getGameHandler();
                 // Get the font
@@ -450,20 +451,11 @@ namespace System
                 Sudoku::Grid grid;
                 gameHandler.getGrid(grid);
 
-                // Create the background frame
-                std::shared_ptr<Object> gridBackgroundFrame = std::make_shared<Rectangle>(
-                        "Grid Background", center.x - 370, topLeft.y + 80,
-                        720, 720, Colors::WHITE);
-                scene.addObject(gridBackgroundFrame);
-
                 // Create the grid background
                 const int GRID_SIZE = 680;
-                const int GRID_X = center.x - 350;
-                const int GRID_Y = topLeft.y + 100;
-                std::shared_ptr<Object> gridBackground = std::make_shared<Rectangle>(
-                        "Grid Background", GRID_X, GRID_Y,
-                        GRID_SIZE, GRID_SIZE, Colors::NAVAJO_WHITE);
-                scene.addObject(gridBackground);
+                const int GRID_X = wi.center.x - 350;
+                const int GRID_Y = wi.topLeft.y + 100;
+                const int FRAME_MARGIN = 20;
 
                 // Create the click function
                 std::shared_ptr<Command> boardClickCommand = std::make_shared<Command>(
@@ -537,16 +529,20 @@ namespace System
                                 }
                         });
 
-                // Create the clickable rectangle
-                std::shared_ptr<Rectangle> clickableBoardRect = std::make_shared<Rectangle>(
-                        "Clickable board rect", GRID_X, GRID_Y,
-                        GRID_SIZE, GRID_SIZE, Colors::NAVAJO_WHITE,
+                auto& sudokuGrid = createButton("Grid",
+                        GRID_X - FRAME_MARGIN, GRID_Y - FRAME_MARGIN,
+                        GRID_SIZE + 2 * FRAME_MARGIN, GRID_SIZE + 2 * FRAME_MARGIN,
+                        FRAME_MARGIN,
+                        Colors::WHITE, Colors::NAVAJO_WHITE,
                         boardClickCommand);
-                scene.addClickableObject(clickableBoardRect);
+                scene.addObject(sudokuGrid.frame);
+                scene.addClickableObject(sudokuGrid.clickable);
+                scene.addObject(sudokuGrid.background);
 
                 // Create the grid lines
                 const int NUM_LINES = 9;
                 const int LINE_SIZE = 2;
+
                 // We temporarily store the thick lines to make sure they are rendered last
                 std::array<std::shared_ptr<Object>, 4> thickLines;
                 int thickLineIndex = 0;
@@ -554,6 +550,7 @@ namespace System
                 {
                         int offset = (GRID_SIZE / NUM_LINES) * i - LINE_SIZE / 2;
                         bool thickLine = i % 3 == 0;
+
                         // Determine the color of the line
                         sf::Color color = thickLine ? Colors::LIGHT_SKY_BLUE
                                 : Colors::WHITE;
@@ -563,14 +560,6 @@ namespace System
                                 "Grid Line Horizontal",
                                 GRID_X, GRID_Y + offset,
                                 GRID_SIZE, LINE_SIZE, color);
-                        if (thickLine)
-                        {
-                                thickLines[thickLineIndex++] = lineH;
-                        }
-                        else
-                        {
-                                scene.addObject(lineH);
-                        }
 
                         // Vertical lines
                         std::shared_ptr<Object> lineV = std::make_shared<Rectangle>(
@@ -580,10 +569,12 @@ namespace System
 
                         if (thickLine)
                         {
+                                thickLines[thickLineIndex++] = lineH;
                                 thickLines[thickLineIndex++] = lineV;
                         }
                         else
                         {
+                                scene.addObject(lineH);
                                 scene.addObject(lineV);
                         }
                 }
@@ -626,18 +617,18 @@ namespace System
 
                 // Pause clickable rectangle
                 std::shared_ptr<Rectangle> pauseClickRect = std::make_shared<Rectangle>(
-                        "Pause Clickable", GRID_X, topLeft.y + 10,
+                        "Pause Clickable", GRID_X, wi.topLeft.y + 10,
                         60, 60, Colors::WHITE, command);
                 scene.addClickableObject(pauseClickRect);
 
                 // Pause symbol rectangles
                 std::shared_ptr<Object> pauseRect1 = std::make_shared<Rectangle>(
-                        "Pause 1", GRID_X + 5, topLeft.y + 15,
+                        "Pause 1", GRID_X + 5, wi.topLeft.y + 15,
                         20, 50, Colors::BLACK);
                 scene.addObject(pauseRect1);
 
                 std::shared_ptr<Object> pauseRect2 = std::make_shared<Rectangle>(
-                        "Pause 2", GRID_X + 35, topLeft.y + 15,
+                        "Pause 2", GRID_X + 35, wi.topLeft.y + 15,
                         20, 50, Colors::BLACK);
                 scene.addObject(pauseRect2);
         // Difficulty Level
@@ -667,25 +658,33 @@ namespace System
 
                 // Difficulty text
                 std::shared_ptr<Object> difficultyText = std::make_shared<Text>(
-                        "Difficulty Text", center.x - 250, topLeft.y + 10, font.first,
-                        font.second, difficultyStr, 50,
+                        "Difficulty Text",
+                        wi.center.x - 250, wi.topLeft.y + 10,
+                        font.first, font.second, difficultyStr, 50,
                         Colors::WHITE);
                 scene.addObject(difficultyText);
-
-        // TODO: other elements
+        // Score label
+                // Score text
+                std::shared_ptr<Object> scoreText = std::make_shared<Text>(
+                        "Score Text",
+                        GRID_X + GRID_SIZE + FRAME_MARGIN, GRID_Y - FRAME_MARGIN - 60,
+                        font.first, font.second,
+                        "Score: " + std::to_string(gameHandler.score), 40,
+                        Colors::WHITE);
+                scene.addObject(scoreText);
 
         // Number Panel
                 // Number panel frame
                 std::shared_ptr<Object> numberPanelFrame = std::make_shared<Rectangle>(
                         "Number Panel Frame",
-                        GRID_X + GRID_SIZE + 30, center.y - 120,
+                        GRID_X + GRID_SIZE + 30, wi.center.y - 120,
                         320, 320, Colors::WHITE);
                 scene.addObject(numberPanelFrame);
 
                 // Number panel background
                 const int NUM_PANEL_SIZE = 300;
                 const int NUM_PANEL_X = GRID_X + GRID_SIZE + 40;
-                const int NUM_PANEL_Y = center.y - 110;
+                const int NUM_PANEL_Y = wi.center.y - 110;
                 std::shared_ptr<Object> numberPanelBackground = std::make_shared<Rectangle>(
                         "Number Panel Background",
                         NUM_PANEL_X, NUM_PANEL_Y,
@@ -730,7 +729,7 @@ namespace System
                 // Number panel clickable rectangle
                 std::shared_ptr<Rectangle> numberPanelClickableRect = std::make_shared<Rectangle>(
                         "Number Panel Clickable",
-                        GRID_X + GRID_SIZE + 40, center.y - 110,
+                        GRID_X + GRID_SIZE + 40, wi.center.y - 110,
                         NUM_PANEL_SIZE, NUM_PANEL_SIZE,
                         Colors::TRANSPARENT, numberPanelClickCommand);
                 scene.addClickableObject(numberPanelClickableRect);
@@ -746,14 +745,14 @@ namespace System
                         // Horizontal lines
                         std::shared_ptr<Object> lineH = std::make_shared<Rectangle>(
                                 "Number Panel Line Horizontal",
-                                GRID_X + GRID_SIZE + 40, center.y - 110 + offset,
+                                GRID_X + GRID_SIZE + 40, wi.center.y - 110 + offset,
                                 NUM_PANEL_SIZE, NUM_PANEL_LINE_SIZE, Colors::WHITE);
                         scene.addObject(lineH);
 
                         // Vertical lines
                         std::shared_ptr<Object> lineV = std::make_shared<Rectangle>(
                                 "Number Panel Line Vertical",
-                                GRID_X + GRID_SIZE + 40 + offset, center.y - 110,
+                                GRID_X + GRID_SIZE + 40 + offset, wi.center.y - 110,
                                 NUM_PANEL_LINE_SIZE, NUM_PANEL_SIZE, Colors::WHITE);
                         scene.addObject(lineV);
                 }
@@ -771,7 +770,7 @@ namespace System
                                 std::shared_ptr<Object> number = std::make_shared<Text>(
                                         "Number Panel Number",
                                         GRID_X + GRID_SIZE + 60 + col * NUM_PANEL_NUM_OFFSET,
-                                        center.y - 120 + row * NUM_PANEL_NUM_OFFSET,
+                                        wi.center.y - 120 + row * NUM_PANEL_NUM_OFFSET,
                                         font.first, font.second,
                                         numStr, NUM_PANEL_NUM_SIZE, Colors::WHITE);
                                 scene.addObject(number);
@@ -880,7 +879,7 @@ namespace System
         {
                 LOG_TRACE("createGameOverScene() called.");
 
-                const std::string result = win ? "won" : "lost";
+                const std::string result = win ? "Won" : "Lost";
                 LOG_DEBUG("Game result: Player " + result);
 
                 scene.clear();
