@@ -48,7 +48,18 @@ namespace System
 
                 while (window.isOpen())
                 {
-                        waitEvent();
+                        // Main loop
+                        try
+                        {
+                                waitEvent();
+                        }
+                        // Prevent the game from crashing if an exception is thrown
+                        catch (const std::exception& e)
+                        {
+                                LOG_ERROR("Exception caught: {}", e.what());
+
+                                run();
+                        }
                 }
         }
 // Getter
