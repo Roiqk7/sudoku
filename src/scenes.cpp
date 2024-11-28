@@ -509,8 +509,13 @@ namespace System
 
                                         if (gameHandler.notesMode)
                                         {
-                                                // Add the note
-                                                gameHandler.notes.flip(grid.convertIndex(row, col));
+                                                int index = grid.convertIndex(row, col) * 9 + selectedNumber - 1;
+                                                bool value = gameHandler.notes.test(index);
+
+                                                // Add or remove note
+                                                gameHandler.notes = gameHandler.notes.set(index, !value);
+
+                                                return createGameScene(scene, gui);
                                         }
                                         else if (!gameHandler.checkUserInput(row, col, selectedNumber))
                                         {
@@ -533,6 +538,7 @@ namespace System
                                                         return createGameOverScene(scene, gui, true);
                                                 }
                                         }
+
                                         return createGameScene(scene, gui);
                                 }
                         });
@@ -618,8 +624,6 @@ namespace System
                                         scene.addObject(number);
 
                                         // Notes
-                                        // TODO: Fix
-                                        gameHandler.notes.flip(grid.convertIndex(row, col));
                                         if (gameHandler.notes.test(grid.convertIndex(row, col)))
                                         {
                                                 // Note number
