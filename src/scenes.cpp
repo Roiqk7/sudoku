@@ -667,11 +667,29 @@ namespace System
                 // Score text
                 std::shared_ptr<Object> scoreText = std::make_shared<Text>(
                         "Score Text",
-                        GRID_X + GRID_SIZE + FRAME_MARGIN, GRID_Y - FRAME_MARGIN - 60,
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN - 60,
                         font.first, font.second,
                         "Score: " + std::to_string(gameHandler.score), 40,
                         Colors::WHITE);
-                scene.addObject(scoreText);
+                scene.addObject(scoreText);\
+        // Mistakes counter
+                // Mistakes text
+                std::shared_ptr<Object> mistakesText = std::make_shared<Text>(
+                        "Mistakes Text",
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN,
+                        font.first, font.second,
+                        "Mistakes: " + std::to_string(gameHandler.mistakes), 40,
+                        Colors::WHITE);
+                scene.addObject(mistakesText);
+
+                // Hints text
+                std::shared_ptr<Object> hintsText = std::make_shared<Text>(
+                        "Hints Text",
+                        GRID_X + GRID_SIZE + FRAME_MARGIN + 20, GRID_Y - FRAME_MARGIN + 60,
+                        font.first, font.second,
+                        "Hints: " + std::to_string(gameHandler.hintsUsed) + "/3", 40,
+                        Colors::WHITE);
+                scene.addObject(hintsText);
 
         // Number Panel
                 // Number panel frame
