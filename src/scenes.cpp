@@ -717,7 +717,7 @@ namespace System
                                         std::this_thread::sleep_for(sleepTime);
                                 }
 
-                                createGameOverScene(scene, gui, true);
+                                createGameOverScene(scene, gui, false);
                         });
 
                 auto solveButton = createButton("Solve",
@@ -726,6 +726,11 @@ namespace System
                 scene.addObject(solveButton.frame);
                 scene.addClickableObject(solveButton.clickable);
                 scene.addObject(solveButton.background);
+
+                // Solve text
+                scene.addObject(std::make_shared<Text>(
+                        "Solve Text", wi.topLeft.x + 70, GRID_Y,
+                        font.first, font.second, "Solve", 80, Colors::BLACK));
         // Hint Button
                 // Hint clickable rectangle
                 // Hint function
@@ -752,13 +757,8 @@ namespace System
 
                 // Hint text
                 scene.addObject(std::make_shared<Text>(
-                        "Hint Text", wi.topLeft.x + 100, GRID_Y + 120,
+                        "Hint Text", wi.topLeft.x + 90, GRID_Y + 120,
                         font.first, font.second, "Hint", 80, Colors::BLACK));
-
-                // Solve text
-                scene.addObject(std::make_shared<Text>(
-                        "Solve Text", wi.topLeft.x + 70, GRID_Y,
-                        font.first, font.second, "Solve", 80, Colors::BLACK));
 
 
         // Number Panel
