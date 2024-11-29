@@ -67,7 +67,7 @@ namespace System
                         }
                         else
                         {
-                                LOG_ERROR("Failed to load sound effect: {}", sound);
+                                LOG_ERROR("Failed to load sound effect: {}", path);
                                 return false;
                         }
                 }
