@@ -749,7 +749,7 @@ namespace System
                                 gameHandler.score = 0;
                                 gameHandler.difficulty = Sudoku::Difficulty::CHEAT;
                                 auto& soundEffect = gui.getSoundEffect();
-                                soundEffect.playSound("solve");
+                                // TODO: Add soundEffect.playSound("solve");
 
                                 int iterations = 0;
                                 while(!gameHandler.checkWin())
