@@ -65,6 +65,21 @@ namespace System
         }
 
         /*
+        Check if the music is playing.
+
+        @note If the music is not playing, start playing it.
+        */
+        void Music::checkMusic()
+        {
+                LOG_TRACE("Music::checkMusic() called");
+
+                if (music->getStatus() != sf::Music::Playing)
+                {
+                        playMusic();
+                }
+        }
+
+        /*
         Load the music.
 
         @return True if the music was loaded successfully, false otherwise.
