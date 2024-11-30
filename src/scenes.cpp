@@ -469,7 +469,7 @@ namespace System
                                 sf::Event event = gui.getEvent();
 
                                 // Ignore if not a mouse click
-                                // Should not happen
+                                // Note: Should not happen
                                 if (event.type != sf::Event::MouseButtonPressed)
                                 {
                                         // This function should only be called on mouse click
@@ -942,9 +942,62 @@ namespace System
                                 */
                                 int num = row * 3 + col + 1;
 
-                                gameHandler.selectedNumber = num;
+                                gameHandler.selectedNumber = gameHandler.selectedNumber == num ? -1 : num;
 
-                                LOG_TRACE("Selected number: " + std::to_string(num));
+                                // Check if the number can be placed
+                                Sudoku::Grid grid;
+                                gameHandler.getGrid(grid);
+                                if (grid.checkCellIndex(gameHandler.selectedCell) and
+                                        gameHandler.selectedNumber != -1)
+                                {
+                                        int cell = gameHandler.selectedCell;
+                                        int cellRow = cell / 9;
+                                        int cellCol = cell % 9;
+
+                                        // Check if the number can be placed
+                                        if (gameHandler.checkUserInput(cellRow, cellCol,
+                                                gameHandler.selectedNumber))
+                                        {
+                                                auto& soundEffect = gui.getSoundEffect();
+
+                                                // Either add a note or a guess
+                                                if (gameHandler.notesMode)
+                                                {
+                                                        int index = grid.convertIndex(row, col) * 9
+                                                                + gameHandler.selectedNumber - 1;
+                                                        bool value = gameHandler.notes.test(index);
+
+                                                        // Add or remove note
+                                                        gameHandler.notes = gameHandler.notes.set(index, !value);
+
+                                                        return createGameScene(scene, gui);
+                                                }
+                                                // Incorrect guess
+                                                else if (!gameHandler.checkUserInput(row, col,
+                                                        gameHandler.selectedNumber))
+                                                {
+                                                        soundEffect.playSound("mistake");
+
+                                                        if (++gameHandler.mistakes == 3)
+                                                        {
+                                                                return createGameOverScene(scene, gui, false);
+                                                        }
+                                                }
+                                                // Correct guess
+                                                else
+                                                {
+                                                        soundEffect.playSound("correct");
+
+                                                        // Check win condition
+                                                        if (gameHandler.checkWin())
+                                                        {
+                                                                return createGameOverScene(scene, gui, true);
+                                                        }
+                                                }
+                                        }
+                                }
+
+                                createGameScene(scene, gui);
                         });
                 auto& numberPanel = createButton("Number Panel",
                         GRID_X + GRID_SIZE + 30, wi.center.y - 120,
@@ -966,7 +1019,7 @@ namespace System
                                 NUM_PANEL_X + col * (NUM_PANEL_SIZE / 3),
                                 NUM_PANEL_Y + row * (NUM_PANEL_SIZE / 3),
                                 NUM_PANEL_SIZE / 3, NUM_PANEL_SIZE / 3,
-                                Colors::SHADOW));
+                                Colors::ORANGE));
                 }
 
                 // Number panel lines
