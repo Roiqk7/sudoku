@@ -746,15 +746,20 @@ namespace System
                         [&scene, &gui]()
                         {
                                 auto& gameHandler = gui.getGameHandler();
-                                gameHandler.score = 0;
                                 gameHandler.difficulty = Sudoku::Difficulty::CHEAT;
+                                gameHandler.cheat = true;
                                 auto& soundEffect = gui.getSoundEffect();
                                 soundEffect.playSound("solve");
 
                                 int iterations = 0;
                                 while(!gameHandler.checkWin())
                                 {
+                                        // Iterate
                                         gameHandler.solve(1);
+                                        gameHandler.hintsUsed++;
+                                        gameHandler.score *= 0.9;
+
+                                        // Render
                                         createGameScene(scene, gui);
                                         gui.render();
 
@@ -764,13 +769,16 @@ namespace System
                                 }
 
                                 // Let the user see the solved board
+                                // TODO: Implement a better way to show the solved board
                                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
                                 createGameOverScene(scene, gui, false);
                         });
+                sf::Color solveColor = gameHandler.cheat ? Colors::SHADOW
+                        : Colors::WHITE;
                 auto solveButton = createButton("Solve",
                         wi.topLeft.x + 60, GRID_Y,
-                        260, 100, 10, Colors::BLACK, Colors::WHITE, solveCommand);
+                        260, 100, 10, Colors::BLACK, solveColor, solveCommand);
                 scene.addObject(solveButton.frame);
                 scene.addClickableObject(solveButton.clickable);
                 scene.addObject(solveButton.background);
