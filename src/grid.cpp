@@ -452,7 +452,8 @@ namespace Sudoku
 
         @return True if the array is valid, false otherwise.
 
-        @note An array is considered valid if every number is in the range [1, 9].
+        @note An array is considered valid if every value in the range [1, 9] occurred at most once
+                and all the values are in the range [0, 9].
         */
         bool Grid::areValidValues(const std::array<int, 9>& array) const noexcept
         {
@@ -462,10 +463,23 @@ namespace Sudoku
 
                 for (size_t i = 0; i < 9; i++)
                 {
-                        values[array[i] - 1] = true;
+                        int value = array[i];
+                        if (value < 0 || value > 9)
+                        {
+                                return false;
+                        }
+
+                        if (value != 0)
+                        {
+                                if (values[value - 1])
+                                {
+                                        return false;
+                                }
+                                values.set(value - 1);
+                        }
                 }
 
-                return values.all();
+                return true;
         }
 
         /*
@@ -492,33 +506,22 @@ namespace Sudoku
                 size_t row = i / 9;
                 size_t col = i % 9;
                 std::array<int, 9> arr;
+                bool valid = true;
 
                 getRow(row, arr);
-                if (!areValidValues(arr))
-                {
-                        setCell(i, originalValue);
-                        return false;
-                }
+                valid = areValidValues(arr);
 
                 getCol(col, arr);
-                if (!areValidValues(arr))
-                {
-                        setCell(i, originalValue);
-                        return false;
-                }
+                valid = valid && areValidValues(arr);
 
                 size_t box = (row / 3) * 3 + (col / 3);
                 getBox(box, arr);
-                if (!areValidValues(arr))
-                {
-                        setCell(i, originalValue);
-                        return false;
-                }
+                valid = valid && areValidValues(arr);
 
                 // Reset the cell to its original value
                 setCell(i, originalValue);
 
-                return true;
+                return valid;
         }
 
 // Utility checkers
