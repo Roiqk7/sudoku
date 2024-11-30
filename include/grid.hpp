@@ -26,6 +26,7 @@ And this is how the boxes are numbered:
 #define GRID_HPP
 
 #include <array>
+#include <bitset>
 
 namespace Sudoku
 {
@@ -35,42 +36,38 @@ namespace Sudoku
         // Class methods
                 Grid();
                 ~Grid();
-        // Getter methods
-                int getCell(int i) const;
-                int getCell(int row, int col) const;
-                void getRow(int row, std::array<int, 9>& rowArray) const;
-                void getCol(int col, std::array<int, 9>& colArray) const;
-                void getBox(int box, std::array<int, 9>& boxArray) const;
-                void getBoxFixed(int box, std::array<bool, 9>& boxArray) const;
-        // Setter methods
-                void setZero(int count) noexcept;
-                void setCell(int i, int value);
-                void setCell(int row, int col, int value);
-                void setRow(int row, const std::array<int, 9>& rowArray);
-                void setCol(int col, const std::array<int, 9>& colArray);
-                void setBox(int box, const std::array<int, 9>& boxArray);
-        // Utility methods
+        // Getters
+                int getCell(size_t i) const;
+                int getCell(size_t row, size_t col) const;
+                void getRow(size_t row, std::array<int, 9>& rowArray) const;
+                void getCol(size_t col, std::array<int, 9>& colArray) const;
+                void getBox(size_t box, std::array<int, 9>& boxArray) const;
+        // Setters
+                void setZero(size_t count);
+                void setCell(size_t i, int value);
+                void setRow(size_t row, const std::array<int, 9>& rowArray);
+                void setCol(size_t col, const std::array<int, 9>& colArray);
+                void setBox(size_t box, const std::array<int, 9>& boxArray);
+        // Utility
                 size_t size() const noexcept;
                 void clear() noexcept;
-                void fill(int value) noexcept;
-                int convertIndex(int row, int col) const;
+                void fill(int value = 0);
+                size_t convertIndex(size_t row, size_t col) const;
                 void print() const noexcept;
-                int count(int value) const noexcept;
-        // Check methods
-                bool checkIndex(int index, bool cell = true) const noexcept;
+                int count(int value) const;
+        // Checkers
                 bool isSolved() const noexcept;
-                bool isValidValue(int row, int col, int value) const;
-                bool isValidCell(
-                        int row, int col, bool includeZero = true) const;
-                bool isValidRow(int row) const;
-                bool isValidCol(int col) const;
-                bool isValidBox(int box) const;
-                bool isValid() const;
                 bool contains(int value) const noexcept;
+                bool areValidValues(const std::array<int, 9>& array) const noexcept;
+                bool isValidValueToSet(size_t i, int value);
+        // Utility checkers
+                bool checkCellIndex(size_t i) const noexcept;
+                bool checkCellIndex(size_t row, size_t col) const noexcept;
+                bool checkIndex(size_t i) const noexcept;
         private: // Variables
                 std::array<int, 81> grid;                                               // Stores the sudoku grid as a 1D array
         public: // Variables
-                std::array<bool, 81> fixed;                                             // Stores whether a cell is fixed
+                std::bitset<81> fixed;                                                  // Stores whether a cell is fixed
         };
 } // namespace Sudoku
 

@@ -2,10 +2,6 @@
 Date: 09/11/2024
 
 This file implements the Grid class.
-
-@note This file was written among the first and it has been a while since I have done any C++ programming.
-        Thus this file may not be up to the standards of the rest of the project. I will refactor this file
-        in the future. (maybe)
 */
 
 #include "../include/macros.hpp"
@@ -36,322 +32,274 @@ namespace Sudoku
         {
                 LOG_TRACE("Grid::~Grid() called");
         }
-// Getter methods
+// Getters
         /*
-        Returns the value of the cell at the specified index.
+        Returns the value of the cell at index i.
 
         @param i The index of the cell. Must be in the range [0, 80].
 
-        @return The value of the cell at the specified index.
+        @return The value of the cell at index i.
 
-        @throw std::out_of_range if i is out of range.
+        @throw std::out_of_range if i is not in the index range.
         */
-        int Grid::getCell(int i) const
+        int Grid::getCell(size_t i) const
         {
                 LOG_TRACE("Grid::getCell() called");
 
-                if (!Grid::checkIndex(i, true))
+                if (!checkCellIndex(i))
                 {
                         LOG_ERROR("Index out of range");
                         throw std::out_of_range("Index out of range");
                 }
+
                 return grid[i];
         }
 
         /*
-        Returns the value of the cell at the specified row and column.
+        Returns the value of the cell at row and col.
 
-        @param row The row of the cell. Must be in the range [0, 9].
-        @param col The column of the cell. Must be in the range [0, 9].
+        @param row The row of the cell. Must be in the range [0, 8].
+        @param col The column of the cell. Must be in the range [0, 8].
 
-        @return The value of the cell at the specified row and column.
+        @return The value of the cell at row and col.
 
-        @throw std::out_of_range if row or col is out of range.
+        @throw std::out_of_range if row or col is not in the index range.
         */
-        int Grid::getCell(int row, int col) const
+        int Grid::getCell(size_t row, size_t col) const
         {
                 LOG_TRACE("Grid::getCell() called");
 
-                const int index = Grid::convertIndex(row, col);
-
-                return grid[Grid::convertIndex(row, col)];
-        }
-
-        /*
-        Returns the values of the cells in the specified row.
-
-        @param row The row to get. Must be in the range [0, 9].
-        @param rowArray The array to store the values of the cells in the row.
-
-        @throw std::out_of_range if row is out of range.
-        */
-        void Grid::getRow(int row, std::array<int, 9>& rowArray) const
-        {
-                LOG_TRACE("Grid::getRow() called");
-
-                if (!Grid::checkIndex(row, false))
-                {
-                        LOG_ERROR("Row out of range");
-                        throw std::out_of_range("Row out of range");
-                }
-
-                for (int i = 0; i < 9; i++)
-                {
-                        rowArray[i] = grid[Grid::convertIndex(row, i)];
-                }
-        }
-
-        /*
-        Returns the values of the cells in the specified column.
-
-        @param col The column to get. Must be in the range [0, 9].
-        @param colArray The array to store the values of the cells in the column.
-
-        @throw std::out_of_range if col is out of range.
-        */
-        void Grid::getCol(int col, std::array<int, 9>& colArray) const
-        {
-                LOG_TRACE("Grid::getCol() called");
-
-                if (!Grid::checkIndex(col, false))
-                {
-                        LOG_ERROR("Column out of range");
-                        throw std::out_of_range("Column out of range");
-                }
-
-                for (int i = 0; i < 9; i++)
-                {
-                        colArray[i] = grid[Grid::convertIndex(i, col)];
-                }
-        }
-
-        /*
-        Returns the values of the cells in the specified box.
-
-        @param box The box to get. Must be in the range [0, 9].
-        @param boxArray The array to store the values of the cells in the box.
-
-        @throw std::out_of_range if box is out of range.
-        */
-        void Grid::getBox(int box, std::array<int, 9>& boxArray) const
-        {
-                LOG_TRACE("Grid::getBox() called");
-
-                if (!Grid::checkIndex(box, false))
-                {
-                        LOG_ERROR("Box out of range");
-                        throw std::out_of_range("Box out of range");
-                }
-
-                const std::array<int, 9>
-                        startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
-
-                int rowStartIndex = startIndex[box];
-
-                for (int i = 0; i < 3; i++)
-                {
-                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
-                        {
-                                boxArray[i * 3 + j - rowStartIndex] = grid[j];
-                        }
-                        rowStartIndex += 9;
-                }
-        }
-
-        /*
-        Returns the fixed values of the cells in the specified box.
-
-        @param box The box to get. Must be in the range [0, 9].
-        @param boxArray The array to store the values of the cells in the box.
-
-        @throw std::out_of_range if box is out of range.
-        */
-        void Grid::getBoxFixed(int box, std::array<bool, 9>& boxArray) const
-        {
-                LOG_TRACE("Grid::getBoxFixed() called");
-
-                if (!Grid::checkIndex(box, false))
-                {
-                        LOG_ERROR("Box out of range");
-                        throw std::out_of_range("Box out of range");
-                }
-                const std::array<int, 9>
-                        startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
-                int rowStartIndex = startIndex[box];
-                for (int i = 0; i < 3; i++)
-                {
-                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
-                        {
-                                boxArray[i * 3 + j - rowStartIndex] = fixed[j];
-                        }
-                        rowStartIndex += 9;
-                }
-        }
-// Setter methods
-        /*
-        Sets the values of the cells in the grid to zero.
-
-        @param count The number of cells to set to zero.
-        */
-        void Grid::setZero(int count) noexcept
-        {
-                LOG_TRACE("Grid::setZero() called");
-
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<int> dis(0, 80);
-
-                int index;
-                for (int i = 0; i < count; i++)
-                {
-                        do
-                        {
-                                index = dis(gen);
-                        }
-                        while (grid[index] == 0);
-                        grid[index] = 0;
-                }
-        }
-
-        /*
-        Sets the value of the cell at the specified index.
-
-        @param i The index of the cell. Must be in the range [0, 80].
-        @param value The value to set the cell to. Must be in the range [0, 9].
-
-        @throw std::out_of_range if i is out of range.
-        @throw std::invalid_argument if value is out of range.
-        */
-        void Grid::setCell(int i, int value)
-        {
-                LOG_TRACE("Grid::setCell() called");
-
-                if (!Grid::checkIndex(i, true))
+                if (!checkCellIndex(row, col))
                 {
                         LOG_ERROR("Index out of range");
                         throw std::out_of_range("Index out of range");
                 }
 
-                if (value < 0 || value > 9)
+                return grid[convertIndex(row, col)];
+        }
+
+        /*
+        Returns the row at index row.
+
+        @param row The row to get. Must be in the range [0, 8].
+        @param rowArray The array to store the row in.
+
+        @throw std::out_of_range if row is not in the index range.
+        */
+        void Grid::getRow(size_t row, std::array<int, 9>& rowArray) const
+        {
+                LOG_TRACE("Grid::getRow() called");
+
+                if (!checkIndex(row))
                 {
-                        LOG_ERROR("Value out of range");
-                        throw std::invalid_argument("Value out of range");
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
+                }
+
+                for (int i = 0; i < 9; i++)
+                {
+                        rowArray[i] = grid[convertIndex(row, i)];
+                }
+        }
+
+        /*
+        Returns the column at index col.
+
+        @param col The column to get. Must be in the range [0, 8].
+        @param colArray The array to store the column in.
+
+        @throw std::out_of_range if col is not in the index range.
+        */
+        void Grid::getCol(size_t col, std::array<int, 9>& colArray) const
+        {
+                LOG_TRACE("Grid::getCol() called");
+
+                if (!checkIndex(col))
+                {
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
+                }
+
+                for (size_t i = 0; i < 9; i++)
+                {
+                        colArray[i] = grid[convertIndex(i, col)];
+                }
+        }
+
+        /*
+        Returns the box at index box.
+
+        @param box The box to get. Must be in the range [0, 8].
+        @param boxArray The array to store the box in.
+
+        @throw std::out_of_range if box is not in the index range.
+        */
+        void Grid::getBox(size_t box, std::array<int, 9>& boxArray) const
+        {
+                LOG_TRACE("Grid::getBox() called");
+
+                if (!checkIndex(box))
+                {
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
+                }
+
+                size_t rowStartIndex = (box / 3) * 27 + (box % 3) * 3;
+
+                for (size_t i = 0; i < 3; ++i)
+                {
+                        for (size_t j = 0; j < 3; ++j)
+                        {
+                                boxArray[i * 3 + j]
+                                        = grid[rowStartIndex + j];
+                        }
+                        rowStartIndex += 9;
+                }
+        }
+// Setters
+        /*
+        Sets count random cells to zero.
+
+        @param count The number of cells to set to zero.
+
+        @note This functions is smart and will try to interpret
+                the count as best as it can.
+        */
+        void Grid::setZero(size_t count)
+        {
+                LOG_TRACE("Grid::setZero() called");
+
+                // First, we find all non-zero cells by index
+                std::vector<size_t> nonZeroCells;
+                nonZeroCells.reserve(size());
+
+                for (size_t i = 0; i < size(); ++i)
+                {
+                        if (grid[i] != 0)
+                        {
+                                nonZeroCells.push_back(i);
+                        }
+                }
+
+                if (count >= nonZeroCells.size())
+                {
+                        grid.fill(0);
+                }
+                else
+                {
+                        std::shuffle(nonZeroCells.begin(), nonZeroCells.end(),
+                                std::mt19937{std::random_device{}()});
+
+                        for (size_t i = 0; i < count; i++)
+                        {
+                                grid[nonZeroCells[i]] = 0;
+                        }
+                }
+        }
+
+        /*
+        Sets the value of the cell at index i.
+
+        @param i The index of the cell. Must be in the range [0, 80].
+        @param value The value to set the cell to.
+
+        @throw std::out_of_range if i is not in the index range.
+        */
+        void Grid::setCell(size_t i, int value)
+        {
+                LOG_TRACE("Grid::setCell() called");
+
+                if (!checkCellIndex(i))
+                {
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
                 }
 
                 grid[i] = value;
         }
 
         /*
-        Sets the value of the cell at the specified row and column.
+        Sets the row at index row.
 
-        @param row The row of the cell. Must be in the range [0, 9].
-        @param col The column of the cell. Must be in the range [0, 9].
-        @param value The value to set the cell to. Must be in the range [0, 9].
+        @param row The row to set. Must be in the range [0, 8].
+        @param rowArray The array to set the row to.
 
-        @throw std::out_of_range if row or col is out of range.
-        @throw std::invalid_argument if value is out of range.
+        @throw std::out_of_range if row is not in the index range.
         */
-        void Grid::setCell(int row, int col, int value)
-        {
-                LOG_TRACE("Grid::setCell() called");
-
-                const int index = Grid::convertIndex(row, col);
-
-                if (value < 0 || value > 9)
-                {
-                        LOG_ERROR("Value out of range");
-                        throw std::invalid_argument("Value out of range");
-                }
-
-                grid[index] = value;
-        }
-
-        /*
-        Sets the values of the cells in the specified row.
-
-        @param row The row to set. Must be in the range [0, 9].
-        @param rowArray The array containing the values to set the cells in the row to.
-
-        @throw std::out_of_range if row is out of range.
-        */
-        void Grid::setRow(int row, const std::array<int, 9>& rowArray)
+        void Grid::setRow(size_t row, const std::array<int, 9>& rowArray)
         {
                 LOG_TRACE("Grid::setRow() called");
 
-                if (!Grid::checkIndex(row, false))
+                if (!checkIndex(row))
                 {
-                        LOG_ERROR("Row out of range");
-                        throw std::out_of_range("Row out of range");
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
                 }
 
-                for (int i = 0; i < 9; i++)
+                for (size_t i = 0; i < 9; i++)
                 {
-                        grid[Grid::convertIndex(row, i)] = rowArray[i];
+                        grid[convertIndex(row, i)] = rowArray[i];
                 }
         }
 
         /*
-        Sets the values of the cells in the specified column.
+        Sets the column at index col.
 
-        @param col The column to set. Must be in the range [0, 9].
-        @param colArray The array containing the values to set the cells in the column to.
+        @param col The column to set. Must be in the range [0, 8].
+        @param colArray The array to set the column to.
 
-        @throw std::out_of_range if col is out of range.
+        @throw std::out_of_range if col is not in the index range.
         */
-        void Grid::setCol(int col, const std::array<int, 9>& colArray)
+        void Grid::setCol(size_t col, const std::array<int, 9>& colArray)
         {
                 LOG_TRACE("Grid::setCol() called");
 
-                if (!Grid::checkIndex(col, false))
+                if (!checkIndex(col))
                 {
-                        LOG_ERROR("Column out of range");
-                        throw std::out_of_range("Column out of range");
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
                 }
 
-                for (int i = 0; i < 9; i++)
+                for (size_t i = 0; i < 9; i++)
                 {
-                        grid[Grid::convertIndex(i, col)] = colArray[i];
+                        grid[convertIndex(i, col)] = colArray[i];
                 }
         }
 
         /*
-        Sets the values of the cells in the specified box.
+        Sets the box at index box.
 
-        @param box The box to set. Must be in the range [0, 9].
-        @param boxArray The array containing the values to set the cells in the box to.
+        @param box The box to set. Must be in the range [0, 8].
+        @param boxArray The array to set the box to.
 
-        @throw std::out_of_range if box is out of range.
+        @throw std::out_of_range if box is not in the index range.
         */
-        void Grid::setBox(int box, const std::array<int, 9>& boxArray)
+        void Grid::setBox(size_t box, const std::array<int, 9>& boxArray)
         {
                 LOG_TRACE("Grid::setBox() called");
 
-                if (!Grid::checkIndex(box, false))
+                if (!checkIndex(box))
                 {
-                        LOG_ERROR("Box out of range");
-                        throw std::out_of_range("Box out of range");
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
                 }
 
-                const std::array<int, 9>
-                        startIndex = {0, 3, 6, 27, 30, 33, 54, 57, 60};         // The starting index of each box
-                int rowStartIndex = startIndex[box];
+                size_t rowStartIndex = (box / 3) * 27 + (box % 3) * 3;
 
-                for (int i = 0; i < 3; i++)
+                for (size_t i = 0; i < 3; ++i)
                 {
-                        for (int j = rowStartIndex; j <= rowStartIndex + 2; j++)
+                        for (size_t j = 0; j < 3; ++j)
                         {
-                                grid[j] = boxArray[i * 3 + j - rowStartIndex];
+                                grid[rowStartIndex + j] = boxArray[i * 3 + j];
                         }
                         rowStartIndex += 9;
                 }
         }
-// Utility methods
+// Utility
         /*
         Returns the size of the grid.
 
         @return The size of the grid.
-
-        @note The size of the grid is 81.
         */
         size_t Grid::size() const noexcept
         {
@@ -361,48 +309,45 @@ namespace Sudoku
         }
 
         /*
-        Clears the grid by setting all cells to zero.
+        Clears the grid.
         */
         void Grid::clear() noexcept
         {
                 LOG_TRACE("Grid::clear() called");
 
-                Grid::fill(0);
+                grid.fill(0);
         }
 
         /*
-        Fills the grid with the specified value.
+        Fills the grid with a value.
 
-        @param value The value to fill the grid with.
+        @param value The value to fill the grid with. Default is 0.
         */
-        void Grid::fill(int value) noexcept
+        void Grid::fill(int value)
         {
                 LOG_TRACE("Grid::fill() called");
 
-                for (int i = 0; i < 81; i++)
-                {
-                        grid[i] = value;
-                }
+                grid.fill(value);
         }
 
         /*
-        Converts the row and column to an index in the grid array.
+        Converts a row and column index to a 1D index.
 
-        @param row The row of the cell. Must be in the range [0, 9].
-        @param col The column of the cell. Must be in the range [0, 9].
+        @param row The row index. Must be in the range [0, 8].
+        @param col The column index. Must be in the range [0, 8].
 
-        @return The index in the grid array corresponding to the row and column.
+        @return The 1D index.
 
-        @throw std::out_of_range if row or col is out of range.
+        @throw std::out_of_range if row or col is not in the index range.
         */
-        int Grid::convertIndex(int row, int col) const
+        size_t Grid::convertIndex(size_t row, size_t col) const
         {
                 LOG_TRACE("Grid::convertIndex() called");
 
-                if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
+                if (!checkCellIndex(row, col))
                 {
-                        LOG_ERROR("Row or column out of range");
-                        throw std::out_of_range("Row or column out of range");
+                        LOG_ERROR("Index out of range");
+                        throw std::out_of_range("Index out of range");
                 }
 
                 return row * 9 + col;
@@ -433,234 +378,51 @@ namespace Sudoku
         }
 
         /*
-        Counts the number of occurrences of the specified value in the grid.
+        Counts the number of times a value appears in the grid.
 
         @param value The value to count.
 
-        @return The number of occurrences of the value in the grid.
+        @return The number of times the value appears in the grid.
         */
-        int Grid::count(int value) const noexcept
+        int Grid::count(int value) const
         {
                 LOG_TRACE("Grid::count() called");
 
                 return std::count(grid.begin(), grid.end(), value);
         }
-// Check methods
-        /*
-        Checks if the index is valid.
-
-        @param index The index to check.
-        @param cell True if the index is for a cell, false if it is for a row, column, or box.
-
-        @return True if the index is valid, false otherwise.
-        */
-        bool Grid::checkIndex(int index, bool cell) const noexcept
-        {
-                LOG_TRACE("Grid::checkIndex() called");
-
-                if (cell)
-                {
-                        return 0 <= index && index < 81;
-                }
-
-                return 0 <= index && index < 9;
-        }
-
+// Checkers
         /*
         Checks if the grid is solved.
 
         @return True if the grid is solved, false otherwise.
+
+        @note A grid is considered solved if it has no zeros and every
+                row, column, and box contains all the numbers 1-9.
         */
         bool Grid::isSolved() const noexcept
         {
                 LOG_TRACE("Grid::isSolved() called");
 
-                // Grid is solved if it is valid and has no zeros
-                return Grid::isValid() && !contains(0);
-        }
-
-        /*
-        Checks if the value is valid for the cell at the specified row and column.
-
-        @param row The row of the cell. Must be in the range [0, 9].
-        @param col The column of the cell. Must be in the range [0, 9].
-        @param value The value to check.
-
-        @return True if the value is valid for the cell, false otherwise.
-
-        @throw std::out_of_range if row or col is out of range.
-
-        @note A valid value is in the range (0, 9] and does not conflict with the row, column, or box.
-        */
-        bool Grid::isValidValue(int row, int col, int value) const
-        {
-                LOG_TRACE("Grid::isValidValue() called");
-
-                if (value <= 0 || value > 9)
+                // Note: The zero check is not necessary as the areValidValues()
+                // function will return false if any zero is found.
+                for (size_t i = 0; i < 9; i++)
                 {
-                        return false;
-                }
+                        std::array<int, 9> arr;
 
-                if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
-                {
-                        LOG_ERROR("Row or column out of range");
-                        throw std::out_of_range("Row or column out of range");
-                }
+                        getRow(i, arr);
+                        if (!areValidValues(arr))
+                        {
+                                return false;
+                        }
 
-                std::array<int, 9> rowArray;
-                std::array<int, 9> colArray;
-                std::array<int, 9> boxArray;
-                Grid::getRow(row, rowArray);
-                Grid::getCol(col, colArray);
-                Grid::getBox(row / 3 * 3 + col / 3, boxArray);
+                        getCol(i, arr);
+                        if (!areValidValues(arr))
+                        {
+                                return false;
+                        }
 
-                return std::none_of(rowArray.begin(), rowArray.end(), [value](int val)
-                {
-                        return val == value;
-                })
-                && std::none_of(colArray.begin(), colArray.end(), [value](int val)
-                {
-                        return val == value;
-                })
-                && std::none_of(boxArray.begin(), boxArray.end(), [value](int val)
-                {
-                        return val == value;
-                });
-        }
-
-        /*
-        Checks if the value of the cell at the specified row and column is valid.
-
-        @param row The row of the cell. Must be in the range [0, 9].
-        @param col The column of the cell. Must be in the range [0, 9].
-        @param includeZero True if zero is considered a valid value, false otherwise.
-
-        @return True if the value of the cell is valid, false otherwise.
-
-        @throw std::out_of_range if row or col is out of range.
-
-        @note A valid cell has a value in the range [0, 9].
-        */
-        bool Grid::isValidCell(int row, int col, bool includeZero) const
-        {
-                LOG_TRACE("Grid::isValidCell() called");
-
-                if (!Grid::checkIndex(row, false) || !Grid::checkIndex(col, false))
-                {
-                        LOG_ERROR("Row or column out of range");
-                        throw std::out_of_range("Row or column out of range");
-                }
-
-                const int value = grid[Grid::convertIndex(row, col)];
-
-                return 0 <= value && value <= 9;
-        }
-
-        /*
-        Checks if the values in the specified row are valid.
-
-        @param row The row to check. Must be in the range [0, 9).
-
-        @return True if the values in the row are valid, false otherwise.
-
-        @throw std::out_of_range if row is out of range.
-
-        @note A valid row has values in the range [0, 9].
-        */
-        bool Grid::isValidRow(int row) const
-        {
-                LOG_TRACE("Grid::isValidRow() called");
-
-                if (!Grid::checkIndex(row, false))
-                {
-                        LOG_ERROR("Row out of range");
-                        throw std::out_of_range("Row out of range");
-                }
-
-                std::array<int, 9> rowArray;
-                Grid::getRow(row, rowArray);
-
-                return std::all_of(rowArray.begin(), rowArray.end(), [this, row](int value)
-                {
-                        return value >= 0 && value <= 9;
-                });
-        }
-
-        /*
-        Checks if the values in the specified column are valid.
-
-        @param col The column to check. Must be in the range [0, 9].
-
-        @return True if the values in the column are valid, false otherwise.
-
-        @throw std::out_of_range if col is out of range.
-
-        @note A valid column has values in the range [0, 9].
-        */
-        bool Grid::isValidCol(int col) const
-        {
-                LOG_TRACE("Grid::isValidCol() called");
-
-                if (!Grid::checkIndex(col, false))
-                {
-                        LOG_ERROR("Column out of range");
-                        throw std::out_of_range("Column out of range");
-                }
-
-                std::array<int, 9> colArray;
-                Grid::getCol(col, colArray);
-
-                return std::all_of(colArray.begin(), colArray.end(), [this, col](int value)
-                {
-                        return value >= 0 && value <= 9;
-                });
-        }
-
-        /*
-        Checks if the values in the specified box are valid.
-
-        @param box The box to check. Must be in the range [0, 9].
-
-        @return True if the values in the box are valid, false otherwise.
-
-        @throw std::out_of_range if box is out of range.
-
-        @note A valid box has values in the range [0, 9].
-        */
-        bool Grid::isValidBox(int box) const
-        {
-                LOG_TRACE("Grid::isValidBox() called");
-
-                if (!Grid::checkIndex(box, false))
-                {
-                        LOG_ERROR("Box out of range");
-                        throw std::out_of_range("Box out of range");
-                }
-
-                std::array<int, 9> boxArray;
-                Grid::getBox(box, boxArray);
-
-                return std::all_of(boxArray.begin(), boxArray.end(), [this, box](int value)
-                {
-                        return value >= 0 && value <= 9;
-                });
-        }
-
-        /*
-        Checks if the grid is valid.
-
-        @return True if the grid is valid, false otherwise.
-
-        @note A valid grid has valid rows, columns, and boxes.
-        */
-        bool Grid::isValid() const
-        {
-                LOG_TRACE("Grid::isValid() called");
-
-                for (int i = 0; i < 9; i++)
-                {
-                        if (!Grid::isValidRow(i) || !Grid::isValidCol(i)
-                                || !Grid::isValidBox(i))
+                        getBox(i, arr);
+                        if (!areValidValues(arr))
                         {
                                 return false;
                         }
@@ -670,9 +432,9 @@ namespace Sudoku
         }
 
         /*
-        Checks if the grid contains the specified value.
+        Checks if the grid contains a value.
 
-        @param value The value to check.
+        @param value The value to check for.
 
         @return True if the grid contains the value, false otherwise.
         */
@@ -680,10 +442,133 @@ namespace Sudoku
         {
                 LOG_TRACE("Grid::contains() called");
 
-                return std::any_of(grid.begin(), grid.end(), [value](int val)
+                return std::find(grid.begin(), grid.end(), value) != grid.end();
+        }
+
+        /*
+        Checks if an array of values are valid.
+
+        @param array The array of values to check.
+
+        @return True if the array is valid, false otherwise.
+
+        @note An array is considered valid if every number is in the range [1, 9].
+        */
+        bool Grid::areValidValues(const std::array<int, 9>& array) const noexcept
+        {
+                LOG_TRACE("Grid::areValidValues() called");
+
+                std::bitset<9> values;
+
+                for (size_t i = 0; i < 9; i++)
                 {
-                        return val == value;
-                });
+                        values[array[i] - 1] = true;
+                }
+
+                return values.all();
+        }
+
+        /*
+        Checks if a value can be set at index i.
+
+        @param i The index to check.
+        @param value The value to set.
+
+        @return True if the value can be set, false otherwise.
+
+        @throw std::out_of_range if i is not in the index range.
+
+        @note A value can be set if placing it would not violate the rules of sudoku.
+        */
+        bool Grid::isValidValueToSet(size_t i, int value)
+        {
+                LOG_TRACE("Grid::isValidValueToSet() called");
+
+                // We place the value at the index and check if the grid is still valid
+                int originalValue = grid[i];
+                setCell(i, value);
+
+                // Check if the grid is still valid
+                size_t row = i / 9;
+                size_t col = i % 9;
+                std::array<int, 9> arr;
+
+                getRow(row, arr);
+                if (!areValidValues(arr))
+                {
+                        setCell(i, originalValue);
+                        return false;
+                }
+
+                getCol(col, arr);
+                if (!areValidValues(arr))
+                {
+                        setCell(i, originalValue);
+                        return false;
+                }
+
+                size_t box = (row / 3) * 3 + (col / 3);
+                getBox(box, arr);
+                if (!areValidValues(arr))
+                {
+                        setCell(i, originalValue);
+                        return false;
+                }
+
+                // Reset the cell to its original value
+                setCell(i, originalValue);
+
+                return true;
+        }
+
+// Utility checkers
+        /*
+        Checks if the cell index is valid.
+
+        @param i The index of the cell.
+
+        @return True if the index is valid, false otherwise.
+
+        @note The index is considered valid if it is in the range [0, 80].
+        */
+        bool Grid::checkCellIndex(size_t i) const noexcept
+        {
+                LOG_TRACE("Grid::checkCellIndex() called");
+
+                return i < size();
+        }
+
+        /*
+        Checks if the cell index is valid.
+
+        @param row The row of the cell.
+        @param col The column of the cell.
+
+        @return True if the index is valid, false otherwise.
+
+        @note The index is considered valid if both the row and column are in the range [0, 8].
+        */
+        bool Grid::checkCellIndex(size_t row, size_t col) const noexcept
+        {
+                LOG_TRACE("Grid::checkCellIndex() called");
+
+                return checkIndex(row) && checkIndex(col);
+        }
+
+        /*
+        Checks if the index is valid.
+
+        @param i The index to check.
+
+        @return True if the index is valid, false otherwise.
+
+        @note The index is considered valid if it is in the range [0, 8].
+        */
+        bool Grid::checkIndex(size_t i) const noexcept
+        {
+                LOG_TRACE("Grid::checkIndex() called");
+
+                return i < 9;
         }
 
 } // namespace Sudoku
