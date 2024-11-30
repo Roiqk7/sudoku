@@ -63,6 +63,7 @@ namespace Sudoku
                 std::bitset<81*9> notes;                                        // Notes for each cell (1 if note is given)
                 int hintsUsed = 0;                                              // Number of hints used
                 std::chrono::seconds time;                                      // Time taken to solve the grid (in seconds)
+                bool cheat = false;                                             // If the player is cheating
         private: // Variables
                 Grid grid;                                                      // What the player sees
                 Grid solved;                                                    // The solved grid

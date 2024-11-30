@@ -57,13 +57,15 @@ namespace Sudoku
                 grid.setZero(81 - cells);
 
                 // Reset attributes
-                score = 0;
+                score = 10000;
                 selectedCell = -1;
                 selectedNumber = 0;
                 hintsUsed = 0;
                 mistakes = 0;
                 notesMode = false;
                 notes.reset();
+                time.zero();
+                cheat = false;
 
                 #ifdef DEVELOPMENT
                 // Log the current grid and solved grid for debugging
