@@ -421,6 +421,10 @@ namespace System
         */
         void createGameScene(Scene& scene, GUI& gui)
         {
+                // TODO: Add more "function wide" variables to make everything more connected
+                // TODO: Add a header with all the important variables (e.g., highlight color)
+                // etc. to make editing easier
+
                 LOG_TRACE("createGameScene() called.");
 
                 scene.clear();
@@ -905,24 +909,10 @@ namespace System
                         "Notes Switch Text", wi.topLeft.x + 70, GRID_Y + 240,
                         font.first, font.second, "Notes", 80, Colors::BLACK));
         // Number Panel
-                // Number panel frame
-                std::shared_ptr<Object> numberPanelFrame = std::make_shared<Rectangle>(
-                        "Number Panel Frame",
-                        GRID_X + GRID_SIZE + 30, wi.center.y - 120,
-                        320, 320, Colors::WHITE);
-                scene.addObject(numberPanelFrame);
-
-                // Number panel background
+                // Constants
                 const int NUM_PANEL_SIZE = 300;
                 const int NUM_PANEL_X = GRID_X + GRID_SIZE + 40;
                 const int NUM_PANEL_Y = wi.center.y - 110;
-                std::shared_ptr<Object> numberPanelBackground = std::make_shared<Rectangle>(
-                        "Number Panel Background",
-                        NUM_PANEL_X, NUM_PANEL_Y,
-                        NUM_PANEL_SIZE, NUM_PANEL_SIZE,
-                        Colors::NAVAJO_WHITE);
-                scene.addObject(numberPanelBackground);
-
                 // Number panel click function
                 std::shared_ptr<Command> numberPanelClickCommand = std::make_shared<Command>(
                         [&scene, &gui, NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y]()
@@ -956,14 +946,15 @@ namespace System
 
                                 LOG_TRACE("Selected number: " + std::to_string(num));
                         });
+                auto& numberPanel = createButton("Number Panel",
+                        GRID_X + GRID_SIZE + 30, wi.center.y - 120,
+                        NUM_PANEL_SIZE + 20, NUM_PANEL_SIZE + 20, 10,
+                        Colors::WHITE, Colors::NAVAJO_WHITE,
+                        numberPanelClickCommand);
 
-                // Number panel clickable rectangle
-                std::shared_ptr<Rectangle> numberPanelClickableRect = std::make_shared<Rectangle>(
-                        "Number Panel Clickable",
-                        GRID_X + GRID_SIZE + 40, wi.center.y - 110,
-                        NUM_PANEL_SIZE, NUM_PANEL_SIZE,
-                        Colors::TRANSPARENT, numberPanelClickCommand);
-                scene.addClickableObject(numberPanelClickableRect);
+                scene.addObject(numberPanel.frame);
+                scene.addClickableObject(numberPanel.clickable);
+                scene.addObject(numberPanel.background);
 
                 // Number panel lines
                 const int NUM_PANEL_NUM_LINES = 3;
@@ -1007,6 +998,20 @@ namespace System
                                 scene.addObject(number);
                         }
                 }
+        // Catch-all click rect
+                // Used as deselect button
+                // Catch-all click function
+                std::shared_ptr<Command> catchAllCommand = std::make_shared<Command>(
+                        [&scene, &gui]()
+                        {
+                                auto& gameHandler = gui.getGameHandler();
+                                gameHandler.selectedCell = -1;
+                                gameHandler.selectedNumber = -1;
+                                createGameScene(scene, gui);
+                        });
+                scene.addClickableObject(std::make_shared<Rectangle>(
+                        "Catch All", wi.topLeft.x, wi.topLeft.y,
+                        wi.size.x, wi.size.y, Colors::TRANSPARENT, catchAllCommand));
         }
 
         /*
