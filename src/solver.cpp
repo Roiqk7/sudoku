@@ -47,7 +47,7 @@ namespace Sudoku
 
                 int zeroCount = grid.count(0);
 
-                bool result = backtrack(grid, 0, 0, zeroCount);
+                bool result = backtrack(grid, 0, zeroCount);
 
                 const std::string resultStr = result ? "Successfully solved"
                         : "Failed to solve";
@@ -61,41 +61,39 @@ namespace Sudoku
         Recursive function to solve the sudoku grid using backtracking.
 
         @param grid The grid to solve.
-        @param row The row of the cell to solve.
-        @param col The column of the cell to solve.
+        @param index The index of the cell to solve.
 
         @return True if the grid is solved, false otherwise.
         */
-        bool Solver::backtrack(Grid& grid, int row, int col, int zeroCount)
+        bool Solver::backtrack(Grid& grid, size_t index, int zeroCount)
         {
                 LOG_TRACE("Solver::backtrack() called");
 
                 // If there are no zeros left, the grid is solved
-                if (zeroCount == 0)
+                if (zeroCount <= 0 || index >= grid.size())
                 {
                         return true;
                 }
 
                 // Find next empty cell
-                while (grid.getCell(row, col) != 0)
+                while (grid.getCell(index) != 0 && index < grid.size())
                 {
-                        col = (col + 1) % 9;
-                        row += (col == 0);
+                        index++;
                 }
 
                 // Try all numbers from 1 to 9
                 for (int num = 1; num <= 9; num++)
                 {
-                        if (grid.isValidValue(row, col, num))
+                        if (grid.isValidValueToSet(index, num))
                         {
-                                grid.setCell(row, col, num);
+                                grid.setCell(index, num);
 
-                                if (backtrack(grid, row + (col + 1) / 9, (col + 1) % 9, zeroCount - 1))
+                                if (backtrack(grid, index + 1, zeroCount - 1))
                                 {
                                         return true;
                                 }
 
-                                grid.setCell(row, col, 0);
+                                grid.setCell(index, 0);
                         }
                 }
 

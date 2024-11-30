@@ -20,7 +20,7 @@ namespace Sudoku
                 ~Solver();
         // Solver methods
                 bool solve(Grid& grid);
-                bool backtrack(Grid& grid, int row, int col, int zeroCount);
+                bool backtrack(Grid& grid, size_t index, int zeroCount);
         };
 }
 

@@ -17,7 +17,7 @@ namespace Sudoku
 {
 // Class methods
         /*
-        Constructor. Initializes the grid, generator, and solver.
+        Constructor.
 
         @note Does not initialize the grid with a new game.
         */
@@ -53,8 +53,8 @@ namespace Sudoku
                 solved = grid;
 
                 // Remove cells based on the difficulty
-                int cells = static_cast<int>(difficulty);
-                grid.setZero(81 - cells);
+                size_t cells = static_cast<size_t>(difficulty);
+                grid.setZero(grid.size() - cells);
 
                 // Reset attributes
                 score = 0;
@@ -98,7 +98,7 @@ namespace Sudoku
                 // If the value is correct, set it in the grid
                 if (isCorrect)
                 {
-                        grid.setCell(row, col, value);
+                        grid.setCell(grid.convertIndex(row, col), value);
 
                         updateScore();
                 }
@@ -118,8 +118,10 @@ namespace Sudoku
                 LOG_TRACE("GameHandler::solve() called");
 
                 // Find unsolved cells
-                std::vector<int> unsolvedCells;
-                for (int i = 0; i < 81; i++)
+                std::vector<size_t> unsolvedCells;
+                unsolvedCells.reserve(grid.size());
+
+                for (size_t i = 0; i < grid.size(); ++i)
                 {
                         if (grid.getCell(i) == 0)
                         {
@@ -127,25 +129,20 @@ namespace Sudoku
                         }
                 }
 
-                // Solve the grid if the number of cells is invalid
-                // or the entire grid is to be solved
-                if (cells == 81 || cells >= static_cast<int>(
-                        unsolvedCells.size()) || cells <= 0)
+                if (cells >= unsolvedCells.size())
                 {
                         grid = solved;
-                        return;
                 }
-
-                // Shuffle the unsolved cells
-                std::shuffle(unsolvedCells.begin(), unsolvedCells.end(),
-                        std::mt19937(std::random_device()()));
-
-                // Solve the desired number of cells
-                int cell;
-                for (int i = 0; i < cells; i++)
+                else
                 {
-                        cell = unsolvedCells[i];
-                        grid.setCell(cell, solved.getCell(cell));
+                        std::shuffle(unsolvedCells.begin(), unsolvedCells.end(),
+                                std::mt19937{std::random_device{}()});
+
+                        for (size_t i = 0, index; i < cells; i++)
+                        {
+                                index = unsolvedCells[i];
+                                grid.setCell(index, solved.getCell(index));
+                        }
                 }
         }
 // Getters
