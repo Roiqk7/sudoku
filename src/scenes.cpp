@@ -795,17 +795,17 @@ namespace System
                         {
                                 auto& gameHandler = gui.getGameHandler();
 
-                                if (gameHandler.hintsUsed >= 3)
+                                if (gameHandler.hintsUsed < 3)
                                 {
-                                        return;
+                                        // Play sound
+                                        auto& soundEffect = gui.getSoundEffect();
+                                        soundEffect.playSound("hint");
+
+                                        // Solve one cell
+                                        gameHandler.solve(1);
+                                        gameHandler.hintsUsed++;
+                                        createGameScene(scene, gui);
                                 }
-
-                                auto& soundEffect = gui.getSoundEffect();
-                                soundEffect.playSound("hint");
-
-                                gameHandler.solve(1);
-                                gameHandler.hintsUsed++;
-                                createGameScene(scene, gui);
                         });
                 sf::Color hintsColor = gameHandler.hintsUsed == 0 ? Colors::WHITE
                         : gameHandler.hintsUsed == 1 ? Colors::GREEN
