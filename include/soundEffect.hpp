@@ -25,6 +25,7 @@ namespace System
         private: // Methods
         // Sound effect methods
                 bool loadSoundEffect(const std::string& sound);
+                void playSoundEffectInThread();
         private: // Variables
         // Variables
                 std::unordered_map<std::string,

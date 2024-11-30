@@ -6,7 +6,9 @@ Music class manages the music in the application.
 
 #include "../include/macros.hpp"
 #include "../include/music.hpp"
+#include <memory>
 #include <SFML/Audio.hpp>
+#include <thread>
 
 namespace System
 {
@@ -72,5 +74,19 @@ namespace System
                 LOG_TRACE("Music::loadMusic() called");
 
                 return music->openFromFile("assets/music.mp3");
+        }
+
+        /*
+        Play the music in a separate thread.
+        */
+        void Music::playMusicInThread()
+        {
+                LOG_TRACE("Music::playMusicInThread() called");
+
+                // Create a thread to play music
+                std::thread musicThread(&Music::playMusic, this);
+
+                // Detach the thread to allow it to run independently
+                musicThread.detach();
         }
 } // namespace System

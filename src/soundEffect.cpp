@@ -7,7 +7,10 @@ Sound effect class manages the sound effects in the application.
 #include "../include/macros.hpp"
 #include "../include/soundEffect.hpp"
 #include <filesystem>
+#include <memory>
 #include <SFML/Audio.hpp>
+#include <string>
+#include <thread>
 
 namespace System
 {
@@ -73,5 +76,19 @@ namespace System
                 }
 
                 return true;
+        }
+
+        /*
+        Play a sound effect in a separate thread.
+        */
+        void SoundEffect::playSoundEffectInThread()
+        {
+                LOG_TRACE("SoundEffect::playSoundEffectInThread() called");
+
+                // Create a thread to play the sound effect
+                std::thread soundThread(&SoundEffect::playSoundEffectInThread, this);
+
+                // Detach the thread
+                soundThread.detach();
         }
 } // namespace System

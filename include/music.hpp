@@ -24,6 +24,7 @@ namespace System
         private: // Methods
         // Music methods
                 bool loadMusic();
+                void playMusicInThread();
         private: // Variables
         // Variables
                 std::unique_ptr<sf::Music> music;                       // Background music
