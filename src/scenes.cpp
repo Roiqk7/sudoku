@@ -495,7 +495,7 @@ namespace System
 
                                 // Validate the row and column
                                 // Note: row and col should be in the range [0, 8]
-                                if (!grid.checkIndex(grid.convertIndex(row, col)))
+                                if (!grid.checkCellIndex(grid.convertIndex(row, col)))
                                 {
                                         LOG_WARN("Invalid row x col: {} x {} (index: {}. This log message should not appear.",
                                                 row, col, grid.convertIndex(row, col));
