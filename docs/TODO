@@ -5,6 +5,10 @@
            3. Fix regular highlight
         2. Add other scenes
         3. Fix bugs (music stopped playing, game crashes etc.)
+           1. Music stop bug (may be fixed)
+           2. Game crash bug when double hint
+           3. Weird controls (not intuitive)
+           4. When first cell select and then number select it behaves weird
         4. Rewrite the tests for the updated Grid
 2. Make a working version of the game
 3. Add features like the old version (notes, etc.)
