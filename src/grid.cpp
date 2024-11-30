@@ -403,8 +403,11 @@ namespace Sudoku
         {
                 LOG_TRACE("Grid::isSolved() called");
 
-                // Note: The zero check is not necessary as the areValidValues()
-                // function will return false if any zero is found.
+                if (contains(0))
+                {
+                        return false;
+                }
+
                 for (size_t i = 0; i < 9; i++)
                 {
                         std::array<int, 9> arr;
