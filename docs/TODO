@@ -1,5 +1,8 @@
 1. Make working scenes
         1. Finish game scene and all its components
+           1. Add timer
+           2. Finish selected number highlight
+           3. Fix regular highlight
         2. Add other scenes
         3. Fix bugs (music stopped playing, game crashes etc.)
         4. Rewrite the tests for the updated Grid
