@@ -421,8 +421,6 @@ namespace System
         */
         void createGameScene(Scene& scene, GUI& gui)
         {
-                // TODO: Simplify as other scenes
-
                 LOG_TRACE("createGameScene() called.");
 
                 scene.clear();
@@ -460,7 +458,7 @@ namespace System
                 const int GRID_Y = wi.topLeft.y + 100;
                 const int FRAME_MARGIN = 20;
 
-                // Create the click function
+                // Create the main click function
                 std::shared_ptr<Command> boardClickCommand = std::make_shared<Command>(
                         [&scene, &gui, GRID_SIZE, GRID_X, GRID_Y]()
                         {
@@ -470,40 +468,39 @@ namespace System
                                 // Should not happen
                                 if (event.type != sf::Event::MouseButtonPressed)
                                 {
+                                        // This function should only be called on mouse click
                                         LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
-                                        return;
-                                }
-
-                                auto& gameHandler = gui.getGameHandler();
-                                int selectedNumber = gameHandler.selectedNumber;
-
-                                // Check if the selected number is valid
-                                if (selectedNumber < 1 || selectedNumber > 9)
-                                {
                                         return;
                                 }
 
                                 auto& window = gui.getWindow();
                                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
+                                // Note: These numbers should be in the range [0, 8]
                                 int row = (mousePos.y - GRID_Y) / (GRID_SIZE / 9);
                                 int col = (mousePos.x - GRID_X) / (GRID_SIZE / 9);
 
                                 // Get the grid
+                                auto& gameHandler = gui.getGameHandler();
                                 Sudoku::Grid grid;
                                 gameHandler.getGrid(grid);
 
                                 // Validate the row and column
                                 // Note: row and col should be in the range [0, 8]
-                                if (!grid.checkCellIndex(grid.convertIndex(row, col)))
+                                if (!grid.checkCellIndex(row, col))
                                 {
                                         LOG_WARN("Invalid row x col: {} x {} (index: {}. This log message should not appear.",
                                                 row, col, grid.convertIndex(row, col));
                                         return;
                                 }
 
-                                // Check if the cell is empty
-                                if (grid.getCell(row, col) == 0)
+                                // Set the selected cell
+                                gameHandler.selectedCell = grid.convertIndex(row, col);
+
+                                int selectedNumber = gameHandler.selectedNumber;
+
+                                // Check if the cell is empty and the selected number is valid
+                                if (grid.getCell(row, col) == 0 and (selectedNumber >= 1 and selectedNumber <= 9))
                                 {
                                         auto& soundEffect = gui.getSoundEffect();
 
@@ -523,7 +520,6 @@ namespace System
                                         {
                                                 soundEffect.playSound("mistake");
 
-                                                // TODO: handle mistakes
                                                 if (++gameHandler.mistakes == 3)
                                                 {
                                                         return createGameOverScene(scene, gui, false);
@@ -540,11 +536,10 @@ namespace System
                                                         return createGameOverScene(scene, gui, true);
                                                 }
                                         }
-
-                                        return createGameScene(scene, gui);
                                 }
-                        });
 
+                                createGameScene(scene, gui);
+                        });
                 auto& sudokuGrid = createButton("Grid",
                         GRID_X - FRAME_MARGIN, GRID_Y - FRAME_MARGIN,
                         GRID_SIZE + 2 * FRAME_MARGIN, GRID_SIZE + 2 * FRAME_MARGIN,
@@ -554,6 +549,70 @@ namespace System
                 scene.addObject(sudokuGrid.frame);
                 scene.addClickableObject(sudokuGrid.clickable);
                 scene.addObject(sudokuGrid.background);
+
+                /*
+                Add highlight effect (we do this before creating the grid lines
+                to make sure the highlight is bellow the grid lines)
+
+                We will highlight all cells with the clicked number and the row,
+                column and box of selected cell
+                */
+                // TODO: Fix highlight effect
+                if (grid.checkCellIndex(gameHandler.selectedCell))
+                {
+                        int row = gameHandler.selectedCell / 9;
+                        int col = gameHandler.selectedCell % 9;
+
+                        if (!grid.checkIndex(row) || !grid.checkIndex(col))
+                        {
+                                // This error is severe as this code should get executed only if
+                                // the selected cell is valid (i.e., in the range [0, 80]) and
+                                // that should imply that the row and column are also valid.
+                                LOG_ERROR("Invalid selected cell: {} [{}x{}]. Grid index calculations are likely wrong.",
+                                        gameHandler.selectedCell, row, col);
+                                return;
+                        }
+
+                        // First, we highlight the row, column and box of the selected cell
+                        // Highlight the row
+                        scene.addObject(std::make_shared<Rectangle>(
+                                "Highlight Row",
+                                GRID_X, GRID_Y + (GRID_SIZE / 9) * row,
+                                GRID_SIZE, GRID_SIZE / 9, Colors::ORANGE));
+
+                        // Highlight the column
+                        scene.addObject(std::make_shared<Rectangle>(
+                                "Highlight Column",
+                                GRID_X + (GRID_SIZE / 9) * col, GRID_Y,
+                                GRID_SIZE / 9, GRID_SIZE, Colors::ORANGE));
+
+                        // Highlight the box
+                        int boxRow = row / 3;
+                        int boxCol = col / 3;
+                        scene.addObject(std::make_shared<Rectangle>(
+                                "Highlight Box",
+                                GRID_X + (GRID_SIZE / 3) * boxCol, GRID_Y + (GRID_SIZE / 3) * boxRow,
+                                GRID_SIZE / 3, GRID_SIZE / 3, Colors::ORANGE));
+
+                        // Now highlight cells with the clicked number
+                        int clickedNumber = grid.getCell(gameHandler.selectedCell / 9, gameHandler.selectedCell % 9);
+                        if (clickedNumber != 0)
+                        {
+                                for (int row = 0; row < 9; row++)
+                                {
+                                        for (int col = 0; col < 9; col++)
+                                        {
+                                                if (grid.getCell(row, col) == clickedNumber)
+                                                {
+                                                        scene.addObject(std::make_shared<Rectangle>(
+                                                                "Highlight Number",
+                                                                GRID_X + (GRID_SIZE / 9) * col, GRID_Y + (GRID_SIZE / 9) * row,
+                                                                GRID_SIZE / 9, GRID_SIZE / 9, Colors::RED));
+                                                }
+                                        }
+                                }
+                        }
+                }
 
                 // Create the grid lines
                 const int NUM_LINES = 9;
