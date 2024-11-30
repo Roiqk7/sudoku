@@ -120,7 +120,7 @@ namespace System
         {
                 LOG_TRACE("GUI::init() called");
 
-                // Setups the window
+                // Setups the window (size: 1400x800, title: "SUDOKU!")
                 sf::VideoMode mode = sf::VideoMode(1400, 800);
                 window.create(mode, "SUDOKU!");
 
