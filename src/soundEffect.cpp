@@ -6,11 +6,11 @@ Sound effect class manages the sound effects in the application.
 
 #include "../include/macros.hpp"
 #include "../include/soundEffect.hpp"
+#include <algorithm>
 #include <filesystem>
 #include <memory>
 #include <SFML/Audio.hpp>
 #include <string>
-#include <thread>
 
 namespace System
 {
@@ -38,21 +38,17 @@ namespace System
 
         @note Expects the sound to be is assets/ and with .mp3 (which should not be included in the parameter).
         */
-        void SoundEffect::playSound(const std::string& sound)
+        void SoundEffect::playSound(const std::string& soundStr)
         {
                 LOG_TRACE("SoundEffect::playSound() called");
 
-                if (loadSoundEffect(sound))
+                if (loadSoundEffect(soundStr))
                 {
-                        if (sound == "click")
-                        {
-                                sounds[sound]->play();
-                        }
-                        else
-                        {
-                                playSoundEffectInThread(sound);
-                        }
+                        activeSounds.push_back(sounds[soundStr]);
+                        activeSounds.back()->play();
                 }
+
+                removeFinishedSounds();
         }
 
         /*
@@ -62,17 +58,17 @@ namespace System
 
         @return True if the sound effect was loaded, false otherwise.
         */
-        bool SoundEffect::loadSoundEffect(const std::string& sound)
+        bool SoundEffect::loadSoundEffect(const std::string& soundStr)
         {
                 LOG_TRACE("SoundEffect::loadSoundEffect() called");
 
-                if (sounds.find(sound) == sounds.end())
+                if (sounds.find(soundStr) == sounds.end())
                 {
                         std::shared_ptr<sf::Music> music = std::make_shared<sf::Music>();
-                        std::string path = "assets/" + sound + ".mp3";
+                        std::string path = "assets/" + soundStr + ".mp3";
                         if (music->openFromFile(path))
                         {
-                                sounds[sound] = music;
+                                sounds[soundStr] = music;
                                 return true;
                         }
                         else
@@ -86,19 +82,15 @@ namespace System
         }
 
         /*
-        Play a sound effect in a separate thread.
+        Remove finished sounds.
         */
-        void SoundEffect::playSoundEffectInThread(const std::string& sound)
+        void SoundEffect::removeFinishedSounds()
         {
-                LOG_TRACE("SoundEffect::playSoundEffectInThread() called");
+                LOG_TRACE("SoundEffect::removeFinishedSounds() called");
 
-                // Create a thread to play the sound effect
-                std::thread soundThread([this, sound]()
+                activeSounds.remove_if([](const std::shared_ptr<sf::Music>& music)
                 {
-                        sounds[sound]->play();
+                        return music->getStatus() == sf::Music::Stopped;
                 });
-
-                // Detach the thread
-                soundThread.detach();
         }
 } // namespace System
