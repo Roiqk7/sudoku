@@ -21,6 +21,7 @@ namespace System
         // Music methods
                 void playMusic();
                 void stopMusic();
+                void checkMusic();
         private: // Methods
         // Music methods
                 bool loadMusic();
