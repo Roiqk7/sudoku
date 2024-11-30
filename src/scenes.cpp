@@ -763,6 +763,9 @@ namespace System
                                         std::this_thread::sleep_for(sleepTime);
                                 }
 
+                                // Let the user see the solved board
+                                std::this_thread::sleep_for(std::chrono::seconds(2));
+
                                 createGameOverScene(scene, gui, false);
                         });
                 auto solveButton = createButton("Solve",
