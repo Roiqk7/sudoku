@@ -749,7 +749,7 @@ namespace System
                                 gameHandler.score = 0;
                                 gameHandler.difficulty = Sudoku::Difficulty::CHEAT;
                                 auto& soundEffect = gui.getSoundEffect();
-                                // TODO: Add soundEffect.playSound("solve");
+                                soundEffect.playSound("solve");
 
                                 int iterations = 0;
                                 while(!gameHandler.checkWin())
@@ -1048,6 +1048,10 @@ namespace System
 
                 sf::RenderWindow& window = gui.getWindow();
                 auto wi = getWindowInfo(window);
+
+                // Sound effect
+                auto& soundEffect = gui.getSoundEffect();
+                soundEffect.playSound(win ? "won" : "lost");
 
                 // Sudoku title
                 scene.addObject(getTitle(window));
