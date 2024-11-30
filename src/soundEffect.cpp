@@ -44,7 +44,14 @@ namespace System
 
                 if (loadSoundEffect(sound))
                 {
-                        playSoundEffectInThread(sound);
+                        if (sound == "click")
+                        {
+                                sounds[sound]->play();
+                        }
+                        else
+                        {
+                                playSoundEffectInThread(sound);
+                        }
                 }
         }
 
