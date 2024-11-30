@@ -57,7 +57,7 @@ namespace Sudoku
                 grid.setZero(81 - cells);
 
                 // Reset attributes
-                score = 10000;
+                score = 0;
                 selectedCell = -1;
                 selectedNumber = 0;
                 hintsUsed = 0;
