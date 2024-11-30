@@ -783,22 +783,23 @@ namespace System
                         [&scene, &gui]()
                         {
                                 auto& gameHandler = gui.getGameHandler();
+
+                                if (gameHandler.hintsUsed >= 3)
+                                {
+                                        return;
+                                }
+
                                 auto& soundEffect = gui.getSoundEffect();
                                 soundEffect.playSound("hint");
 
                                 gameHandler.solve(1);
                                 gameHandler.hintsUsed++;
                                 createGameScene(scene, gui);
-
-                                if (gameHandler.hintsUsed == 3)
-                                {
-                                        createGameOverScene(scene, gui, gameHandler.checkWin());
-                                }
                         });
                 sf::Color hintsColor = gameHandler.hintsUsed == 0 ? Colors::WHITE
                         : gameHandler.hintsUsed == 1 ? Colors::GREEN
                         : gameHandler.hintsUsed == 2 ? Colors::BLUE
-                        : Colors::WHITE;
+                        : Colors::SHADOW;
                 auto hintButton = createButton("Hint",
                         wi.topLeft.x + 60, GRID_Y + 120,
                         260, 100, 10, Colors::BLACK, hintsColor, hintCommand);
