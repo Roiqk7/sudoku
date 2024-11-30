@@ -561,7 +561,7 @@ namespace System
                 We will highlight all cells with the clicked number and the row,
                 column and box of selected cell
                 */
-                // TODO: Fix highlight effect
+                // TODO: Fix highlight effect - edges are weird
                 if (grid.checkCellIndex(gameHandler.selectedCell))
                 {
                         int row = gameHandler.selectedCell / 9;
@@ -951,10 +951,23 @@ namespace System
                         NUM_PANEL_SIZE + 20, NUM_PANEL_SIZE + 20, 10,
                         Colors::WHITE, Colors::NAVAJO_WHITE,
                         numberPanelClickCommand);
-
                 scene.addObject(numberPanel.frame);
                 scene.addClickableObject(numberPanel.clickable);
                 scene.addObject(numberPanel.background);
+
+                // Number panel highlight
+                if (gameHandler.selectedNumber > 0 and gameHandler.selectedNumber < 10)
+                {
+                        int row = (gameHandler.selectedNumber - 1) / 3;
+                        int col = (gameHandler.selectedNumber - 1) % 3;
+
+                        scene.addObject(std::make_shared<Rectangle>(
+                                "Number Panel Highlight",
+                                NUM_PANEL_X + col * (NUM_PANEL_SIZE / 3),
+                                NUM_PANEL_Y + row * (NUM_PANEL_SIZE / 3),
+                                NUM_PANEL_SIZE / 3, NUM_PANEL_SIZE / 3,
+                                Colors::SHADOW));
+                }
 
                 // Number panel lines
                 const int NUM_PANEL_NUM_LINES = 3;
