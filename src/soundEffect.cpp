@@ -44,7 +44,7 @@ namespace System
 
                 if (loadSoundEffect(sound))
                 {
-                        sounds[sound]->play();
+                        playSoundEffectInThread(sound);
                 }
         }
 
@@ -81,12 +81,15 @@ namespace System
         /*
         Play a sound effect in a separate thread.
         */
-        void SoundEffect::playSoundEffectInThread()
+        void SoundEffect::playSoundEffectInThread(const std::string& sound)
         {
                 LOG_TRACE("SoundEffect::playSoundEffectInThread() called");
 
                 // Create a thread to play the sound effect
-                std::thread soundThread(&SoundEffect::playSoundEffectInThread, this);
+                std::thread soundThread([this, sound]()
+                {
+                        sounds[sound]->play();
+                });
 
                 // Detach the thread
                 soundThread.detach();

@@ -51,7 +51,7 @@ namespace System
         {
                 LOG_TRACE("Music::playMusic() called");
 
-                music->play();
+                playMusicInThread();
         }
 
         /*
@@ -84,7 +84,10 @@ namespace System
                 LOG_TRACE("Music::playMusicInThread() called");
 
                 // Create a thread to play music
-                std::thread musicThread(&Music::playMusic, this);
+                std::thread musicThread([this]()
+                {
+                        music->play();
+                });
 
                 // Detach the thread to allow it to run independently
                 musicThread.detach();
