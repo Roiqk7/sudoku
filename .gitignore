@@ -35,6 +35,7 @@
 .vscode/
 bin/
 build/
+log/
 myenv/
 lib/
 SFML/
