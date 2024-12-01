@@ -443,9 +443,9 @@ namespace System
                 We will highlight all cells with the clicked number and the row,
                 column and box of selected cell
                 */
-                // TODO: Fix highlight effect - edges are weird
                 if (grid.checkCellIndex(gameHandler.selectedCell))
                 {
+                        // Row and column are in the range [0, 8]
                         int row = gameHandler.selectedCell / 9;
                         int col = gameHandler.selectedCell % 9;
 
@@ -475,10 +475,15 @@ namespace System
                         // Highlight the box
                         int boxRow = row / 3;
                         int boxCol = col / 3;
+                        // We add this as the highlight box is weird on the end edges
+                        int xOffset = boxRow == 2 ? 5 : 0;
+                        int yOffset = boxCol == 2 ? 5 : 0;
                         scene.addObject(std::make_shared<Rectangle>(
                                 "Highlight Box",
-                                GRID_X + (GRID_SIZE / 3) * boxCol, GRID_Y + (GRID_SIZE / 3) * boxRow,
-                                GRID_SIZE / 3, GRID_SIZE / 3, Colors::ORANGE));
+                                GRID_X + (GRID_SIZE / 3) * boxCol - boxCol,
+                                GRID_Y + (GRID_SIZE / 3) * boxRow - boxRow,
+                                GRID_SIZE / 3 + yOffset, GRID_SIZE / 3 + xOffset,
+                                Colors::ORANGE));
 
                         // Now highlight cells with the clicked number
                         int clickedNumber = grid.getCell(gameHandler.selectedCell / 9, gameHandler.selectedCell % 9);
