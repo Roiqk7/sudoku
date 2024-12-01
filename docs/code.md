@@ -16,3 +16,10 @@ The events in the GUI are handled using the command pattern. The `Command` and `
 ## Development
 
 The project was developed using the C++ programming language and the SFML library for the graphical user interface. Once of the arguments for the `build.sh` files is `dev` which will build the project with additional logging and debugging information. It may also be helpful to use the `test` argument to run the tests.
+
+Command:
+```bash
+./scripts/build.sh dev && ./build/sudoku
+```
+
+will be your best friend during development.
