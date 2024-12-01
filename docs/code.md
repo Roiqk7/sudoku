@@ -23,3 +23,7 @@ Command:
 ```
 
 will be your best friend during development.
+
+## Testing
+
+TODO: Finish tests
