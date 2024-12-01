@@ -56,7 +56,8 @@ namespace Sudoku
         public: // Variables
                 int score = 0;                                                  // The score of the player
                 int selectedCell = -1;                                          // The cell selected by the player [0, 80]
-                int selectedNumber = 0;                                         // The number selected by the player [1, 9]
+                int selectedCellValue = -1;                                     // The value of the selected cell [0, 9]
+                int selectedNumber = -1;                                        // The number selected by the player [1, 9]
                 Difficulty difficulty = Difficulty::NONE;                       // The difficulty of the game
                 int mistakes = 0;                                               // Number of mistakes made (max 3)
                 bool notesMode = false;                                         // If notes mode is enabled
