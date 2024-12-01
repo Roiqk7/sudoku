@@ -5,6 +5,8 @@ The code is separated into three folders:
 - `include`: Contains the header files of the project.
 - `test`: Contains the tests for the project.
 
+The main function is located in the `src/sudoku.cpp` file. The main function is responsible for creating the `Application` object. And if the `DEVELOPMENT` flag is set, the main function will also set the logging level to `DEBUG`.
+
 The code follows strong object-oriented principles with all the main components having a class of their own. The entire game is controlled by the `Application` class which is constructed in the main function. The application ends once the application object is destroyed.
 
 The entire graphical user interface is controlled by the `GUI` class which is an attribute of the `application` class. The GUI class is responsible for rendering, updating and handling all the user inputs. The `Scene` class is one logical GUI element with many gui `Objects` which are the smallest graphical elements. The `Scene` class is responsible for handling all the gui objects and rendering them. More `Scene` classes can be rendered at the same time.
