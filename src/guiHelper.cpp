@@ -157,9 +157,11 @@ namespace System
         Button::Button(const std::shared_ptr<Object>& frame,
                 const std::shared_ptr<Rectangle>& clickable,
                 const std::shared_ptr<Object>& background,
-                const std::shared_ptr<Command>& command)
+                const std::shared_ptr<Command>& command,
+                const std::shared_ptr<Object>& text)
                 : frame(frame), clickable(clickable),
-                background(background), command(command)
+                background(background), command(command),
+                text(text)
         {
                 LOG_TRACE("Button::Button() called.");
         }
@@ -216,6 +218,10 @@ namespace System
         @param frameColor Color of the frame.
         @param backgroundColor Color of the background.
         @param command Command to execute.
+        @param fontName Name of the font.
+        @param fontSize Size of the font.
+        @param text Text of the button.
+        @param textColor Color of the text.
 
         @return Pointer to the button.
 
@@ -227,7 +233,9 @@ namespace System
                         const int margin,
                         const sf::Color frameColor,
                         const sf::Color backgroundColor,
-                        const std::shared_ptr<Command>& command)
+                        const std::shared_ptr<Command>& command,
+                        const std::string& fontName, const int fontSize,
+                        const std::string& textStr, const sf::Color textColor)
         {
                 LOG_TRACE("createButton() called.");
 
@@ -240,7 +248,25 @@ namespace System
                                 name + " Clickable", x, y, width, height,
                                 Colors::TRANSPARENT, command)
                         : nullptr;
-                return *new Button(frame, clickable, background, command);
+                /*
+                The offset calculation is a bit of a magic. The way it works is that the
+                width : height ratio of the text is 0.625. (meaning that the width of the
+                character is 0.625 times the height of the character and height == fontSize).
+
+                Thus we get the total width of the text by multiplying the number of characters
+                in the text by the width of the character. We then subtract from the total width
+                and divide by 2 to center the text. The margin is added to the x position to
+                center the text within the button background. The 0.625 is a magic number and
+                is not precise but works well enough for the purpose of this program.
+                */
+                int offset = (width - (textStr.size() * (fontSize * 0.625))) / 2 + margin;
+                auto text = textStr != "" ? std::make_shared<Text>(
+                        name + " Text", x + offset, y,
+                        getFont(fontName).first, getFont(fontName).second,
+                        textStr, fontSize, textColor)
+                        : nullptr;
+
+                return *new Button(frame, clickable, background, command, text);
         }
 
         /*
