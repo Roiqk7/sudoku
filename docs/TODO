@@ -1,6 +1,6 @@
-1. Make working scenes
-        1. Finish game scene and all its components
-           1. Add timer
-           2. Finish TODOs in the code (mainly in the scenes.cpp)
+1. Finish game scene and all its components
+        1. Add timer
+        2. Finish TODOs in the code (mainly in the scenes.cpp)
 2. Add more tests
    1. Rewrite the tests for the updated Grid
+   2. Add more tests
