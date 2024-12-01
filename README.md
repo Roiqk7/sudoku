@@ -31,3 +31,7 @@ Run the game:
 ```
 
 For more information, see the [installation document](docs/installation.md).
+
+## Development
+
+Feel free to contribute to the project. For more information, see the [development document](docs/development.md) and the [dev log](docs/devLog.md).
