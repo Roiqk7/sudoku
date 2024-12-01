@@ -841,7 +841,6 @@ namespace System
                 std::shared_ptr<Command> numberPanelClickCommand = std::make_shared<Command>(
                         [&scene, &gui, NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y]()
                         {
-                                // TODO: Rework
                                 sf::Event event = gui.getEvent();
 
                                 // Ignore if not a mouse click

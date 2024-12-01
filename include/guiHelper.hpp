@@ -90,6 +90,9 @@ namespace System
 // Click functions
         void gameSceneMainGridClick(Scene& scene, GUI& gui, const int gridSize,
                 const int gridX, const int gridY);
+        void gameSceneNumberPanelClick(Scene& scene, GUI& gui,
+                const int numberPanelSize,
+                const int numberPanelX, const int numberPanelY);
 } // namespace System
 
 

@@ -464,4 +464,69 @@ namespace System
                 createGameScene(scene, gui);
         }
 
+        /*
+        The number panel click function for the game scene.
+
+        @param scene Scene to handle the click in.
+        @param gui GUI to handle the click in.
+        @param numberPanelSize Size of the number panel.
+        @param numberPanelX X position of the number panel.
+        @param numberPanelY Y position of the number panel.
+        */
+        void gameSceneNumberPanelClick(Scene& scene, GUI& gui,
+                const int numberPanelSize,
+                const int numberPanelX, const int numberPanelY)
+        {
+                LOG_TRACE("gameSceneNumberPanelClick() called.");
+
+                sf::Event event = gui.getEvent();
+
+                // Ignore if not a mouse click
+                // Should not happen
+                if (event.type != sf::Event::MouseButtonPressed)
+                {
+                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
+                        return;
+                }
+
+                // Find the selected number
+                auto& window = gui.getWindow();
+                auto& gameHandler = gui.getGameHandler();
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                // Note: row and col should be in the range [0, 2]
+                int row = (mousePos.y - numberPanelX) / (numberPanelSize / 3);
+                int col = (mousePos.x - numberPanelY) / (numberPanelSize / 3);
+                if (row < 0 or row > 2 or col < 0 or col > 2)
+                {
+                        LOG_WARN("Invalid row x col: {} x {}. This log message should not appear.",
+                                row, col);
+                        return;
+                }
+
+                /*
+                Layout:
+                        1 2 3
+                        4 5 6
+                        7 8 9
+                */
+                // Get the number
+                int num = row * 3 + col + 1;
+
+                // Select/deselect the number
+                gameHandler.selectedNumber = gameHandler.selectedNumber == num ? -1 : num;
+
+                // Check if user intended to insert a number
+                Sudoku::Grid grid;
+                gameHandler.getGrid(grid);
+                if (isValidGameSceneMainGridUserInput(
+                        grid.getCell(gameHandler.selectedCell),
+                        gameHandler.selectedCell, gameHandler.selectedNumber))
+                {
+                        gameSceneMainGridUserInputHandle(scene, gui,
+                                gameHandler.selectedCell, gameHandler.selectedNumber);
+                }
+
+                createGameScene(scene, gui);
+        }
+
 } // namespace System
