@@ -164,18 +164,12 @@ namespace System
                         });
 
                 auto NGButton = createButton("New Game", wi.center.x - 210, wi.center.y - 100,
-                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command);
-
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command,
+                        "font", wi.center.y / 5, "New Game", Colors::BLACK);
                 scene.addObject(NGButton.frame);
                 scene.addClickableObject(NGButton.clickable);
                 scene.addObject(NGButton.background);
-
-                // New Game text
-                auto font = getFont("font");
-                scene.addObject(std::make_shared<Text>(
-                        "New Game Text", wi.center.x - 200, wi.center.y - 100, font.first,
-                        font.second, "New Game", wi.center.y / 5,
-                        Colors::BLACK));
+                scene.addObject(NGButton.text);
         // Credits Button
                 // Credits clickable black rectangle
                 // Credits function
@@ -184,18 +178,13 @@ namespace System
                         {
                                 createCreditsScene(scene, gui);
                         });
-
                 auto creditsButton = createButton("Credits", wi.center.x - 210, wi.center.y + 20,
-                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command2);
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command2,
+                        "font", wi.center.y / 5, "Credits", Colors::BLACK);
                 scene.addObject(creditsButton.frame);
                 scene.addClickableObject(creditsButton.clickable);
                 scene.addObject(creditsButton.background);
-
-                // Credits text
-                scene.addObject(std::make_shared<Text>(
-                        "Credits Text", wi.center.x - 180, wi.center.y + 20, font.first,
-                        font.second, "Credits", wi.center.y / 5,
-                        Colors::BLACK));
+                scene.addObject(creditsButton.text);
         // Exit Button
                 // Exit clickable black rectangle
                 // Exit function
@@ -206,16 +195,12 @@ namespace System
                         });
 
                 auto exitButton = createButton("Exit", wi.center.x - 210, wi.center.y + 140,
-                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command3);
+                        wi.size.x/5 + 120, wi.size.y/8, 10, Colors::BLACK, Colors::WHITE, command3,
+                        "font", wi.center.y / 5, "Exit", Colors::BLACK);
                 scene.addObject(exitButton.frame);
                 scene.addClickableObject(exitButton.clickable);
                 scene.addObject(exitButton.background);
-
-                // Exit text
-                scene.addObject(std::make_shared<Text>(
-                        "Exit Text", wi.center.x - 110, wi.center.y + 140, font.first,
-                        font.second, "Exit", wi.center.y / 5,
-                        Colors::BLACK));
+                scene.addObject(exitButton.text);
         }
 
         /*
@@ -346,7 +331,7 @@ namespace System
                                 Sudoku::Difficulty::MEDIUM, Colors::YELLOW),
                         std::make_tuple("Easy",
                                 Sudoku::Difficulty::EASY, Colors::GREEN)
-        };
+                };
 
         for (int i = 0; i < 4; i++)
         {
@@ -367,41 +352,13 @@ namespace System
                         wi.center.x - 160, wi.center.y - 140 + 120 * i,
                         wi.size.x/5 + 50, wi.size.y/8, 10,
                         Colors::BLACK, diffColor,
-                        std::make_shared<Command>(command));
+                        std::make_shared<Command>(command),
+                        "font", wi.center.y / 5, diffName, Colors::BLACK);
                 scene.addObject(button.frame);
                 scene.addClickableObject(button.clickable);
                 scene.addObject(button.background);
+                scene.addObject(button.text);
         }
-
-        // Difficulty Texts
-        auto font = getFont("font");
-        // Expert Difficulty text
-        scene.addObject(std::make_shared<Text>(
-                "Expert Difficulty Text", wi.center.x - 140,
-                wi.center.y - 140, font.first,
-                font.second, "Expert", wi.center.y / 5,
-                Colors::BLACK));
-
-        // Hard Difficulty text
-        scene.addObject(std::make_shared<Text>(
-                "Hard Difficulty Text", wi.center.x - 95,
-                wi.center.y - 20, font.first,
-                font.second, "Hard", wi.center.y / 5,
-                Colors::BLACK));
-
-        // Medium Difficulty text
-        scene.addObject(std::make_shared<Text>(
-                "Medium Difficulty Text", wi.center.x - 140,
-                wi.center.y + 100, font.first,
-                font.second, "Medium", wi.center.y / 5,
-                Colors::BLACK));
-
-        // Easy Difficulty text
-        scene.addObject(std::make_shared<Text>(
-                "Easy Difficulty Text", wi.center.x - 95,
-                wi.center.y + 220, font.first,
-                font.second, "Easy", wi.center.y / 5,
-                Colors::BLACK));
 
         // Click to return box
                 // Click-to-return function
@@ -423,6 +380,7 @@ namespace System
         {
                 // TODO: Add more "function wide" variables to make everything more connected
                 // TODO: Add a header with all the important variables (e.g., highlight color)
+                // TODO: Create a separate function for the highlite, numbers and grid lines
                 // etc. to make editing easier
 
                 LOG_TRACE("createGameScene() called.");
@@ -765,15 +723,12 @@ namespace System
                         : Colors::WHITE;
                 auto solveButton = createButton("Solve",
                         wi.topLeft.x + 60, GRID_Y,
-                        260, 100, 10, Colors::BLACK, solveColor, solveCommand);
+                        260, 100, 10, Colors::BLACK, solveColor, solveCommand,
+                        "font", 80, "Solve", Colors::BLACK);
                 scene.addObject(solveButton.frame);
                 scene.addClickableObject(solveButton.clickable);
                 scene.addObject(solveButton.background);
-
-                // Solve text
-                scene.addObject(std::make_shared<Text>(
-                        "Solve Text", wi.topLeft.x + 70, GRID_Y,
-                        font.first, font.second, "Solve", 80, Colors::BLACK));
+                scene.addObject(solveButton.text);
         // Hint Button
                 // Hint clickable rectangle
                 // Hint function
@@ -800,15 +755,12 @@ namespace System
                         : Colors::SHADOW;
                 auto hintButton = createButton("Hint",
                         wi.topLeft.x + 60, GRID_Y + 120,
-                        260, 100, 10, Colors::BLACK, hintsColor, hintCommand);
+                        260, 100, 10, Colors::BLACK, hintsColor, hintCommand,
+                        "font", 80, "Hint", Colors::BLACK);
                 scene.addObject(hintButton.frame);
                 scene.addClickableObject(hintButton.clickable);
                 scene.addObject(hintButton.background);
-
-                // Hint text
-                scene.addObject(std::make_shared<Text>(
-                        "Hint Text", wi.topLeft.x + 90, GRID_Y + 120,
-                        font.first, font.second, "Hint", 80, Colors::BLACK));
+                scene.addObject(hintButton.text);
         // Notes switch button
                 // Notes switch clickable rectangle
                 // Notes switch function
@@ -957,17 +909,12 @@ namespace System
                 auto& resumeButton = createButton("Resume",
                         wi.center.x - 210, wi.center.y - 100,
                         wi.size.x/5 + 120, wi.size.y/8, 10,
-                        Colors::BLACK, Colors::WHITE, command);
+                        Colors::BLACK, Colors::WHITE, command,
+                        "font", wi.center.y / 5, "Resume", Colors::BLACK);
                 scene.addObject(resumeButton.frame);
                 scene.addClickableObject(resumeButton.clickable);
                 scene.addObject(resumeButton.background);
-
-                // Resume text
-                auto font = getFont("font");
-                scene.addObject(std::make_shared<Text>(
-                        "Resume Text", wi.center.x - 160, wi.center.y - 100,
-                        font.first, font.second, "Resume", wi.center.y / 5,
-                        Colors::BLACK));
+                scene.addObject(resumeButton.text);
         // Help Button
                 // Help clickable black rectangle
                 // Help function
@@ -980,16 +927,12 @@ namespace System
                 auto& helpButton = createButton("Help",
                         wi.center.x - 210, wi.center.y + 20,
                         wi.size.x/5 + 120, wi.size.y/8 + 5, 10,
-                        Colors::BLACK, Colors::WHITE, command2);
+                        Colors::BLACK, Colors::WHITE, command2,
+                        "font", wi.center.y / 5, "Help", Colors::BLACK);
                 scene.addObject(helpButton.frame);
                 scene.addClickableObject(helpButton.clickable);
                 scene.addObject(helpButton.background);
-
-                // Help text
-                scene.addObject(std::make_shared<Text>(
-                        "Help Text", wi.center.x - 110, wi.center.y + 20, font.first,
-                        font.second, "Help", wi.center.y / 5,
-                        Colors::BLACK));
+                scene.addObject(helpButton.text);
         // Exit Button
                 // Exit clickable black rectangle
                 // Exit function
@@ -1002,17 +945,12 @@ namespace System
                 auto& exitButton = createButton("Exit",
                         wi.center.x - 210, wi.center.y + 145,
                         wi.size.x/5 + 120, wi.size.y/8, 10,
-                        Colors::BLACK, Colors::WHITE, command3);
+                        Colors::BLACK, Colors::WHITE, command3,
+                        "font", wi.center.y / 5, "Exit", Colors::BLACK);
                 scene.addObject(exitButton.frame);
                 scene.addClickableObject(exitButton.clickable);
                 scene.addObject(exitButton.background);
-
-                // Exit text
-                std::shared_ptr<Object> exitText = std::make_shared<Text>(
-                        "Exit Text", wi.center.x - 110, wi.center.y + 145,
-                        font.first, font.second, "Exit", wi.center.y / 5,
-                        Colors::BLACK);
-                scene.addObject(exitText);
+                scene.addObject(exitButton.text);
         }
 
         /*
@@ -1104,16 +1042,11 @@ namespace System
                 auto& exitButton = createButton("Exit",
                         wi.center.x - 210, wi.center.y + 220,
                         wi.size.x/5 + 120, wi.size.y/8, 10,
-                        Colors::BLACK, Colors::WHITE, command);
+                        Colors::BLACK, Colors::WHITE, command,
+                        "font", wi.center.y / 5, "Exit", Colors::BLACK);
                 scene.addObject(exitButton.frame);
                 scene.addClickableObject(exitButton.clickable);
                 scene.addObject(exitButton.background);
-
-                // Exit text
-                scene.addObject(std::make_shared<Text>(
-                        "Exit Text", wi.center.x - 110, wi.center.y + 220,
-                        font.first, font.second, "Exit", wi.center.y / 5,
-                        Colors::BLACK));
         }
 // Development scenes
         /*
