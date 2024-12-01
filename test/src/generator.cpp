@@ -8,8 +8,8 @@ This file provides a few tests for the Generator class.
 #error "Tried to compile a test file without the TEST macro defined. Aborting compilation."
 #else
 
-#include "../../include/generator.hpp"
-#include "../../include/grid.hpp"
+#include "../generator.hpp"
+#include "../grid.hpp"
 #include <array>
 #include <gtest/gtest.h>
 

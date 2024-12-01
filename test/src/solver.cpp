@@ -8,8 +8,8 @@ This file provides a few tests for the Solver class.
 #error "Tried to compile a test file without the TEST macro defined. Aborting compilation."
 #else
 
-#include "../../include/grid.hpp"
-#include "../../include/solver.hpp"
+#include "../grid.hpp"
+#include "../solver.hpp"
 #include <array>
 #include <gtest/gtest.h>
 

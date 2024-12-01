@@ -4,9 +4,9 @@ Date: 14/11/2024
 Scene class stores one scene of the application and all the objects in it.
 */
 
-#include "../include/macros.hpp"
-#include "../include/object.hpp"
-#include "../include/scene.hpp"
+#include "macros.hpp"
+#include "object.hpp"
+#include "scene.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -129,7 +129,7 @@ namespace System
                 }
 
                 objects.push_back(object);
-                clickableObjects.push_back(object); 
+                clickableObjects.push_back(object);
         }
 
         /*

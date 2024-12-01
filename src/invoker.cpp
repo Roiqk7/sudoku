@@ -4,9 +4,9 @@ Date: 13/11/2024
 Invoker class is used to execute commands. Following the command pattern.
 */
 
-#include "../include/command.hpp"
-#include "../include/invoker.hpp"
-#include "../include/macros.hpp"
+#include "command.hpp"
+#include "invoker.hpp"
+#include "macros.hpp"
 #include <memory>
 #include <queue>
 

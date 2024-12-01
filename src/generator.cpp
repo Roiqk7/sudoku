@@ -4,10 +4,10 @@ Date: 10/11/2024
 Generator is class which generates a new sudoku grid.
 */
 
-#include "../include/generator.hpp"
-#include "../include/macros.hpp"
-#include "../include/grid.hpp"
-#include "../include/solver.hpp"
+#include "generator.hpp"
+#include "macros.hpp"
+#include "grid.hpp"
+#include "solver.hpp"
 #include <algorithm>
 #include <array>
 #include <random>

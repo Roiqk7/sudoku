@@ -8,7 +8,7 @@ This file provides a few tests for the Grid class.
 #error "Tried to compile a test file without the TEST macro defined. Aborting compilation."
 #else
 
-#include "../../include/grid.hpp"
+#include "../grid.hpp"
 #include <array>
 #include <gtest/gtest.h>
 

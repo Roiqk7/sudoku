@@ -4,9 +4,9 @@ Date: 09/11/2024
 Solver is class which given a sudoku grid, solves it using backtracking.
 */
 
-#include "../include/macros.hpp"
-#include "../include/grid.hpp"
-#include "../include/solver.hpp"
+#include "macros.hpp"
+#include "grid.hpp"
+#include "solver.hpp"
 #include <algorithm>
 #include <array>
 #include <iostream>

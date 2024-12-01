@@ -4,11 +4,11 @@ Date: 10/11/2024
 Game handler makes the connection between the GUI and the game logic.
 */
 
-#include "../include/gameHandler.hpp"
-#include "../include/generator.hpp"
-#include "../include/macros.hpp"
-#include "../include/grid.hpp"
-#include "../include/solver.hpp"
+#include "gameHandler.hpp"
+#include "generator.hpp"
+#include "macros.hpp"
+#include "grid.hpp"
+#include "solver.hpp"
 #include <algorithm>
 #include <chrono>
 #include <random>

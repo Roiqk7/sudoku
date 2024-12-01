@@ -4,9 +4,9 @@ Date: 10/11/2024
 GUI class controls the graphical user interface of the program.
 */
 
-#include "../include/macros.hpp"
-#include "../include/gui.hpp"
-#include "../include/scenes.hpp"
+#include "macros.hpp"
+#include "gui.hpp"
+#include "scenes.hpp"
 #include <algorithm>
 #include <chrono>
 #include <memory>

@@ -4,8 +4,8 @@ Date: 09/11/2024
 This file implements the Grid class.
 */
 
-#include "../include/macros.hpp"
-#include "../include/grid.hpp"
+#include "macros.hpp"
+#include "grid.hpp"
 #include <algorithm>
 #include <array>
 #include <iostream>

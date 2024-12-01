@@ -4,8 +4,8 @@ Date: 24/11/2024
 Sound effect class manages the sound effects in the application.
 */
 
-#include "../include/macros.hpp"
-#include "../include/soundEffect.hpp"
+#include "macros.hpp"
+#include "soundEffect.hpp"
 #include <algorithm>
 #include <filesystem>
 #include <memory>

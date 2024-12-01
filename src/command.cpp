@@ -4,8 +4,8 @@ Date: 13/11/2024
 Command class used to store commands for buttons in the scene. Following the command pattern.
 */
 
-#include "../include/command.hpp"
-#include "../include/macros.hpp"
+#include "command.hpp"
+#include "macros.hpp"
 #include <functional>
 
 namespace System

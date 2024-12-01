@@ -4,11 +4,11 @@ Date: 15/11/2024
 This file contains helper functions for the GUI.
 */
 
-#include "../include/grid.hpp"
-#include "../include/gui.hpp"
-#include "../include/guiHelper.hpp"
-#include "../include/scenes.hpp"
-#include "../include/macros.hpp"
+#include "grid.hpp"
+#include "gui.hpp"
+#include "guiHelper.hpp"
+#include "scenes.hpp"
+#include "macros.hpp"
 #include <filesystem>
 #include <iomanip>
 #include <SFML/Graphics.hpp>

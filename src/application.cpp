@@ -4,9 +4,9 @@ Date: 10/11/2024
 Application class controls the overall flow of the program.
 */
 
-#include "../include/application.hpp"
-#include "../include/macros.hpp"
-#include "../include/gui.hpp"
+#include "application.hpp"
+#include "macros.hpp"
+#include "gui.hpp"
 
 namespace System
 {

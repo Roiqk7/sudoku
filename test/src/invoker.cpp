@@ -8,8 +8,8 @@ This file provides a few tests for the Invoker class.
 #error "Tried to compile a test file without the TEST macro defined. Aborting compilation."
 #else
 
-#include "../../include/command.hpp"
-#include "../../include/invoker.hpp"
+#include "../command.hpp"
+#include "../invoker.hpp"
 #include <array>
 #include <gtest/gtest.h>
 

@@ -4,8 +4,8 @@ Date: 23/11/2024
 Music class manages the music in the application.
 */
 
-#include "../include/macros.hpp"
-#include "../include/music.hpp"
+#include "macros.hpp"
+#include "music.hpp"
 #include <memory>
 #include <SFML/Audio.hpp>
 #include <thread>

@@ -4,17 +4,17 @@ Date: 15/11/2024
 This file contains pre-made scenes for the GUI.
 */
 
-#include "../include/colors.hpp"
-#include "../include/command.hpp"
-#include "../include/gameHandler.hpp"
-#include "../include/grid.hpp"
-#include "../include/gui.hpp"
-#include "../include/guiHelper.hpp"
-#include "../include/macros.hpp"
-#include "../include/object.hpp"
-#include "../include/scene.hpp"
-#include "../include/scenes.hpp"
-#include "../include/soundEffect.hpp"
+#include "colors.hpp"
+#include "command.hpp"
+#include "gameHandler.hpp"
+#include "grid.hpp"
+#include "gui.hpp"
+#include "guiHelper.hpp"
+#include "macros.hpp"
+#include "object.hpp"
+#include "scene.hpp"
+#include "scenes.hpp"
+#include "soundEffect.hpp"
 #include <array>
 #include <bitset>
 #include <chrono>

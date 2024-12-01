@@ -1,5 +1,5 @@
-#include "../include/macros.hpp"
-#include "../include/signalHandler.hpp"
+#include "macros.hpp"
+#include "signalHandler.hpp"
 #include <csignal>
 #include <cstdlib>
 

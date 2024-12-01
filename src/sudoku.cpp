@@ -4,9 +4,9 @@ Date: 09/11/2024
 Description: This file contains the main function.
 */
 
-#include "../include/application.hpp"
-#include "../include/macros.hpp"
-#include "../include/signalHandler.hpp"
+#include "application.hpp"
+#include "macros.hpp"
+#include "signalHandler.hpp"
 #include <csignal>
 // Uncomment if you want to enable logging to a file #include <filesystem>
 
