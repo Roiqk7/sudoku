@@ -841,87 +841,8 @@ namespace System
                 std::shared_ptr<Command> numberPanelClickCommand = std::make_shared<Command>(
                         [&scene, &gui, NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y]()
                         {
-                                sf::Event event = gui.getEvent();
-
-                                // Ignore if not a mouse click
-                                // Should not happen
-                                if (event.type != sf::Event::MouseButtonPressed)
-                                {
-                                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
-                                        return;
-                                }
-
-                                auto& window = gui.getWindow();
-                                auto& gameHandler = gui.getGameHandler();
-                                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-                                int row = (mousePos.y - NUM_PANEL_Y) / (NUM_PANEL_SIZE / 3);
-                                int col = (mousePos.x - NUM_PANEL_X) / (NUM_PANEL_SIZE / 3);
-
-                                /*
-                                Layout:
-                                        1 2 3
-                                        4 5 6
-                                        7 8 9
-                                */
-                                int num = row * 3 + col + 1;
-
-                                gameHandler.selectedNumber = gameHandler.selectedNumber == num ? -1 : num;
-
-                                // Check if the number can be placed
-                                Sudoku::Grid grid;
-                                gameHandler.getGrid(grid);
-                                if (grid.checkCellIndex(gameHandler.selectedCell) and
-                                        gameHandler.selectedNumber != -1)
-                                {
-                                        int cell = gameHandler.selectedCell;
-                                        int cellRow = cell / 9;
-                                        int cellCol = cell % 9;
-
-                                        // Check if the number can be placed
-                                        if (gameHandler.checkUserInput(cell,
-                                                gameHandler.selectedNumber))
-                                        {
-                                                auto& soundEffect = gui.getSoundEffect();
-
-                                                // Either add a note or a guess
-                                                if (gameHandler.notesMode)
-                                                {
-                                                        int index = grid.convertIndex(row, col) * 9
-                                                                + gameHandler.selectedNumber - 1;
-                                                        bool value = gameHandler.notes.test(index);
-
-                                                        // Add or remove note
-                                                        gameHandler.notes = gameHandler.notes.set(index, !value);
-
-                                                        return createGameScene(scene, gui);
-                                                }
-                                                // Incorrect guess
-                                                else if (!gameHandler.checkUserInput(cell,
-                                                        gameHandler.selectedNumber))
-                                                {
-                                                        soundEffect.playSound("mistake");
-
-                                                        if (++gameHandler.mistakes == 3)
-                                                        {
-                                                                return createGameOverScene(scene, gui, false);
-                                                        }
-                                                }
-                                                // Correct guess
-                                                else
-                                                {
-                                                        soundEffect.playSound("correct");
-
-                                                        // Check win condition
-                                                        if (gameHandler.checkWin())
-                                                        {
-                                                                return createGameOverScene(scene, gui, true);
-                                                        }
-                                                }
-                                        }
-                                }
-
-                                createGameScene(scene, gui);
+                                gameSceneNumberPanelClick(scene, gui,
+                                        NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y);
                         });
                 auto& numberPanel = createButton("Number Panel",
                         GRID_X + GRID_SIZE + 30, wi.center.y - 120,
