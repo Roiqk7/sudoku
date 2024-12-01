@@ -494,8 +494,8 @@ namespace System
                 auto& gameHandler = gui.getGameHandler();
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 // Note: row and col should be in the range [0, 2]
-                int row = (mousePos.y - numberPanelX) / (numberPanelSize / 3);
-                int col = (mousePos.x - numberPanelY) / (numberPanelSize / 3);
+                int row = (mousePos.y - numberPanelY) / (numberPanelSize / 3);
+                int col = (mousePos.x - numberPanelX) / (numberPanelSize / 3);
                 if (row < 0 or row > 2 or col < 0 or col > 2)
                 {
                         LOG_WARN("Invalid row x col: {} x {}. This log message should not appear.",
