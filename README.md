@@ -29,3 +29,5 @@ Run the game:
 ```bash
 ./build/sudoku
 ```
+
+For more information, see the [installation document](docs/installation.md).
