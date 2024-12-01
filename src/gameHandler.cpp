@@ -82,23 +82,22 @@ namespace Sudoku
         /*
         Checks if the user input is correct and sets the value in the grid if it is.
 
-        @param row The row of the cell.
-        @param col The column of the cell.
+        @param index The index of the cell.
         @param value The value to check.
 
         @return True if the value is correct, false otherwise.
         */
-        bool GameHandler::checkUserInput(int row, int col, int value)
+        bool GameHandler::checkUserInput(int index, int value)
         {
                 LOG_TRACE("GameHandler::checkUserInput() called");
 
                 // Check if the value is correct
-                bool isCorrect = value == solved.getCell(row, col);
+                bool isCorrect = value == solved.getCell(index);
 
                 // If the value is correct, set it in the grid
                 if (isCorrect)
                 {
-                        grid.setCell(grid.convertIndex(row, col), value);
+                        grid.setCell(index, value);
 
                         updateScore();
                 }

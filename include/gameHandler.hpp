@@ -42,7 +42,7 @@ namespace Sudoku
                 ~GameHandler();
         // Game handler methods
                 void newGame(Difficulty difficulty);
-                bool checkUserInput(int row, int col, int value);
+                bool checkUserInput(int index, int value);
                 void solve(int cells);
         // Getters
                 void getGrid(Grid& grid, bool solved = false) const;
