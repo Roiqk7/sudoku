@@ -403,6 +403,40 @@ namespace System
 
                 createGameScene(scene, gui);
         }
+
+        /*
+        Handles what to do when the user interacts with the sudoku grid.
+
+        @param scene Scene to handle the input in.
+        @param gui GUI to handle the input in.
+        @param selectedCell Selected cell. [0, 80]
+        @param selectedCellValue Selected cell value. [0, 9]
+        @param selectedNumber Selected number. [1, 9]
+
+        @note This function is used when the user clicked either on the main grid
+        or the number panel.
+        */
+        void gameSceneGridInputHandle(Scene& scene, GUI& gui,
+                const int selectedCell, const int selectedCellValue, const int selectedNumber)
+        {
+                LOG_TRACE("gameSceneNumberPanelUserInputHandle() called.");
+
+                auto& gameHandler = gui.getGameHandler();
+
+                // Check if user intended to insert a number
+                if (isValidGameSceneMainGridUserInput(
+                        gameHandler.selectedCellValue,
+                        gameHandler.selectedCell, gameHandler.selectedNumber))
+                {
+                        gameSceneMainGridUserInputHandle(scene, gui,
+                                gameHandler.selectedCell, gameHandler.selectedNumber);
+                }
+                else
+                {
+                        createGameScene(scene, gui);
+                }
+        }
+
 // Click functions
         /*
         The main grid click function for the game scene.
@@ -455,18 +489,10 @@ namespace System
                 gameHandler.selectedCell = grid.convertIndex(row, col);
                 gameHandler.selectedCellValue = grid.getCell(row, col);
 
-                // Check if user intended to insert a number
-                if (isValidGameSceneMainGridUserInput(
-                        gameHandler.selectedCellValue,
-                        gameHandler.selectedCell, gameHandler.selectedNumber))
-                {
-                        gameSceneMainGridUserInputHandle(scene, gui,
-                                gameHandler.selectedCell, gameHandler.selectedNumber);
-                }
-                else
-                {
-                        createGameScene(scene, gui);
-                }
+                // Determine what the user wants to do
+                gameSceneGridInputHandle(scene, gui,
+                        gameHandler.selectedCell, gameHandler.selectedCellValue,
+                        gameHandler.selectedNumber);
         }
 
         /*
@@ -520,18 +546,10 @@ namespace System
                 // Select/deselect the number
                 gameHandler.selectedNumber = gameHandler.selectedNumber == num ? -1 : num;
 
-                // Check if user intended to insert a number
-                if (isValidGameSceneMainGridUserInput(
-                        gameHandler.selectedCellValue,
-                        gameHandler.selectedCell, gameHandler.selectedNumber))
-                {
-                        gameSceneMainGridUserInputHandle(scene, gui,
-                                gameHandler.selectedCell, gameHandler.selectedNumber);
-                }
-                else
-                {
-                        createGameScene(scene, gui);
-                }
+                // Determine what the user wants to do
+                gameSceneGridInputHandle(scene, gui,
+                        gameHandler.selectedCell, gameHandler.selectedCellValue,
+                        gameHandler.selectedNumber);
         }
 
 } // namespace System

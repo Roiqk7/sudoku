@@ -87,6 +87,9 @@ namespace System
                 const int selectedCell, const int selectedNumber);
         void gameSceneMainGridUserInputHandle(Scene& scene, GUI& gui,
                 const int selectedCell, const int selectedNumber);
+        void gameSceneGridInputHandle(Scene& scene, GUI& gui,
+                const int selectedCell, const int selectedCellValue,
+                const int selectedNumber);
 // Click functions
         void gameSceneMainGridClick(Scene& scene, GUI& gui, const int gridSize,
                 const int gridX, const int gridY);
