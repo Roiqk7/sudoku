@@ -26,7 +26,7 @@ install_dependencies()
         echo "Installing dependencies using Homebrew..."
 
         # Install dependencies using Homebrew
-        brew install cmake gcc googletest spdlog
+        brew install cmake gcc googletest spdlog sfml
 }
 
 # Detect operating system using uname
