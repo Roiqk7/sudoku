@@ -1047,6 +1047,7 @@ namespace System
                 scene.addObject(exitButton.frame);
                 scene.addClickableObject(exitButton.clickable);
                 scene.addObject(exitButton.background);
+                scene.addObject(exitButton.text);
         }
 // Development scenes
         /*
