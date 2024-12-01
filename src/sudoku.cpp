@@ -8,7 +8,7 @@ Description: This file contains the main function.
 #include "../include/macros.hpp"
 #include "../include/signalHandler.hpp"
 #include <csignal>
-#include <filesystem>
+// Uncomment if you want to enable logging to a file #include <filesystem>
 
 int main()
 {
