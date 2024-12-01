@@ -28,3 +28,7 @@ Run the game:
 ```bash
 ./build/sudoku
 ```
+
+# Dependencies
+
+All dependencies will be automatically downloaded and installed by the build script. The only dependency you need to have is `git` to clone the repository. All shell commands are written for MacOS. If you are using a different operating system, you may need to adjust the commands accordingly.
