@@ -11,10 +11,9 @@ Description: This file contains the main function.
 
 int main()
 {
-        LOG_TRACE("main() called");
-
         #ifdef DEVELOPMENT
         SET_LOG_LEVEL_DEBUG();
+        LOG_TRACE("main() called");
         #endif // DEVELOPMENT
 
         // Set up signal handling
