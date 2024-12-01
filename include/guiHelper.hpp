@@ -60,11 +60,13 @@ namespace System
                 std::shared_ptr<Rectangle> clickable;
                 std::shared_ptr<Object> background;
                 std::shared_ptr<Command> command;
+                std::shared_ptr<Object> text;
 
                 Button(const std::shared_ptr<Object>& frame,
                         const std::shared_ptr<Rectangle>& clickable,
                         const std::shared_ptr<Object>& background,
-                        const std::shared_ptr<Command>& command);
+                        const std::shared_ptr<Command>& command,
+                        const std::shared_ptr<Object>& text);
         };
 // Scenes helper
         WindowInfo getWindowInfo(const sf::RenderWindow& window);
@@ -75,7 +77,10 @@ namespace System
                         const int margin,
                         const sf::Color frameColor,
                         const sf::Color backgroundColor,
-                        const std::shared_ptr<Command>& command = nullptr);
+                        const std::shared_ptr<Command>& command = nullptr,
+                        const std::string& fontName = "", const int fontSize = 0,
+                        const std::string& textStr = "",
+                        const sf::Color textColor = Colors::WHITE);
         std::shared_ptr<Rectangle> createClickToContinue(
                 const std::shared_ptr<Command>& command,
                 const sf::RenderWindow& window);
