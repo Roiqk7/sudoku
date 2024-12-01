@@ -20,7 +20,7 @@ namespace System
         @param name Name of the scene.
         */
         Scene::Scene(const std::string& name)
-                : name(name), active(true)
+                : name(name)
         {
                 LOG_TRACE("Scene::Scene() called.");
         }
