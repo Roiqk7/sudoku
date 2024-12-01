@@ -44,11 +44,17 @@ namespace System
 
                 if (loadSoundEffect(soundStr))
                 {
-                        activeSounds.push_back(sounds[soundStr]);
-                        activeSounds.back()->play();
+                        auto sound = std::make_shared<sf::Sound>();
+                        sound->setBuffer(*sounds[soundStr]);
+                        sound->play();
+                        activeSounds.push_back(sound);
                 }
 
-                removeFinishedSounds();
+                // Once in a while, remove inactive sounds
+                if (activeSounds.size() > 10)
+                {
+                        removeInactiveSounds();
+                }
         }
 
         /*
@@ -64,11 +70,12 @@ namespace System
 
                 if (sounds.find(soundStr) == sounds.end())
                 {
-                        std::shared_ptr<sf::Music> music = std::make_shared<sf::Music>();
+                        std::shared_ptr<sf::SoundBuffer> sound
+                                = std::make_shared<sf::SoundBuffer>();
                         std::string path = "assets/" + soundStr + ".mp3";
-                        if (music->openFromFile(path))
+                        if (sound->loadFromFile(path))
                         {
-                                sounds[soundStr] = music;
+                                sounds[soundStr] = sound;
                                 return true;
                         }
                         else
@@ -82,15 +89,15 @@ namespace System
         }
 
         /*
-        Remove finished sounds.
+        Remove inactive sounds.
         */
-        void SoundEffect::removeFinishedSounds()
+        void SoundEffect::removeInactiveSounds()
         {
-                LOG_TRACE("SoundEffect::removeFinishedSounds() called");
+                LOG_TRACE("SoundEffect::removeInactiveSounds() called");
 
-                activeSounds.remove_if([](const std::shared_ptr<sf::Music>& music)
+                activeSounds.remove_if([](const std::shared_ptr<sf::Sound>& sound)
                 {
-                        return music->getStatus() == sf::Music::Stopped;
+                        return sound->getStatus() == sf::Sound::Stopped;
                 });
         }
 } // namespace System

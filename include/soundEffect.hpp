@@ -26,12 +26,12 @@ namespace System
         private: // Methods
         // Sound effect methods
                 bool loadSoundEffect(const std::string& soundStr);
-                void removeFinishedSounds();
+                void removeInactiveSounds();
         private: // Variables
         // Variables
-                std::list<std::shared_ptr<sf::Music>> activeSounds;             // List of active sounds
                 std::unordered_map<std::string,
-                        std::shared_ptr<sf::Music>> sounds;                     // Sound name to sound mapping
+                        std::shared_ptr<sf::SoundBuffer>> sounds;               // Sound name to sound mapping
+                std::list<std::shared_ptr<sf::Sound>> activeSounds;             // Active sounds
         };
 }
 
