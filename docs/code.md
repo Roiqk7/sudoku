@@ -28,4 +28,6 @@ will be your best friend during development.
 
 ## Testing
 
+Honestly I have barely ever run the tests. I have written a few of them but I believe that they deserve more attention. The tests are located in the `test/` directory and can be run using the `build.sh` script with the `test` argument... hopefully.
+
 TODO: Finish tests
