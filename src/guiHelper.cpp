@@ -4,7 +4,10 @@ Date: 15/11/2024
 This file contains helper functions for the GUI.
 */
 
+#include "../include/grid.hpp"
+#include "../include/gui.hpp"
 #include "../include/guiHelper.hpp"
+#include "../include/scenes.hpp"
 #include "../include/macros.hpp"
 #include <filesystem>
 #include <iomanip>
@@ -309,6 +312,156 @@ namespace System
                         default:
                                 return "None";
                 }
+        }
+// Click functions helper
+        /*
+        Determines if the user input should be considered valid.
+
+        @param gridValueAtSelectedCell Value at the selected cell. [0, 9]
+        @param selectedCell Selected cell. [0, 80]
+        @param selectedNumber Selected number. [1, 9]
+        */
+        bool isValidGameSceneMainGridUserInput(
+                const int gridValueAtSelectedCell,
+                const int selectedCell, const int selectedNumber)
+        {
+                LOG_TRACE("isValidGameSceneMainGridUserInput() called.");
+
+                /*
+                The input is valid only if user selected an empty cell and
+                selected a number. The selectedCell argument is redundant
+                but is kept for clarity.
+                */
+                return gridValueAtSelectedCell == 0
+                        and 1 <= selectedNumber and selectedNumber <= 9
+                        and 0 <= selectedCell and selectedCell <= 80;
+        }
+
+        /*
+        Handles valid user input in the main grid of the game scene.
+
+        @param scene Scene to handle the input in.
+        @param gui GUI to handle the input in.
+        @param selectedCell Selected cell. [0, 80]
+        @param selectedNumber Selected number. [1, 9]
+
+        @note This function holds all the logic for valid user input in the main grid.
+        */
+        void gameSceneMainGridUserInputHandle(Scene& scene, GUI& gui,
+                const int selectedCell, const int selectedNumber)
+        {
+                LOG_TRACE("gameSceneMainGridUserInputHandle() called.");
+
+                auto& gameHandler = gui.getGameHandler();
+                auto& soundEffect = gui.getSoundEffect();
+                bool correctGuess = gameHandler.checkUserInput(selectedCell, selectedNumber);
+
+                // Either add a note or a guess
+                // Note
+                if (gameHandler.notesMode)
+                {
+                        /*
+                        The index calculations is as follows because the notes array
+                        stores for each cell 9 buckets for each number which could be
+                        a note. The index is calculated by multiplying the cell index
+                        by 9 and adding the selected number - 1 to get the correct
+                        bucket.
+                        */
+                        int index = selectedCell * 9 + selectedNumber - 1;
+                        bool value = gameHandler.notes.test(index);
+
+                        // Add or remove note
+                        gameHandler.notes = gameHandler.notes.set(index, !value);
+                }
+                // Correct guess
+                else if (correctGuess)
+                {
+                        soundEffect.playSound("correct");
+
+                        // Check win condition
+                        if (gameHandler.checkWin())
+                        {
+                                createGameOverScene(scene, gui, true);
+                        }
+                }
+                // Incorrect guess
+                else if (!correctGuess)
+                {
+                        soundEffect.playSound("mistake");
+
+                        if (gameHandler.mistakes++ >= 3)
+                        {
+                                createGameOverScene(scene, gui, false);
+                        }
+                }
+                #ifdef DEVELOPMENT
+                else
+                {
+                        LOG_WARN("Invalid main grid click handling. This log message should not appear.");
+                }
+                #endif // DEVELOPMENT
+        }
+// Click functions
+        /*
+        The main grid click function for the game scene.
+
+        @param scene Scene to handle the click in.
+        @param gui GUI to handle the click in.
+        @param gridSize Size of the grid.
+        @param gridX X position of the grid.
+        @param gridY Y position of the grid
+        */
+        void gameSceneMainGridClick(Scene& scene, GUI& gui, const int gridSize,
+                const int gridX, const int gridY)
+        {
+                LOG_TRACE("gameSceneMainGridClick() called.");
+
+                // Get the event
+                sf::Event event = gui.getEvent();
+                // Ignore if not a mouse click
+                // Note: Should not happen
+                if (event.type != sf::Event::MouseButtonPressed)
+                {
+                        // This function should only be called on mouse click
+                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
+                        return;
+                }
+
+                // Find the selected cell
+                auto& window = gui.getWindow();
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                // Note: These numbers should be in the range [0, 8]
+                int row = (mousePos.y - gridY) / (gridSize / 9);
+                int col = (mousePos.x - gridX) / (gridSize / 9);
+
+                // Get the grid
+                auto& gameHandler = gui.getGameHandler();
+                Sudoku::Grid grid;
+                gameHandler.getGrid(grid);
+                // Validate the row and column
+                // Note: row and col should be in the range [0, 8]
+                if (!grid.checkCellIndex(row, col))
+                {
+                        LOG_WARN("Invalid row x col: {} x {} (index: {}. This log message should not appear.",
+                                row, col, grid.convertIndex(row, col));
+                        return;
+                }
+
+                // Now we can be sure the input is valid
+
+                // Set the selected cell
+                gameHandler.selectedCell = grid.convertIndex(row, col);
+
+                // Check if user intended to insert a number
+                if (isValidGameSceneMainGridUserInput(
+                        grid.getCell(gameHandler.selectedCell),
+                        gameHandler.selectedCell, gameHandler.selectedNumber))
+                {
+                        gameSceneMainGridUserInputHandle(scene, gui,
+                                gameHandler.selectedCell, gameHandler.selectedNumber);
+                }
+
+                createGameScene(scene, gui);
         }
 
 } // namespace System

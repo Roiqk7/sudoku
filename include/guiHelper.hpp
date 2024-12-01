@@ -10,6 +10,7 @@ This file contains helper functions for the GUI.
 #include "colors.hpp"
 #include "command.hpp"
 #include "gameHandler.hpp"
+#include "gui.hpp"
 #include "object.hpp"
 #include "scene.hpp"
 #include <filesystem>
@@ -80,6 +81,15 @@ namespace System
                 const sf::RenderWindow& window);
         std::string getFormattedTime(const std::chrono::microseconds& time);
         std::string getFormattedDifficulty(const Sudoku::Difficulty& difficulty);
+// Click functions helper
+        bool isValidGameSceneMainGridUserInput(
+                const int gridValueAtSelectedCell,
+                const int selectedCell, const int selectedNumber);
+        void gameSceneMainGridUserInputHandle(Scene& scene, GUI& gui,
+                const int selectedCell, const int selectedNumber);
+// Click functions
+        void gameSceneMainGridClick(Scene& scene, GUI& gui, const int gridSize,
+                const int gridX, const int gridY);
 } // namespace System
 
 
