@@ -187,8 +187,6 @@ namespace System
 
                                 render();
 
-                                music.checkMusic();
-
                                 {
                                         #ifdef DEVELOPMENT
                                         // Delete the execution time scene
