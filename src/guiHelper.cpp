@@ -381,7 +381,7 @@ namespace System
                         // Check win condition
                         if (gameHandler.checkWin())
                         {
-                                createGameOverScene(scene, gui, true);
+                                return createGameOverScene(scene, gui, true);
                         }
                 }
                 // Incorrect guess
@@ -389,9 +389,9 @@ namespace System
                 {
                         soundEffect.playSound("mistake");
 
-                        if (gameHandler.mistakes++ >= 3)
+                        if (++gameHandler.mistakes >= 3)
                         {
-                                createGameOverScene(scene, gui, false);
+                                return createGameOverScene(scene, gui, false);
                         }
                 }
                 #ifdef DEVELOPMENT
@@ -400,6 +400,8 @@ namespace System
                         LOG_WARN("Invalid main grid click handling. This log message should not appear.");
                 }
                 #endif // DEVELOPMENT
+
+                createGameScene(scene, gui);
         }
 // Click functions
         /*
@@ -449,19 +451,22 @@ namespace System
 
                 // Now we can be sure the input is valid
 
-                // Set the selected cell
+                // Set the selected cell and value
                 gameHandler.selectedCell = grid.convertIndex(row, col);
+                gameHandler.selectedCellValue = grid.getCell(row, col);
 
                 // Check if user intended to insert a number
                 if (isValidGameSceneMainGridUserInput(
-                        grid.getCell(gameHandler.selectedCell),
+                        gameHandler.selectedCellValue,
                         gameHandler.selectedCell, gameHandler.selectedNumber))
                 {
                         gameSceneMainGridUserInputHandle(scene, gui,
                                 gameHandler.selectedCell, gameHandler.selectedNumber);
                 }
-
-                createGameScene(scene, gui);
+                else
+                {
+                        createGameScene(scene, gui);
+                }
         }
 
         /*
@@ -516,17 +521,17 @@ namespace System
                 gameHandler.selectedNumber = gameHandler.selectedNumber == num ? -1 : num;
 
                 // Check if user intended to insert a number
-                Sudoku::Grid grid;
-                gameHandler.getGrid(grid);
                 if (isValidGameSceneMainGridUserInput(
-                        grid.getCell(gameHandler.selectedCell),
+                        gameHandler.selectedCellValue,
                         gameHandler.selectedCell, gameHandler.selectedNumber))
                 {
                         gameSceneMainGridUserInputHandle(scene, gui,
                                 gameHandler.selectedCell, gameHandler.selectedNumber);
                 }
-
-                createGameScene(scene, gui);
+                else
+                {
+                        createGameScene(scene, gui);
+                }
         }
 
 } // namespace System
