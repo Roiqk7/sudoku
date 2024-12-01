@@ -171,6 +171,7 @@ namespace System
                                 this->event = event;
 
                                 #ifdef DEVELOPMENT
+                                // Debug: Used to measure execution time of the handleEvent function
                                 auto start = std::chrono::high_resolution_clock::now();
                                 #endif // DEVELOPMENT
 
