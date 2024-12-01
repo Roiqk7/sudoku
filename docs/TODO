@@ -4,6 +4,7 @@
            2. Finish selected number highlight
            3. Fix regular highlight
            4. Simplify code
+              1. Simplify the number panel click function
         2. Fix bugs (music stopped playing, game crashes etc.)
            1. Music stop bug (may be fixed)
            2. Game crash bug when double hint
