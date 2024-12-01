@@ -38,7 +38,6 @@ namespace System
         // GUI methods
                 void init();
                 void waitEvent();
-                void removeInactiveScenes();
         // Event handling
                 void handleEvent(const sf::Event& event);
                 void handleMouseClick(const sf::Event& event);

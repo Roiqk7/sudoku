@@ -175,7 +175,6 @@ namespace System
                                 #endif // DEVELOPMENT
 
                                 handleEvent(event);
-                                // Note: Does nothing removeInactiveScenes();
 
                                 {
                                         #ifdef DEVELOPMENT
@@ -221,18 +220,6 @@ namespace System
                 }
 
                 window.display();
-        }
-
-        /*
-        Remove inactive scenes.
-        */
-        void GUI::removeInactiveScenes()
-        {
-                LOG_TRACE("GUI::removeInactiveScenes() called");
-
-                scenes.erase(std::remove_if(scenes.begin(), scenes.end(),
-                        [](const Scene& scene) { return !scene.active; }),
-                        scenes.end());
         }
 // Event handling
         /*
