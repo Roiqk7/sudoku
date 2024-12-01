@@ -69,6 +69,7 @@ namespace System
 
         @note If the music is not playing, start playing it.
         */
+        [[deprecated("If needed, place in the main loop. But I believe it is not necessary.")]]
         void Music::checkMusic()
         {
                 LOG_TRACE("Music::checkMusic() called");
