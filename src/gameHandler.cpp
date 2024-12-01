@@ -59,7 +59,7 @@ namespace Sudoku
                 // Reset attributes
                 score = 0;
                 selectedCell = -1;
-                selectedNumber = 0;
+                selectedNumber = -1;
                 hintsUsed = 0;
                 mistakes = 0;
                 notesMode = false;
