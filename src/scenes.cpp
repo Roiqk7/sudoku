@@ -466,83 +466,7 @@ namespace System
                 std::shared_ptr<Command> boardClickCommand = std::make_shared<Command>(
                         [&scene, &gui, GRID_SIZE, GRID_X, GRID_Y]()
                         {
-                                sf::Event event = gui.getEvent();
-
-                                // Ignore if not a mouse click
-                                // Note: Should not happen
-                                if (event.type != sf::Event::MouseButtonPressed)
-                                {
-                                        // This function should only be called on mouse click
-                                        LOG_WARN("Ignoring non-mouse click event. This log message should not appear.");
-                                        return;
-                                }
-
-                                auto& window = gui.getWindow();
-                                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-                                // Note: These numbers should be in the range [0, 8]
-                                int row = (mousePos.y - GRID_Y) / (GRID_SIZE / 9);
-                                int col = (mousePos.x - GRID_X) / (GRID_SIZE / 9);
-
-                                // Get the grid
-                                auto& gameHandler = gui.getGameHandler();
-                                Sudoku::Grid grid;
-                                gameHandler.getGrid(grid);
-
-                                // Validate the row and column
-                                // Note: row and col should be in the range [0, 8]
-                                if (!grid.checkCellIndex(row, col))
-                                {
-                                        LOG_WARN("Invalid row x col: {} x {} (index: {}. This log message should not appear.",
-                                                row, col, grid.convertIndex(row, col));
-                                        return;
-                                }
-
-                                // Set the selected cell
-                                gameHandler.selectedCell = grid.convertIndex(row, col);
-
-                                int selectedNumber = gameHandler.selectedNumber;
-
-                                // Check if the cell is empty and the selected number is valid
-                                if (grid.getCell(row, col) == 0 and (selectedNumber >= 1 and selectedNumber <= 9))
-                                {
-                                        auto& soundEffect = gui.getSoundEffect();
-
-                                        // Either add a note or a guess
-                                        if (gameHandler.notesMode)
-                                        {
-                                                int index = grid.convertIndex(row, col) * 9 + selectedNumber - 1;
-                                                bool value = gameHandler.notes.test(index);
-
-                                                // Add or remove note
-                                                gameHandler.notes = gameHandler.notes.set(index, !value);
-
-                                                return createGameScene(scene, gui);
-                                        }
-                                        // Incorrect guess
-                                        else if (!gameHandler.checkUserInput(row, col, selectedNumber))
-                                        {
-                                                soundEffect.playSound("mistake");
-
-                                                if (++gameHandler.mistakes == 3)
-                                                {
-                                                        return createGameOverScene(scene, gui, false);
-                                                }
-                                        }
-                                        // Correct guess
-                                        else
-                                        {
-                                                soundEffect.playSound("correct");
-
-                                                // Check win condition
-                                                if (gameHandler.checkWin())
-                                                {
-                                                        return createGameOverScene(scene, gui, true);
-                                                }
-                                        }
-                                }
-
-                                createGameScene(scene, gui);
+                                gameSceneMainGridClick(scene, gui, GRID_SIZE, GRID_X, GRID_Y);
                         });
                 auto& sudokuGrid = createButton("Grid",
                         GRID_X - FRAME_MARGIN, GRID_Y - FRAME_MARGIN,
@@ -917,6 +841,7 @@ namespace System
                 std::shared_ptr<Command> numberPanelClickCommand = std::make_shared<Command>(
                         [&scene, &gui, NUM_PANEL_SIZE, NUM_PANEL_X, NUM_PANEL_Y]()
                         {
+                                // TODO: Rework
                                 sf::Event event = gui.getEvent();
 
                                 // Ignore if not a mouse click
@@ -955,7 +880,7 @@ namespace System
                                         int cellCol = cell % 9;
 
                                         // Check if the number can be placed
-                                        if (gameHandler.checkUserInput(cellRow, cellCol,
+                                        if (gameHandler.checkUserInput(cell,
                                                 gameHandler.selectedNumber))
                                         {
                                                 auto& soundEffect = gui.getSoundEffect();
@@ -973,7 +898,7 @@ namespace System
                                                         return createGameScene(scene, gui);
                                                 }
                                                 // Incorrect guess
-                                                else if (!gameHandler.checkUserInput(row, col,
+                                                else if (!gameHandler.checkUserInput(cell,
                                                         gameHandler.selectedNumber))
                                                 {
                                                         soundEffect.playSound("mistake");
